@@ -1,1 +1,12 @@
-<p>forms works!</p>
+<div class="form-list-container">
+  <table class="form-table">
+    <tbody>
+      <tr *ngFor="let form of forms">
+        <td class="form-title">{{ form.title }}</td>
+        <td class="form-download">
+          <a [href]="'/downloads/' + form.link" target="_blank">Download({{ form.link }})</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

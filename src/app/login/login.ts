@@ -37,7 +37,7 @@ export class Login {
           localStorage.setItem('username', res.data.username);
 
           // REDIRECT
-          this.router.navigate(['/forms']);
+          this.router.navigate(['/layout/forms']);
         } 
         else {
           alert("Invalid username or password");
