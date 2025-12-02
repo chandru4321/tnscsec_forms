@@ -1,25 +1,31 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { Layout } from './layout';
-import { Header } from './header/header';
-import { Footer } from './footer/footer';
 
 const routes: Routes = [
   {
     path: '',
     component: Layout,
     children: [
-      { path: 'header', component: Header} ,
-      {path:'footer', component:Footer}  // content inside layout
+
+      // All pages INSIDE layout
+      {
+        path: 'totalforms',
+        loadChildren: () =>
+          import('../totalforms/totalforms-routingmodule')
+            .then(m => m.default)
+      },
+
+      {
+        path: 'form1to10',
+        loadChildren: () =>
+          import('../form1to10/form1to10-routing.module')
+            .then(m => m.default)
+      },
+
+      // Default child
+      { path: '', redirectTo: 'totalforms', pathMatch: 'full' }
     ]
   }
 ];
 
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class LayoutRoutingModule {
-  
-}
+export default routes;

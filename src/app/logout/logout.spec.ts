@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Forms } from './forms';
+import { Logout } from './logout';
 
-describe('Forms', () => {
-  let component: Forms;
-  let fixture: ComponentFixture<Forms>;
+describe('Logout', () => {
+  let component: Logout;
+  let fixture: ComponentFixture<Logout>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Forms]
+      imports: [Logout]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Forms);
+    fixture = TestBed.createComponent(Logout);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

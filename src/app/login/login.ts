@@ -1,4 +1,3 @@
-
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth';
@@ -20,15 +19,14 @@ export class Login {
   private router = inject(Router);
 
   login() {
-    const payload = {
-      username: this.username,
-      password: this.password
-    };
 
     this.auth.login(this.username, this.password).subscribe({
       next: (res: any) => {
 
-        if (res.status_code === 200 && res.data?.accessToken) {
+        console.log(res);   // Debug
+
+        // 🔥 Correct condition based on your API response
+        if (res.statusCode === 200 && res.data?.login === 'success') {
 
           // STORE TOKEN
           this.auth.storeToken(res.data.accessToken);
@@ -37,9 +35,9 @@ export class Login {
           localStorage.setItem('username', res.data.username);
 
           // REDIRECT
-          this.router.navigate(['/layout/forms']);
-        } 
-        else {
+          this.router.navigate(['/layout/totalforms']);
+
+        } else {
           alert("Invalid username or password");
         }
       },

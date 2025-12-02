@@ -1,0 +1,57 @@
+/* SPACE UNDER HEADER */
+.forms-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;     /* Add space below header */
+  padding-bottom: 40px;
+}
+
+/* BETTER TABLE WIDTH */
+.forms-table {
+  width: 70%;                    /* smaller width */
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+/* TABLE ROWS */
+.forms-table tr {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.forms-table tr:hover {
+  background: #f9f9f9;
+}
+
+/* TABLE CELLS */
+.forms-table td {
+  padding: 16px 20px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* TITLE COLUMN */
+.title {
+  color: #003366;
+  font-weight: 600;
+  width: 75%;
+}
+
+/* LINK COLUMN */
+.link {
+  text-align: right;
+  width: 25%;
+}
+
+.link a {
+  color: #0066cc;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,12 @@
+<div class="forms-container">
+  <table class="forms-table">
+    <tr *ngFor="let f of formsList">
+      <td class="title">{{ f.title }}</td>
+      <td class="link">
+        <a [routerLink]="f.routerLink">
+          Download({{ f.code }})
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
