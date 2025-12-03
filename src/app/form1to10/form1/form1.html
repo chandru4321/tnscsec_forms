@@ -1,1 +1,48 @@
-<p>routed suddessfully</p>
+<div class="step-container">
+  <h2 class="title">படிவம் 1</h2>
+
+  <h3 class="sub-title">
+    மாவட்டத் தேர்வு அலுவலரால் தேர்வு அறிக்கை பதிவு செய்யப்பட்ட விவரம்
+  </h3>
+
+  <div class="form-grid">
+
+    <!-- Left Section -->
+    <div class="form-column">
+
+      <label class="label">தேர்வு அலுவலர் (Department)</label>
+      <input type="text" class="input-box" [(ngModel)]="department_name" readonly>
+
+      <label class="label">மாவட்டம் (District)</label>
+      <input type="text" class="input-box" [(ngModel)]="district_name" readonly>
+
+    </div>
+
+    <!-- Right Section -->
+    <div class="form-column">
+
+      <label class="label">மண்டலம் (Zone)</label>
+      <input type="text" class="input-box" [(ngModel)]="zone_name" readonly>
+
+      <label class="label">
+        தேர்வு திட்டம் வகுக்கப்பட்ட சங்கங்களின் பெயர் (Master Zones)
+      </label>
+
+      <textarea class="textarea-box"
+        [(ngModel)]="masterZonesText"
+        readonly>
+      </textarea>
+
+    </div>
+
+
+
+
+
+
+
+
+    
+
+  </div>
+</div>

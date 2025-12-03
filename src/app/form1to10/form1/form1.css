@@ -1,57 +1,94 @@
-.form-list-container {
-  width: 100%;
-  max-width: 900px;
-  margin: 20px auto;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+/* Container styling */
+.step-container {
+  background: #b7d7b2;
+  padding: 40px 60px;
+  border-radius: 0;        /* remove rounded edges (optional) */
+  width: 100%;             /* full width */
+  max-width: 100%;         /* override fixed width */
+  margin: 0;               /* remove centering */
+  box-shadow: none;        /* optional – remove card shadow */
+  box-sizing: border-box;
 }
 
-.form-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Titles */
+.title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-.form-table tr {
-  border-bottom: 1px solid #ddd;
+.sub-title {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 1.4;
 }
 
-.form-table tr:last-child {
-  border-bottom: none;
+/* Form layout */
+.form-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-.form-title {
-  padding: 12px 16px;
+.form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label styling */
+.label {
+  font-size: 15px;
+  margin-bottom: 6px;
+  font-weight: 600;
   color: #333;
 }
 
-.form-download {
-  padding: 12px 16px;
-  text-align: right;
+/* Input fields */
+.input-box {
+  background: #009aa5;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  color: white;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.form-download a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
+.input-box::placeholder {
+  color: #e9fdfd;
 }
 
-.form-download a:hover {
-  text-decoration: underline;
+/* Textarea styling */
+.textarea-box {
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 5px;
+  border: 1px solid #dcdcdc;
+  min-height: 180px;
+  resize: none;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+  overflow-y: auto;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .form-table tr {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* Scrollbar for textarea */
+.textarea-box::-webkit-scrollbar {
+  width: 8px;
+}
 
-  .form-download {
-    text-align: left;
-    margin-top: 6px;
-  }
+.textarea-box::-webkit-scrollbar-thumb {
+  background-color: #009aa5;
+  border-radius: 4px;
+}
+
+.textarea-box[readonly] {
+  background: #f5f5f5;
+  border: 1px solid #cccccc;
+  cursor: not-allowed;
 }

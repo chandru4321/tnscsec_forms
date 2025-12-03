@@ -19,22 +19,27 @@ export class Login {
   private router = inject(Router);
 
   login() {
-
     this.auth.login(this.username, this.password).subscribe({
       next: (res: any) => {
 
-        console.log(res);   // Debug
+        console.log(res);
 
-        // 🔥 Correct condition based on your API response
         if (res.statusCode === 200 && res.data?.login === 'success') {
 
-          // STORE TOKEN
+          // Store token
           this.auth.storeToken(res.data.accessToken);
 
-          // STORE USERNAME
+          // Store username
           localStorage.setItem('username', res.data.username);
 
-          // REDIRECT
+          // Store IDs for Form1
+          localStorage.setItem('department_name', res.data.department_name);
+          localStorage.setItem('district_name', res.data.district_name);
+          localStorage.setItem('zone_name', res.data.zone_name);
+          
+          
+
+          // Redirect
           this.router.navigate(['/layout/totalforms']);
 
         } else {
