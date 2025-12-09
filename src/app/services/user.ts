@@ -11,21 +11,23 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  /** GET Master Zones */
   getMasterZones(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form1/master-zones`);
   }
 
+  /** POST → Checkpoint Zones */
   PostCheckpointZones(body: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/form1/checkpoint-zones`, body);
   }
 
-  // ❗ Remove old one before adding this
-getRuralSocietyDetails(body: any): Observable<any> {
-  return this.http.post<any>(`${this.baseUrl}/form1/rural-details`, body);
-}
+  /** POST → Get Rural Detail API */
+  getRuralSocietyDetails(body: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/form1/rural-details`, body);
+  }
 
-
-  submitForm(data: FormData): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/complaint-register-form1`, data);
+  /** 📌 NEW API — Final Form Submit */
+  submitForm1(data: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/form1/submit`, data);
   }
 }

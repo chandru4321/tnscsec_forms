@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Logout } from './logout/logout';
+import { totalforms } from './totalforms/totalforms';
 
 export const routes: Routes = [
 
@@ -15,9 +16,10 @@ export const routes: Routes = [
         .then(m => m.default)   // important
   },
 
+
   { path: 'logout', component: Logout },
 
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
 ];
 
 
