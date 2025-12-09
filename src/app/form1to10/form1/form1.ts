@@ -12,17 +12,18 @@ import { UserService } from '../../services/user';
 })
 export class Form1 implements OnInit {
 
-  department_name: string = '';
-  district_name: string = '';
-  zone_name: string = '';
+  department_name = '';
+  district_name = '';
+  zone_name = '';
 
-  masterZonesText: string = '';
-  societyListText: string = '';
+  masterZonesText = '';
   plannedSocietiesCount: number | null = null;
-  searchSocietyName: string = '';
-  nonNotifiedSocieties: string = '';
-  nonNotifiedCount: number | null = null;
-  remarks: string = '';
+
+  masterZones12: { id:number; name:string; selected:boolean }[] = [];
+  ruralDetails: { name:string; sc:number; women:number; general:number; total:number }[] = [];
+
+  /** 🔥 Added missing variable */
+  unselectedList: string[] = [];
 
   constructor(private userService: UserService) {}
 
@@ -32,146 +33,80 @@ export class Form1 implements OnInit {
     this.zone_name = localStorage.getItem('zone_name') || '';
 
     this.loadMasterZones();
-    this.loadMasterZones12();
-   // this.loadSocieties();
-    //this.loadVoters();
+    this.loadMasterZonesCheckbox();
   }
 
- 
-  
-
+  /** Load Master Zones Left Display */
   loadMasterZones() {
-  this.userService.getMasterZones().subscribe({
-    next: (res) => {
-      if (res.success && Array.isArray(res.data)) {
-        this.masterZonesText = res.data
-          .map((z: any) => z.association_name.replace(/\s+/g, ' ').trim())
-          .join('\n\n');
-
-        /** 🔥 Auto-fill count here */
+    this.userService.getMasterZones().subscribe(res => {
+      if (res.success) {
+        this.masterZonesText = res.data.map((x:any)=>x.association_name).join('\n\n');
         this.plannedSocietiesCount = res.data.length;
       }
-    },
-    error: (err) => console.error('Master Zones API Error:', err)
-  });
-}
-masterZones12: { name: string; selected: boolean }[] = []; // ADD THIS
+    });
+  }
 
-loadMasterZones12() {
-  this.userService.getMasterZones().subscribe({
-    next: (res) => {
-      if (res.success && Array.isArray(res.data)) {
-
-        this.masterZones12 = res.data.map((z: any) => ({
-          name: z.association_name.trim(),
-          selected: false  // checkbox default
+  /** Load Checkboxes */
+  loadMasterZonesCheckbox() {
+    this.userService.getMasterZones().subscribe(res => {
+      if (res.success) {
+        this.masterZones12 = res.data.map((z:any)=>({
+          id: z.id, 
+          name: z.association_name, 
+          selected:false
         }));
-
       }
-    },
-    error: (err) => console.error('Master Zones API Error:', err)
-  });
-}
+    });
+  }
 
+  /** Checkbox → Call API */
+  onCheckboxChange() {
 
+    const selectedIDs = this.masterZones12.filter(x => x.selected).map(x => x.id);
 
+    /** 🔥 Store unselected checkboxes for H4 display */
+    this.unselectedList = this.masterZones12
+        .filter(z => !z.selected)
+        .map(z => z.name);
 
+    if (selectedIDs.length === 0) {
+      this.ruralDetails = [];
+      return;
+    }
 
+    const body = { associationIds:selectedIDs };
 
+    this.userService.PostCheckpointZones(body).subscribe(res => {
+      if (res.success) {
 
+        this.ruralDetails = [];
 
+        const list = res.data.non_selected_soc;
+        const filtered = list.filter((x:any)=> selectedIDs.includes(x.id));
 
+        filtered.forEach((soc:any)=> this.loadRuralDetail(soc.id, soc.association_name));
+      }
+    });
+  }
 
+  /** Load rural data for each selected society */
+  loadRuralDetail(id:number, name:string) {
 
+    const body = { associationIds:[id] };
 
+    this.userService.getRuralSocietyDetails(body).subscribe(r=>{
+      if(r.success && r.data.length > 0){
 
+        const d = r.data[0];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   loadSocieties() {
-//     this.userService.getSocieties().subscribe({
-//       next: (res) => {
-//         if (res.success && Array.isArray(res.data)) {
-//           this.societyListText = res.data
-//             .map((s: any) => s.society_name.replace(/\s+/g, ' ').trim())
-//             .join('\n\n');
-//         }
-//       },
-//       error: (err) => console.error('Societies API Error:', err)
-//     });
-//   }
-
-//   loadVoters() {
-//     this.userService.getVoters().subscribe({
-//       next: (res) => {
-//         if (res.success && Array.isArray(res.data)) {
-//           // Example: could store voters if needed
-//         }
-//       },
-//       error: (err) => console.error('Voters API Error:', err)
-//     });
-//   }
-
-//   searchSociety() {
-//     const filtered = this.societyListText
-//       .split('\n\n')
-//       .filter(s => s.toLowerCase().includes(this.searchSocietyName.toLowerCase()));
-//     this.nonNotifiedSocieties = filtered.join('\n\n');
-//   }
-
-//   resetForm() {
-//     this.plannedSocietiesCount = null;
-//     this.searchSocietyName = '';
-//     this.nonNotifiedSocieties = '';
-//     this.nonNotifiedCount = null;
-//     this.remarks = '';
-//   }
-
-//   submitForm() {
-//     const payload = {
-//       department_name: this.department_name,
-//       district_name: this.district_name,
-//       zone_name: this.zone_name,
-//       masterZonesText: this.masterZonesText,
-//       plannedSocietiesCount: this.plannedSocietiesCount,
-//       nonNotifiedSocieties: this.nonNotifiedSocieties,
-//       nonNotifiedCount: this.nonNotifiedCount,
-//       remarks: this.remarks
-//     };
-//     console.log('Form submitted:', payload);
-//     // Call service to save payload if needed
-//   }
-
+        this.ruralDetails.push({
+          name,
+          sc:d.sc_st,
+          women:d.women,
+          general:d.general,
+          total:d.sc_st + d.women + d.general
+        });
+      }
+    });
+  }
 }

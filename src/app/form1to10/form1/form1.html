@@ -1,71 +1,77 @@
 <div class="step-container">
-  <h2 class="title">படிவம் 1</h2>
 
-  <h3 class="sub-title">
-    மாவட்டத் தேர்வு அலுவலரால் தேர்வு அறிக்கை பதிவு செய்யப்பட்ட விவரம்
-  </h3>
+  <h2 class="title">படிவம் 1</h2>
+  <h3 class="sub-title">மாவட்டத் தேர்வு அலுவலரால் தேர்வு அறிக்கை பதிவு செய்யப்பட்ட விவரம்</h3>
 
   <div class="form-grid">
-
-    <!-- Left Section -->
     <div class="form-column">
-      <label class="label">தேர்வு அலுவலர் (Department)</label>
+      <label class="label">தேர்வு அலுவலர்</label>
       <input type="text" class="input-box" [(ngModel)]="department_name" readonly>
 
-      <label class="label">மாவட்டம் (District)</label>
+      <label class="label">மாவட்டம்</label>
       <input type="text" class="input-box" [(ngModel)]="district_name" readonly>
     </div>
 
-    <!-- Right Section -->
     <div class="form-column">
-      <label class="label">மண்டலம் (Zone)</label>
+      <label class="label">மண்டலம்</label>
       <input type="text" class="input-box" [(ngModel)]="zone_name" readonly>
 
-      <label class="label">தேர்வு திட்டம் வகுக்கப்பட்ட சங்கங்களின் பெயர் (Master Zones)</label>
+      <label class="label">திட்டமிடப்பட்ட சங்கங்கள்</label>
       <textarea class="textarea-box" [(ngModel)]="masterZonesText" readonly></textarea>
     </div>
-
   </div>
 
-  <!-- Section 2 -->
-  <h3 class="sub-title"></h3>
   <div class="form-grid">
-
     <div class="form-column">
-      <label class="label">தேர்வு ஆணையத்தால் திட்டம் வகுக்கப்பட்ட சங்கங்களின் எண்ணிக்கை(Count)</label>
-<input type="text" class="input-box" [(ngModel)]="plannedSocietiesCount" readonly>
+      <label class="label">மொத்த சங்கங்கள்</label>
+      <input type="text" class="input-box" [(ngModel)]="plannedSocietiesCount" readonly>
     </div>
 
     <div class="form-column">
-  <label class="label">மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்பட்ட சங்கங்களின் பெயர்</label>
-
-  <div class="checkbox-list">
-    <div *ngFor="let item of masterZones12; let i = index" class="checkbox-item">
-      <input type="checkbox" [(ngModel)]="item.selected" [name]="'zone12_' + i">
-      {{ item.name }}
+      <label class="label">அறிவிப்பு வழங்கப்பட்ட சங்கங்கள்</label>
+      <div class="checkbox-list">
+        <div *ngFor="let item of masterZones12; let i=index" class="checkbox-item">
+          <input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()" [name]="'z'+i">
+          {{ item.name }}
+        </div>
+      </div>
     </div>
+  </div>
+
+  <h3 class="label">நிர்வாகக்குழு உறுப்பினர்களின் எண்ணிக்கை
+</h3>
+  <table *ngIf="ruralDetails.length>0" class="society-table">
+    <thead><tr>
+      <th>பெயர்</th><th>SC/ST</th><th>மகளிர்</th><th>பொது</th><th>மொத்தம்</th>
+    </tr></thead>
+    <tbody>
+      <tr *ngFor="let r of ruralDetails">
+        <td>{{r.name}}</td>
+        <td><input type="number" [(ngModel)]="r.sc" readonly></td>
+        <td><input type="number" [(ngModel)]="r.women" readonly></td>
+        <td><input type="number" [(ngModel)]="r.general" readonly></td>
+        <td><input type="number" [value]="r.sc+r.women+r.general" readonly></td>
+      </tr>
+    </tbody>
+  </table>
+  <h4 class="label section-title">
+  மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்படாத சங்கங்களின் பெயர்
+</h4>
+
+<div class="unselected-box" *ngIf="unselectedList.length > 0">
+  <div *ngFor="let name of unselectedList" class="unselected-item">
+    {{ name }}
   </div>
 </div>
 
-    </div>
 
-  </div>
+  <label class="note-label">குறிப்பு</label>
+<textarea class="note-box"></textarea>
 
-  <h3 class="sub-title">தேர்வு அறிவிப்பு வழங்கப்படாத சங்கங்களின் பெயர்</h3>
-  <textarea class="textarea-box" [(ngModel)]="nonNotifiedSocieties" readonly></textarea>
-
-  <!-- Section 3 -->
-  <h3 class="sub-title">தேர்வு அறிவிப்பு வழங்கப்படாத சங்கங்களின் எண்ணிக்கை</h3>
-  <input type="text" class="input-box" [(ngModel)]="nonNotifiedCount" placeholder="எண்ணிக்கை உள்ளிடவும்">
-
-  <label class="label">குறிப்பு</label>
-  <textarea class="textarea-box" [(ngModel)]="remarks" placeholder="உங்கள் குறிப்பை உள்ளிடவும்"></textarea>
 
   <div class="form-actions">
-    <button class="button-box cancel" >ரத்து செய்</button>
-    <button class="button-box submit" >சமர்ப்பிக்க</button>
+    <button class="button-box cancel">ரத்து</button>
+    <button class="button-box submit">சமர்ப்பிக்க</button>
   </div>
-  <!-- (click)="resetForm()"
-  (click)="submitForm()" -->
 
-
+</div>

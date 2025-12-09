@@ -189,3 +189,156 @@
   background-color: #009aa5;
   border-radius: 4px;
 }
+
+
+
+/*************** TABLE STYLING ***************/
+.society-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;               /* rounded corners apply correctly */
+  font-size: 15px;
+}
+
+/* Header row */
+.society-table thead {
+  background: #43cc0d;           /* dark green header */
+  color: white;
+  font-weight: bold;
+}
+
+.society-table th {
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid #ddd;
+}
+.society-table th:last-child { border-right: none; }
+
+/* Rows */
+.society-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+/* Name column aligned left */
+.society-table td.name {
+  text-align: left;
+  font-weight: 600;
+  width: 48%;
+  color: #222;
+}
+
+/* Inputs inside table */
+.society-table input {
+  width: 85px;
+  height: 32px;
+  border: 1px solid #a8a8a8;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  background: #e9f2e4;           /* slight green shade */
+  cursor: not-allowed;           /* readonly lock feel */
+}
+
+/* Row Hover Highlight */
+.society-table tr:hover {
+  background: #eef7e9;
+  transition: 0.2s;
+}
+
+
+
+/* ============================
+  SECTION TITLE (BLUE BAR)
+============================ */
+.section-title {
+  color:#140404;
+  padding:8px 12px;
+  font-size:18px;
+  font-weight:bold;
+  border-radius:4px;
+  margin-top:25px;
+  white-space: nowrap;
+/*overflow: hidden;*/
+text-overflow: ellipsis;
+
+
+  width: 55%;              /* 🔥 reduce width */
+  text-align:center;
+          /* center text */
+  /*margin-left:auto;         /* auto centers */
+  /*margin-right:auto;  
+        /* auto centers */
+}
+
+/* ============================
+   UNSELECTED SCROLL BOX
+============================ */
+.unselected-box {
+  background: #e9ad5e;
+  padding: 10px 18px;
+  border-radius: 6px;
+  margin-top: 10px;
+
+  width: 55%;                /* 🔥 same width as header */
+  /*margin-left:auto;*/
+  margin-right:auto;
+
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* individual row styling */
+.unselected-item {
+  background: rgba(255,255,255,0.18);
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* scrollbar */
+.unselected-box::-webkit-scrollbar { width: 8px; }
+.unselected-box::-webkit-scrollbar-thumb {
+  background: #7b7e7d;
+  border-radius: 6px;
+}
+/* Label Styling */
+.note-label{
+    font-size:18px;
+    font-weight:bold;
+    color:#1b1b1b;
+    margin-bottom:5px;
+    display:block;
+}
+
+/* Large Beautiful Input Box */
+.note-box{
+    width:95%;                        /* full width look🔥 */
+    height:140px;                     /* fixed height like screenshot */
+    background:#ffffff;
+    border:2px solid #c7d7c3;         /* light green soft border */
+    border-radius:6px;                
+    padding:12px 15px;
+    font-size:15px;
+    outline:none;
+    resize:vertical;                  /* allow only vertical resize */
+
+    box-shadow:0 0 4px rgba(0,0,0,0.1);
+    transition:0.2s;
+}
+
+/* On focus highlight */
+.note-box:focus{
+    border-color:#4ca95a;
+    box-shadow:0 0 6px rgba(0,150,50,0.4);
+}
+
+
+
+
+
