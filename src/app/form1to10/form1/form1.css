@@ -1,16 +1,20 @@
-/* Container styling */
+/* --------------------------------------------------
+   CONTAINER
+-------------------------------------------------- */
 .step-container {
   background: #b7d7b2;
   padding: 40px 60px;
-  border-radius: 0;        /* remove rounded edges (optional) */
-  width: 100%;             /* full width */
-  max-width: 100%;         /* override fixed width */
-  margin: 0;               /* remove centering */
-  box-shadow: none;        /* optional – remove card shadow */
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
   box-sizing: border-box;
 }
 
-/* Titles */
+/* --------------------------------------------------
+   TITLES
+-------------------------------------------------- */
 .title {
   text-align: center;
   font-size: 26px;
@@ -25,70 +29,163 @@
   line-height: 1.4;
 }
 
-/* Form layout */
+/* --------------------------------------------------
+   FORM GRID (MAIN FIX FOR SCREENSHOT-1 LOOK)
+-------------------------------------------------- */
 .form-grid {
-  display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 50px;
+  margin-bottom: 30px;
 }
 
+/* Column Styling */
 .form-column {
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Label styling */
+/* --------------------------------------------------
+   LABELS
+-------------------------------------------------- */
 .label {
   font-size: 15px;
-  margin-bottom: 6px;
   font-weight: 600;
   color: #333;
+  margin-bottom: 6px;
+  margin-top: 8px;
 }
 
-/* Input fields */
+/* --------------------------------------------------
+   INPUT BOX
+-------------------------------------------------- */
 .input-box {
   background: #009aa5;
   border: none;
   padding: 10px 12px;
   border-radius: 5px;
   margin-bottom: 20px;
-  color: white;
   font-size: 14px;
   width: 100%;
+  color: white;
   box-sizing: border-box;
+  height: 42px; /* cleaner input height */
+}
+
+.input-box[readonly] {
+  background: #d2eaea;
+  color: black;
+  cursor: not-allowed;
 }
 
 .input-box::placeholder {
   color: #e9fdfd;
 }
 
-/* Textarea styling */
+/* --------------------------------------------------
+   TEXTAREA
+-------------------------------------------------- */
 .textarea-box {
   background: #ffffff;
+  border: 1px solid #dcdcdc;
   padding: 10px 12px;
   border-radius: 5px;
-  border: 1px solid #dcdcdc;
   min-height: 180px;
   resize: none;
   font-size: 14px;
   color: #333;
-  line-height: 1.4;
+  line-height: 1.45;
   overflow-y: auto;
 }
 
-/* Scrollbar for textarea */
-.textarea-box::-webkit-scrollbar {
-  width: 8px;
-}
-
-.textarea-box::-webkit-scrollbar-thumb {
-  background-color: #009aa5;
-  border-radius: 4px;
+.textarea-box.master-box {
+  height: 260px; /* Ensures view like screenshot */
 }
 
 .textarea-box[readonly] {
   background: #f5f5f5;
   border: 1px solid #cccccc;
   cursor: not-allowed;
+}
+
+/* Scrollbar styling */
+.textarea-box::-webkit-scrollbar {
+  width: 8px;
+}
+.textarea-box::-webkit-scrollbar-thumb {
+  background-color: #009aa5;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------
+   SEARCH FIELD + BUTTON ROW
+-------------------------------------------------- */
+.search-group {
+  display: flex;
+  gap: 15px;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+-------------------------------------------------- */
+
+.button-box {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+}
+
+.button-box.cancel {
+  background: #6c757d;
+  width: 160px;
+}
+
+.button-box.submit {
+  background: #1a73e8;
+  width: 160px;
+}
+
+/* Right alignment for final action buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+
+
+/* ==================================================
+   CHECKBOX DISPLAY LIKE FIRST SCREENSHOT
+================================================== */
+.checkbox-list {
+  background: #ffffff;          /* white background like screenshot */
+  border: 1px solid #dcdcdc;    /* same border style as textarea */
+  padding: 12px;
+  border-radius: 6px;
+  max-height: 260px;            /* matching size with master textarea */
+  overflow-y: auto;             /* scroll enabled */
+  line-height: 1.6;
+}
+
+/* checkbox item spacing + alignment neat */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Scrollbar match textarea */
+.checkbox-list::-webkit-scrollbar {
+  width: 8px;
+}
+.checkbox-list::-webkit-scrollbar-thumb {
+  background-color: #009aa5;
+  border-radius: 4px;
 }
