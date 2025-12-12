@@ -25,7 +25,7 @@ export class Form1 implements OnInit {
 
   unselectedList: string[] = [];
 
-  noteText:string = "";  //🔥 remark text
+  noteText:string = "";  // remark text
 
   constructor(private userService: UserService, private router : Router) {}
 
@@ -50,6 +50,7 @@ export class Form1 implements OnInit {
   }
 
 
+
   
 
 
@@ -64,6 +65,8 @@ export class Form1 implements OnInit {
     });
   }
 
+
+
   /** When checkbox changes → Load data */
   onCheckboxChange() {
     const selectedIDs = this.masterZones12.filter(x=>x.selected).map(x=>x.id);
@@ -73,10 +76,13 @@ export class Form1 implements OnInit {
 
     if(selectedIDs.length===0){
       this.ruralDetails=[];
+
+
       return;
     }
 
     const body = { associationIds:selectedIDs };
+
 
     this.userService.PostCheckpointZones(body).subscribe(res=>{
       if(res.success){
@@ -108,7 +114,8 @@ export class Form1 implements OnInit {
     });
   }
 
-  //🔥 FINAL SUBMIT ------->
+
+  // FINAL SUBMIT ------->
   submitForm() {
 
   const selectedSoc = this.masterZones12
@@ -144,10 +151,12 @@ export class Form1 implements OnInit {
   this.userService.submitForm1(payload).subscribe(res=>{
      alert("✔ Form Submitted Successfully");
 
-     // 🔥 Redirect to Form1-10 Page After Submit
+     //  Redirect to Form1-10 Page After Submit
      this.router.navigate(['/layout/totalforms']);
   });
 }
 }
+
+
 
 

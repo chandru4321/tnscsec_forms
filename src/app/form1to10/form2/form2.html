@@ -1,1 +1,86 @@
-<p>form2 works!</p>
+<div class="step-container">
+
+  <h2 class="title">படிவம் 2</h2>
+  <h3 class="sub-title">உறுப்பினர் பட்டியல் அளித்த/அளிக்காத சங்கங்கள் விவரம்</h3>
+
+  <!-- =============== ROW 1 =============== -->
+  <div class="form-grid">    
+
+    <!-- LEFT COLUMN -->
+    <div class="form-column">
+
+      <label class="label">மாவட்டம்</label>
+      <input type="text" class="input-box" [(ngModel)]="district_name" readonly>
+
+      <label class="label">Form-1 ல் தேர்வு செய்யப்பட்ட சங்கங்கள் (F3)</label>
+
+      <textarea class="textarea-box" readonly>{{ f3List }}</textarea>
+
+    </div>
+
+
+    <!-- RIGHT COLUMN -->
+    <div class="form-column">
+
+      <label class="label">மண்டலம்</label>
+      <input type="text" class="input-box" [(ngModel)]="zone_name" readonly>
+
+      <label class="label">உறுப்பினர் பட்டியல் வழங்கிய சங்கங்கள் (F4)</label>
+
+      <div class="checkbox-list">
+        <div *ngFor="let item of finalCheckboxList" class="checkbox-item">
+          <input type="checkbox" [checked]="item.checked" (change)="toggleCheckbox(item)">
+          {{ item.society_name }}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =============== ROW 2 : F5 + F6 =============== -->
+  <div class="upload-container">
+
+    <!-- F5 PANEL -->
+    <div class="upload-panel">
+      <h3 class="panel-title">
+        வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளித்த சங்கங்கள் (F5)
+      </h3>
+
+      <div class="panel-box">
+        <div *ngFor="let item of f5_selectedList" class="panel-item">
+          {{ item.society_name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- F6 PANEL -->
+
+    <div class="upload-panel">
+      <h3 class="panel-title">
+        வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளிக்காத சங்கங்கள் (F6)
+      </h3>
+
+      <div class="panel-box red-box">
+        <div *ngFor="let item of f6_unselectedList" class="panel-item panel-item-red">
+          {{ item.society_name }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =============== COUNT FIELD =============== -->
+  <label class="label">அளிக்காத சங்கங்களின் எண்ணிக்கை</label>
+  <input type="text" class="input-box" readonly [value]="f6_unselectedList.length">
+
+  <!-- =============== BUTTONS =============== -->
+  <div class="form-actions">
+    <button class="button-box cancel">ரத்து</button>
+    <button class="button-box submit" (click)="submitForm2()">சமர்ப்பிக்க</button>
+  </div>
+
+
+
+
+</div>
