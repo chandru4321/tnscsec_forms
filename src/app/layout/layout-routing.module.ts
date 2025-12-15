@@ -21,6 +21,12 @@ const routes: Routes = [
           import('../form1to10/form1to10-routing.module')
             .then(m => m.default)
       },
+      {
+        path: 'formtables',
+        loadChildren: () =>
+          import('../formtables/formtables-routing.module')
+            .then(m => m.default)
+      },
 
       // Default child
       { path: '', redirectTo: 'totalforms', pathMatch: 'full' }

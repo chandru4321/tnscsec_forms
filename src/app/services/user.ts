@@ -31,6 +31,11 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/form1/submit`, data);
   }
 
+  /** FORM-1 — TABLE / LIST API ✅ */
+  getForm1Table(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form1`);
+  }
+
   /** FORM-2 — Fetch Form-1 Selected Societies */
   getForm1Selected(form1_id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form2/form1-selected/${form1_id}`);
@@ -41,9 +46,8 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/form2/checkbox/${form1_id}`, {});
   }
 
-  /** ✅ FORM-2 — FINAL SUBMIT API */
+  /** FORM-2 — FINAL SUBMIT */
   submitForm2(form1_id: number, payload: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/form2/submit/${form1_id}`, payload);
   }
-
 }

@@ -1,115 +1,61 @@
-/* HEADER BAR */
 .header-container {
-  background: #3caf6b;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 90px;
+  background: #4caf50;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 16px;
-  color: white;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  box-sizing: border-box;
+  padding: 0 20px;
 }
 
-/* LEFT SECTION */
+.logo {
+  height: 55px;
+}
+
 .left-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-/* LOGO */
-.logo {
-  width: 55px;
-  height: 55px;
-  object-fit: contain;
-}
-
-/* TEXT */
-.header-text {
-  color: white;
-  line-height: 1.1;
+  gap: 15px;
 }
 
 .header-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  color: #fff;
 }
 
 .header-subtitle {
   font-size: 14px;
-  margin-top: 2px;
+  color: #eaffea;
 }
 
-/* RIGHT SECTION */
 .right-section {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* PROFILE */
 .profile {
   display: flex;
   align-items: center;
+  gap: 8px;
+  color: white;
 }
 
 .profile-icon {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  margin-right: 6px;
 }
 
-.username {
-  font-size: 14px;
-}
-
-/* LOGOUT BUTTON */
 .logout-btn {
-  background: white;
-  color: #3caf6b;
+  background: #e53935;
+  color: #fff;
   border: none;
-  padding: 7px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 4px;
   cursor: pointer;
-}
-
-.logout-btn:hover {
-  background: #f3f3f3;
-}
-
-/* PUSH CONTENT DOWN */
-body, .content-area {
-  padding-top: 85px;
-}
-.profile{
-
-
-display: flex;
-  flex-direction: column;  /* stack vertically */
-  align-items: center;     /* center horizontally */
-  gap: 4px;                /* space between icon and username */
-}
-
-/* RESPONSIVE */
-@media(max-width: 600px) {
-  .header-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .right-section {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .content-area, body {
-    padding-top: 120px;
-  }
 }

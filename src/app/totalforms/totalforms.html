@@ -2,6 +2,7 @@
   <table class="forms-table">
     <tr *ngFor="let f of formsList">
       <td class="title">{{ f.title }}</td>
+      <button routerLink="/layout/formtables/formt1">List</button>
       <td class="link">
         <a [routerLink]="f.routerLink">
           Download({{ f.code }})
