@@ -9,7 +9,7 @@ export class UserService {
 
   private baseUrl = 'https://lg0w5w01-4000.inc1.devtunnels.ms/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { } s
 
   /** GET Master Zones */
   getMasterZones(): Observable<any> {

@@ -6,113 +6,113 @@
 
 <div class="table-scroll-wrapper">
 
-<table class="report-table" id="reportTable">
+  <table class="report-table" id="reportTable">
 
-  <thead>
+    <thead>
 
-    <!-- ✅ TOP HEADER ROW 1 -->
-    <tr class="top-header">
-      <th colspan="12">
-        மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்பட்ட விவரம்
-      </th>
-    </tr>
+      <!-- ✅ TOP HEADER ROW 1 -->
+      <tr class="top-header">
+        <th colspan="12">
+          மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்பட்ட விவரம்
+        </th>
+      </tr>
 
-    <!-- ✅ TOP HEADER ROW 2 -->
-    <tr class="top-sub-header">
-      <th colspan="12">
-        துறை--கூட்டுறவு சங்கங்களின் பதிவாளர் (விவரம்)(department_name)
-      </th>
-    </tr>
+      <!-- ✅ TOP HEADER ROW 2 -->
+      <tr class="top-sub-header">
+        <th colspan="12">
+          துறை--கூட்டுறவு சங்கங்களின் பதிவாளர் (விவரம்)(department_name)
+        </th>
+      </tr>
 
-    <!-- ✅ MAIN HEADER -->
-    <tr>
-      <th rowspan="2">வ.எண்</th>
-      <th rowspan="2">மாவட்டம்(district_name)</th>
-      <th rowspan="2">மாவட்ட தேர்தல் அலுவலர் சரகம்(zone_name)</th>
-      <th rowspan="2">
-        தேர்தல் அறிவிப்பதற்கு<br>
-        திட்டமிடப்பட்ட சங்கங்களின் எண்ணிக்கை(masterzone_count)
-      </th>
-      <th rowspan="2">
-        தேர்தல் அறிவிப்பு வழங்கப்பட்ட<br>
-        சங்கங்களின் பெயர்(selected_soc_names)
-      </th>
-      <th colspan="4">
-        நிர்வாகக்குழு உறுப்பினர்களின் எண்ணிக்கை
-      </th>
-      <th rowspan="2">
-        தேர்தல் அறிவிப்பு வழங்கப்படாத<br>
-        சங்கங்களின் பெயர்(non_selected_societies)
-      </th>
-      <th rowspan="2">
-        வழங்கப்படாத<br> சங்கங்களின் எண்ணிக்கை(non_selected_count)
-      </th>
-      <th rowspan="2">குறிப்பு(remark)</th>
-    </tr>
+      <!-- ✅ MAIN HEADER -->
+      <tr>
+        <th rowspan="2">வ.எண்</th>
+        <th rowspan="2">மாவட்டம்(district_name)</th>
+        <th rowspan="2">மாவட்ட தேர்தல் அலுவலர் சரகம்(zone_name)</th>
+        <th rowspan="2">
+          தேர்தல் அறிவிப்பதற்கு<br>
+          திட்டமிடப்பட்ட சங்கங்களின் எண்ணிக்கை(masterzone_count)
+        </th>
+        <th rowspan="2">
+          தேர்தல் அறிவிப்பு வழங்கப்பட்ட<br>
+          சங்கங்களின் பெயர்(selected_soc_names)
+        </th>
+        <th colspan="4">
+          நிர்வாகக்குழு உறுப்பினர்களின் எண்ணிக்கை
+        </th>
+        <th rowspan="2">
+          தேர்தல் அறிவிப்பு வழங்கப்படாத<br>
+          சங்கங்களின் பெயர்(non_selected_societies)
+        </th>
+        <th rowspan="2">
+          வழங்கப்படாத<br> சங்கங்களின் எண்ணிக்கை(non_selected_count)
+        </th>
+        <th rowspan="2">குறிப்பு(remark)</th>
+      </tr>
 
-    <!-- ✅ SUB HEADER -->
-    <tr class="sub-header">
-      <th>ப.ச / ப.கு (sc_st)</th>
-      <th>மகளிர்(women)</th>
-      <th>பொது(general)</th>
-      <th>மொத்தம்(tot_voters)</th>
-    </tr>
+      <!-- ✅ SUB HEADER -->
+      <tr class="sub-header">
+        <th>ப.ச / ப.கு (sc_st)</th>
+        <th>மகளிர்(women)</th>
+        <th>பொது(general)</th>
+        <th>மொத்தம்(tot_voters)</th>
+      </tr>
 
-  </thead>
+    </thead>
 
-  <tbody>
+    <tbody>
 
-    <tr *ngFor="let row of form1List; let i = index">
+      <tr *ngFor="let row of form1List; let i = index">
 
-      <!-- SERIAL -->
-      <td>{{ i + 1 }}</td>
+        <!-- SERIAL -->
+        <td>{{ i + 1 }}</td>
 
-      <!-- DISTRICT -->
-      <td>{{ row.district_name }}</td>
+        <!-- DISTRICT -->
+        <td>{{ row.district_name }}</td>
 
-      <!-- ZONE -->
-      <td>{{ row.zone_name }}</td>
+        <!-- ZONE -->
+        <td>{{ row.zone_name }}</td>
 
-      <!-- MASTER COUNT -->
-      <td>{{ row.masterzone_count }}</td>
+        <!-- MASTER COUNT -->
+        <td>{{ row.masterzone_count }}</td>
 
-      <!-- SELECTED SOCIETIES -->
-      <td class="text-left">
-        <div *ngFor="let s of row.selected_societies">
-          {{ s.society_name }}
-        </div>
-      </td>
+        <!-- SELECTED SOCIETIES -->
+        <td class="text-left">
+          <div *ngFor="let s of row.selected_soc">
+            {{ s.society_name }}
+          </div>
+        </td>
 
-      <!-- SC / ST -->
-      <td>{{ sumField(row.selected_societies, 'sc_st') }}</td>
+        <!-- SC / ST -->
+        <td>{{ sumField(row.selected_soc, 'sc_st') }}</td>
 
-      <!-- WOMEN -->
-      <td>{{ sumField(row.selected_societies, 'women') }}</td>
+        <!-- WOMEN -->
+        <td>{{ sumField(row.selected_soc, 'women') }}</td>
 
-      <!-- GENERAL -->
-      <td>{{ sumField(row.selected_societies, 'general') }}</td>
+        <!-- GENERAL -->
+        <td>{{ sumField(row.selected_soc, 'general') }}</td>
 
-      <!-- TOTAL -->
-      <td class="total-cell">
-        {{ sumField(row.selected_societies, 'tot_voters') }}
-      </td>
+        <!-- TOTAL -->
+        <td class="total-cell">
+          {{ sumField(row.selected_soc, 'tot_voters') }}
+        </td>
 
-      <!-- NON SELECTED SOCIETIES -->
-      <td class="danger-text">
-        <div *ngFor="let ns of row.non_selected_societies">
-          {{ ns.society_name }}
-        </div>
-      </td>
+        <!-- NON SELECTED SOCIETIES -->
+        <td class="danger-text">
+          <div *ngFor="let ns of row.non_selected_soc">
+            {{ ns.society_name }}
+          </div>
+        </td>
 
-      <!-- NON SELECTED COUNT -->
-      <td>{{ row.non_selected_count }}</td>
+        <!-- NON SELECTED COUNT -->
+        <td>{{ row.non_selected_count }}</td>
 
-      <!-- REMARK -->
-      <td class="note-cell">{{ row.remark || '-' }}</td>
+        <!-- REMARK -->
+        <td class="note-cell">{{ row.remark || '-' }}</td>
 
-    </tr>
+      </tr>
 
-  </tbody>
+    </tbody>
 
-</table>
+  </table>
 </div>
