@@ -9,9 +9,13 @@ export class UserService {
 
   private baseUrl = 'https://lg0w5w01-4000.inc1.devtunnels.ms/api';
 
-  constructor(private http: HttpClient) { } s
+  constructor(private http: HttpClient) { }
 
-  /** GET Master Zones */
+  /** =========================
+   * FORM-1 APIs
+   * ========================= */
+
+  /** GET → Master Zones */
   getMasterZones(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form1/master-zones`);
   }
@@ -21,32 +25,41 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/form1/checkpoint-zones`, body);
   }
 
-  /** POST → Get Rural Details */
+  /** POST → Get Rural Society Details */
   getRuralSocietyDetails(body: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/form1/rural-details`, body);
   }
 
-  /** FORM–1 FINAL SUBMIT */
+  /** POST → FORM-1 FINAL SUBMIT */
   submitForm1(data: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/form1/submit`, data);
   }
 
-  /** FORM-1 — TABLE / LIST API ✅ */
+  /** GET → FORM-1 TABLE / LIST */
   getForm1Table(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form1`);
   }
 
-  /** FORM-2 — Fetch Form-1 Selected Societies */
+  /**  POST → FORM-1 EDIT (UPDATE EXISTING FORM-1) */
+  editForm1(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/form1/edit`, payload);
+  }
+
+  /** =========================
+   * FORM-2 APIs
+   * ========================= */
+
+  /** GET → Form-1 Selected Societies */
   getForm1Selected(form1_id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form2/form1-selected/${form1_id}`);
   }
 
-  /** FORM-2 — Fetch Checkbox (Published / Not Published) */
+  /** POST → Checkbox (Published / Not Published) */
   getForm2Checkbox(form1_id: number): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/form2/checkbox/${form1_id}`, {});
   }
 
-  /** FORM-2 — FINAL SUBMIT */
+  /** POST → FORM-2 FINAL SUBMIT */
   submitForm2(form1_id: number, payload: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/form2/submit/${form1_id}`, payload);
   }

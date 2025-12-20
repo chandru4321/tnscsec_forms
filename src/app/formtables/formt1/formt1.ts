@@ -3,50 +3,131 @@ import { CommonModule } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { UserService } from '../../services/user';
+import { RouterLink, RouterModule } from "@angular/router";
+
+/* =========================
+   INTERFACES
+========================= */
+
+interface SelectedSociety {
+  society_id: number;
+  society_name: string;
+  sc_st: number;
+  women: number;
+  general: number;
+  tot_voters: number;
+}
+
+interface MasterzoneSociety {
+  society_id: number;
+  society_name: string;
+}
+
+interface Form1ApiRow {
+  district_name: string;
+  zone_name: string;
+  masterzone_count: number;
+  remark: string;
+  non_selected_count: number;
+  selected_soc: SelectedSociety[];
+  masterzone_societies: MasterzoneSociety[];
+}
+
+interface TableRow {
+  district_name: string;
+  zone_name: string;
+  masterzone_count: number;
+  society_name: string;
+
+  sc_st: number | null;
+  women: number | null;
+  general: number | null;
+  tot_voters: number | null;
+
+  isSelected: boolean;
+  remark: string;
+
+  rowSpan?: number;
+  non_selected_count?: number;
+}
+
+/* =========================
+   COMPONENT
+========================= */
 
 @Component({
   selector: 'app-formt1',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './formt1.html',
   styleUrls: ['./formt1.css']
+
 })
 export class Formt1 implements OnInit {
 
-  form1List: any[] = [];
-  departmentName = '';
+  tableRows: TableRow[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadForm1Table();
   }
 
-  /** 🔵 Load API data */
-  loadForm1Table() {
+  /* =========================
+     LOAD API DATA
+  ========================= */
+  loadForm1Table(): void {
     this.userService.getForm1Table().subscribe(res => {
       if (res?.success && Array.isArray(res.data)) {
-        this.form1List = res.data;
-
-        // Show department name in header (from first row)
-        this.departmentName = res.data[0]?.department_name || '';
+        this.prepareRows(res.data as Form1ApiRow[]);
       }
     });
   }
 
-  /** 🔢 SUM helper */
-  sumField(list: any[], field: string): number {
-    if (!Array.isArray(list)) return 0;
-    return list.reduce((sum, item) => sum + (Number(item[field]) || 0), 0);
+  /* =========================
+     TRANSFORM API → TABLE
+  ========================= */
+  private prepareRows(data: Form1ApiRow[]): void {
+    this.tableRows = [];
+
+    data.forEach((row: Form1ApiRow) => {
+
+      const selectedMap = new Map<number, SelectedSociety>(
+        row.selected_soc.map(s => [s.society_id, s])
+      );
+
+      const totalRows = row.masterzone_societies.length;
+
+      row.masterzone_societies.forEach((mz, index) => {
+
+        const selected = selectedMap.get(mz.society_id);
+
+        this.tableRows.push({
+          district_name: row.district_name,
+          zone_name: row.zone_name,
+          masterzone_count: row.masterzone_count,
+          society_name: mz.society_name,
+
+          sc_st: selected ? selected.sc_st : null,
+          women: selected ? selected.women : null,
+          general: selected ? selected.general : null,
+          tot_voters: selected ? selected.tot_voters : null,
+
+          isSelected: !!selected,
+          remark: row.remark || '-',
+
+          rowSpan: index === 0 ? totalRows : undefined,
+          non_selected_count: index === 0 ? row.non_selected_count : undefined
+        });
+
+      });
+    });
   }
 
-  /** ✏️ Dummy edit */
-  onEdit() {
-    alert('Edit clicked (Dummy action)');
-  }
-
-  /** ⬇️ Export Excel */
-  exportToExcel() {
+  /* =========================
+     EXPORT EXCEL
+  ========================= */
+  exportToExcel(): void {
     const table = document.getElementById('reportTable');
     if (!table) return;
 
@@ -62,5 +143,12 @@ export class Formt1 implements OnInit {
     });
 
     saveAs(new Blob([buffer]), 'Form1_Report.xlsx');
+  }
+
+  /* =========================
+     DUMMY EDIT
+  ========================= */
+  onEdit(): void {
+    alert('Edit clicked (Dummy action)');
   }
 }

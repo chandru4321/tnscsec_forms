@@ -5,7 +5,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-forms',
   standalone: true,
-  imports: [CommonModule,RouterModule,RouterLink],
+  imports: [CommonModule, RouterModule, RouterLink],
   templateUrl: './totalforms.html',
   styleUrls: ['./totalforms.css']
 })

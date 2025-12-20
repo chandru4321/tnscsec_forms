@@ -1,156 +1,140 @@
-/* =========================
-   SCROLL CONTAINER
-========================= */
+/* =====================================
+   ACTION BUTTON BAR
+===================================== */
+.table-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin: 10px 0;
+  padding-right: 10px;
+}
+
+/* =====================================
+   SCROLL CONTAINER (BODY ONLY SCROLLS)
+===================================== */
 .table-scroll-wrapper {
-  max-height: 420px;
-  overflow: auto;
+  width: 100%;
+  max-height: calc(100vh - 220px);
+  /* header + buttons + footer safe */
+  overflow-y: auto;
+  /* ✅ vertical scroll */
+  overflow-x: auto;
+  /* ✅ horizontal scroll */
   border: 1px solid #4d7c0f;
   background: #ffffff;
 }
 
-/* =========================
+/* =====================================
    TABLE BASE
-========================= */
+===================================== */
 .report-table {
-  width: 2200px;                 /* MUST be larger than screen */
+  min-width: 2200px;
   border-collapse: collapse;
-  table-layout: fixed;           /* REQUIRED */
+  table-layout: fixed;
   font-family: "Noto Sans Tamil", sans-serif;
   font-size: 14px;
 }
 
-/* Ensure header never disappears */
-.report-table thead {
-  display: table-header-group;
-}
-
-/* =========================
-   COLUMN WIDTHS (VERY IMPORTANT)
-========================= */
+/* =====================================
+   COMMON CELL STYLE
+===================================== */
 .report-table th,
 .report-table td {
   border: 1px solid #4d7c0f;
-  padding: 10px;
+  padding: 8px;
+  /* 🔽 reduced */
   vertical-align: top;
 }
 
-.report-table th:nth-child(1),
-.report-table td:nth-child(1) { width: 60px; }
-
-.report-table th:nth-child(2),
-.report-table td:nth-child(2) { width: 160px; }
-
-.report-table th:nth-child(3),
-.report-table td:nth-child(3) { width: 180px; }
-
-.report-table th:nth-child(4),
-.report-table td:nth-child(4) { width: 220px; }
-
-.report-table th:nth-child(5),
-.report-table td:nth-child(5) { width: 360px; }
-
-.report-table th:nth-child(6),
-.report-table td:nth-child(6),
-.report-table th:nth-child(7),
-.report-table td:nth-child(7),
-.report-table th:nth-child(8),
-.report-table td:nth-child(8),
-.report-table th:nth-child(9),
-.report-table td:nth-child(9) {
-  width: 90px;
-}
-
-.report-table th:nth-child(10),
-.report-table td:nth-child(10) { width: 360px; }
-
-.report-table th:nth-child(11),
-.report-table td:nth-child(11) { width: 120px; }
-
-.report-table th:nth-child(12),
-.report-table td:nth-child(12) { width: 180px; }
-
-/* =========================
-   TOP HEADER ROW 1
-========================= */
+/* =====================================
+   TOP HEADER (STICKY)
+===================================== */
 .top-header th {
   background: #b7e3a1;
-  text-align: center;
-  font-size: 18px;
+  font-size: 16px;
+  /* 🔽 reduced */
   font-weight: 700;
-  padding: 16px;
+  padding: 10px;
+  /* 🔽 reduced */
+  text-align: center;
+
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 30;
 }
 
-/* =========================
-   TOP HEADER ROW 2
-========================= */
+/* =====================================
+   TOP SUB HEADER (STICKY)
+===================================== */
 .top-sub-header th {
   background: #c6efb3;
-  text-align: left;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 12px 16px;
+
+  padding: 8px 16px;
+
+  /* 🔥 THIS IS THE FIX */
+  text-align: left;
+
   position: sticky;
-  top: 56px;
-  z-index: 95;
+  top: 42px;
+  z-index: 29;
 }
 
-/* =========================
-   MAIN HEADER
-========================= */
+
+/* =====================================
+   MAIN HEADER (STICKY)
+===================================== */
 .report-table thead tr:not(.top-header):not(.top-sub-header) th {
-  background: #2563eb;
+  background: #61b9c0;
   color: #ffffff;
-  text-align: center;
+  font-size: 13px;
+  /* 🔽 reduced */
   font-weight: 600;
   line-height: 1.4;
+  text-align: center;
+
+  position: sticky;
+  top: 74px;
+  z-index: 28;
+
   white-space: normal;
   word-break: break-word;
-  position: sticky;
-  top: 104px;
-  z-index: 90;
 }
 
-/* =========================
-   SUB HEADER (SC / WOMEN / TOTAL)
-========================= */
+/* =====================================
+   SUB HEADER (STICKY)
+===================================== */
 .sub-header th {
-  background: #1e40af;
+  background: #b7bcce;
   color: #ffffff;
+
   position: sticky;
-  top: 168px;
-  z-index: 85;
+  top: 116px;
+  z-index: 27;
 }
 
-/* =========================
-   BODY
-========================= */
+/* =====================================
+   BODY CELLS
+===================================== */
 .report-table td {
   background: #ffffff;
   text-align: center;
   line-height: 1.6;
 }
 
-/* =========================
-   TEXT LEFT
-========================= */
+/* =====================================
+   TEXT ALIGNMENTS
+===================================== */
 .text-left {
   text-align: left;
 }
 
-/* =========================
-   TOTAL CELL
-========================= */
 .total-cell {
   background: #e0f2fe;
   font-weight: bold;
 }
 
-/* =========================
-   NON-SELECTED
-========================= */
 .danger-text {
   background: #fee2e2;
   color: #991b1b;
@@ -158,51 +142,22 @@
   text-align: left;
 }
 
-/* =========================
-   REMARK
-========================= */
 .note-cell {
   background: #f8fafc;
   font-style: italic;
   text-align: left;
 }
 
-/* =========================
-   ACTION BAR
-========================= */
-.table-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-bottom: 12px;
-}
+/* =====================================
+   FIXED WIDTH WRAP COLUMNS
+===================================== */
+.wrap-col {
+  width: 360px;
+  min-width: 360px;
+  max-width: 360px;
 
-/* =========================
-   BUTTONS
-========================= */
-.action-btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.edit-btn {
-  background: #f59e0b;
-  color: #ffffff;
-}
-
-.edit-btn:hover {
-  background: #d97706;
-}
-
-.export-btn {
-  background: #16a34a;
-  color: #ffffff;
-}
-
-.export-btn:hover {
-  background: #15803d;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.6;
 }

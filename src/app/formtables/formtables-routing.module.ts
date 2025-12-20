@@ -4,12 +4,13 @@ import { Formt1 } from './formt1/formt1';
 
 const routes: Routes = [
   {
-    path:'formt1', component:Formt1
+    path: 'formt1', component: Formt1
   },
-  
-    
-  
+
+
+
 ];
+
 
 
 export default routes;

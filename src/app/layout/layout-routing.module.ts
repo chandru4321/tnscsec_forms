@@ -27,6 +27,12 @@ const routes: Routes = [
           import('../formtables/formtables-routing.module')
             .then(m => m.default)
       },
+      {
+        path: 'form1to10edit',
+        loadChildren: () =>
+          import('../form1to10edit/form1to10edit-routing.module')
+            .then(m => m.default)
+      },
 
       // Default child
       { path: '', redirectTo: 'totalforms', pathMatch: 'full' }
