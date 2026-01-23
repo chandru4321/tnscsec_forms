@@ -40,10 +40,96 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form1`);
   }
 
-  /**  POST → FORM-1 EDIT (UPDATE EXISTING FORM-1) */
-  editForm1(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/form1/edit`, payload);
+
+  /** =========================
+   * FORM-1 EDIT APIs
+   * ========================= */
+
+  /** GET → Get Form1 By ID (For Edit Load) */
+  getForm1ById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form1/${id}`);
   }
+
+  /** POST → FORM-1 EDIT SUBMIT */
+  // editForm1(data: any): Observable<any> {
+  //   return this.http.put<any>(`${this.baseUrl}/form1/edit`, data);
+  // }
+  editForm1(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form1/edit/${id}`, data);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /** =========================
    * FORM-2 APIs

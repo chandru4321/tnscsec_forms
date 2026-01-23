@@ -1,8 +1,39 @@
 <!-- ACTION BUTTONS -->
 <div class="table-actions">
-  <button class="action-btn edit-btn" routerLink="/layout/form1to10edit/form1edit">
+  <!-- <button [routerLink]="['/layout/form1to10/form1']" [queryParams]="{id:r.id}">
     Edit
-  </button>
+  </button> -->
+
+
+
+  <tr *ngFor="let r of tableRows">
+
+    <!-- your other <td> columns -->
+
+    <td *ngIf="r.rowSpan">
+      <button class="action-btn edit-btn" [routerLink]="['/layout/form1to10/form1']" [queryParams]="{ id: r.id }">
+        Edit
+      </button>
+    </td>
+
+
+  </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- (click)="onEdit() -->
   <button class="action-btn export-btn" (click)="exportToExcel()">⬇️ Export Excel</button>

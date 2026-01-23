@@ -39,11 +39,17 @@
   </div>
 
   <h3 class="label">நிர்வாகக்குழு உறுப்பினர்களின் எண்ணிக்கை
-</h3>
+  </h3>
   <table *ngIf="ruralDetails.length>0" class="society-table">
-    <thead><tr>
-      <th>பெயர்</th><th>SC/ST</th><th>மகளிர்</th><th>பொது</th><th>மொத்தம்</th>
-    </tr></thead>
+    <thead>
+      <tr>
+        <th>பெயர்</th>
+        <th>SC/ST</th>
+        <th>மகளிர்</th>
+        <th>பொது</th>
+        <th>மொத்தம்</th>
+      </tr>
+    </thead>
     <tbody>
       <tr *ngFor="let r of ruralDetails">
         <td>{{r.name}}</td>
@@ -55,23 +61,30 @@
     </tbody>
   </table>
   <h4 class="label section-title">
-  மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்படாத சங்கங்களின் பெயர்
-</h4>
+    மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்படாத சங்கங்களின் பெயர்
+  </h4>
 
-<div class="unselected-box" *ngIf="unselectedList.length > 0">
-  <div *ngFor="let name of unselectedList" class="unselected-item">
-    {{ name }}
+  <div class="unselected-box" *ngIf="unselectedList.length > 0">
+    <div *ngFor="let name of unselectedList" class="unselected-item">
+      {{ name }}
+    </div>
   </div>
-</div>
 
 
   <label class="note-label">குறிப்புரை</label>
-<textarea class="note-box"></textarea>
+  <!-- <textarea class="note-box"></textarea> -->
+  <textarea class="note-box" [(ngModel)]="noteText"></textarea>
+
 
 
   <div class="form-actions">
     <button class="button-box cancel">ரத்து</button>
-<button class="button-box submit" (click)="submitForm()"  >சமர்ப்பிக்க</button>
+    <!-- <button class="button-box submit" (click)="submitForm()">சமர்ப்பிக்க</button> -->
+
+    <button class="button-box submit" (click)="submitForm()">
+      {{ isEditMode ? 'புதுப்பிக்கவும்' : 'சமர்ப்பிக்க' }}
+    </button>
+
   </div>
 
 </div>

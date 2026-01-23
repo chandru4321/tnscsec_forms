@@ -34,6 +34,8 @@ interface Form1ApiRow {
 }
 
 interface TableRow {
+  id: number;   // 🔥 ADD THIS
+
   district_name: string;
   zone_name: string;
   masterzone_count: number;
@@ -90,31 +92,35 @@ export class Formt1 implements OnInit {
   private prepareRows(data: Form1ApiRow[]): void {
     this.tableRows = [];
 
-    data.forEach((row: Form1ApiRow) => {
+    data.forEach((row: any) => {
 
       const selectedMap = new Map<number, SelectedSociety>(
-        row.selected_soc.map(s => [s.society_id, s])
+        row.selected_soc.map((s: any) => [s.society_id, s])
       );
 
       const totalRows = row.masterzone_societies.length;
 
-      row.masterzone_societies.forEach((mz, index) => {
+      row.masterzone_societies.forEach((mz: any, index: number) => {
 
         const selected = selectedMap.get(mz.society_id);
+        const isSelected = !!selected; // ✅ KEY LINE
 
         this.tableRows.push({
+          id: row.id,
+
           district_name: row.district_name,
           zone_name: row.zone_name,
           masterzone_count: row.masterzone_count,
           society_name: mz.society_name,
 
-          sc_st: selected ? selected.sc_st : null,
-          women: selected ? selected.women : null,
-          general: selected ? selected.general : null,
-          tot_voters: selected ? selected.tot_voters : null,
+          // ✅ numbers only for selected
+          sc_st: isSelected ? selected!.sc_st : null,
+          women: isSelected ? selected!.women : null,
+          general: isSelected ? selected!.general : null,
+          tot_voters: isSelected ? selected!.tot_voters : null,
 
-          isSelected: !!selected,
-          remark: row.remark || '-',
+          isSelected: isSelected, // ✅ FIXED
+          remark: row.remark,
 
           rowSpan: index === 0 ? totalRows : undefined,
           non_selected_count: index === 0 ? row.non_selected_count : undefined
@@ -123,6 +129,7 @@ export class Formt1 implements OnInit {
       });
     });
   }
+
 
   /* =========================
      EXPORT EXCEL
