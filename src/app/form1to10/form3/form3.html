@@ -1,0 +1,95 @@
+<div class="page-bg">
+
+    <h2 class="form-title">படிவம் 3</h2>
+    <div class="form-subtitle">
+        இரதி வாக்காளர் பட்டியல் வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட விபரம்
+    </div>
+
+    <!-- F1 & F2 -->
+    <div class="row">
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / மாவட்டம் (F1)</label>
+            <input class="input-box" [(ngModel)]="district_name" readonly />
+        </div>
+
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / சபகம் (F2)</label>
+            <input class="input-box" [(ngModel)]="zone_name" readonly />
+        </div>
+    </div>
+
+    <!-- F3 -->
+    <div class="section-label">வாக்காளர் பட்டியல் அலுவலரால் உருவாக்கப்பட்ட சங்கங்கள் (F3)</div>
+    <div class="large-box">
+        <div *ngFor="let soc of f3SocietyList; let i = index">
+            {{ i + 1 }}. {{ soc.society_name }}
+        </div>
+    </div>
+
+    <!-- F4 -->
+    <div class="section-label">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர்கள் எண்ணிக்கை (F4)</div>
+    <div class="large-box">
+        <div class="f4-row" *ngFor="let soc of f3SocietyList; let i = index">
+            <div class="f4-name">{{ i + 1 }}. {{ soc.society_name }}</div>
+            <div class="f4-input-group">
+                <span class="f4-label">வாக்காளர்கள் எண்ணிக்கை</span>
+                <input type="number" class="f4-input" [(ngModel)]="voterCounts[i]" />
+            </div>
+        </div>
+    </div>
+
+    <!-- F5 -->
+    <div class="section-label">வாக்காளர் பட்டியலில் வெளியிடப்பட்ட சங்கங்கள் கோரியமை (F5)</div>
+    <div class="large-box">
+        <div class="f5-row" *ngFor="let soc of f3SocietyList; let i = index">
+            <div class="f5-name">{{ i + 1 }}. {{ soc.society_name }}</div>
+            <div class="f5-radio">
+                <label>
+                    <input type="radio" [name]="'f5_' + i" value="YES" [(ngModel)]="f5Answers[i]" /> ஆம்
+                </label>
+                <label>
+                    <input type="radio" [name]="'f5_' + i" value="NO" [(ngModel)]="f5Answers[i]" /> இல்லை
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- F6 -->
+    <div class="section-label">வாக்காளர் பட்டியலில் இருந்து நீக்கப்பட்ட சங்கங்கள் (F6)</div>
+    <div class="large-box">
+        <ng-container *ngFor="let soc of f3SocietyList; let i = index">
+            <div class="f6-row" *ngIf="f5Answers[i] === 'YES'">
+                <div class="f6-name">{{ soc.society_name }}</div>
+
+                <div class="f6-input-group">
+                    <span class="f6-label">நீக்கப்பட்ட வாக்காளர்கள்</span>
+                    <input type="number" class="f6-input" [(ngModel)]="removedCounts[i]" />
+                </div>
+
+                <div class="f6-input-group">
+                    <span class="f6-label">மீதமுள்ள வாக்காளர்கள்</span>
+                    <input type="number" class="f6-input" [(ngModel)]="remainingCounts[i]" />
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- F7 -->
+    <div class="section-label">இறுதி வாக்காளர் பட்டியல் (F7)</div>
+    <div class="large-box">
+        <div class="f7-row" *ngFor="let soc of f3SocietyList; let i = index">
+            <div class="f7-name">{{ i + 1 }}. {{ soc.society_name }}</div>
+            <div class="f7-input-group">
+                <span class="f7-label">மொத்த வாக்காளர்கள்</span>
+                <input class="f7-input" [value]="voterCounts[i]" readonly />
+            </div>
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="form-actions-right">
+        <button class="btn-cancel" (click)="onCancel()">ரத்து</button>
+        <button class="btn-submit" (click)="onSubmit()">சமர்ப்பிக்க</button>
+    </div>
+
+</div>

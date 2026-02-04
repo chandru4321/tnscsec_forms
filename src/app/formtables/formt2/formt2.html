@@ -1,0 +1,87 @@
+<div class="table-scroll-wrapper">
+
+    <table class="report-table">
+
+        <thead>
+
+            <!-- TOP HEADER -->
+            <tr class="top-header">
+                <th colspan="8">
+                    சங்கம் உறுப்பினர் பட்டியல் வெளியிடுதல் மற்றும் வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல்
+                    அளித்த/அளிக்காத சங்கங்கள் விவரம் </th>
+            </tr>
+            <!-- SUB HEADER -->
+            <tr class="top-sub-header">
+                <th colspan="13">
+                    துறை--கூட்டுறவு சங்கங்களின் பதிவாளர் (விவரம்)(department_name)
+                </th>
+            </tr>
+
+            <!-- MAIN HEADER -->
+            <tr>
+                <th>மாவட்ட தேர்தல் அலுவலர் மாவட்டம்/மண்டலம்</th>
+                <th>மாவட்ட தேர்தல் அலுவலர் சரகம்</th>
+
+                <th class="wrap-col">
+                    Form-1 ல் தேர்வு செய்யப்பட்ட சங்கங்கள் (F3)
+                </th>
+
+                <th class="wrap-col">
+                    உறுப்பினர் பட்டியல் அளித்த சங்கங்கள் (F5)
+                </th>
+
+                <th class="wrap-col">
+                    உறுப்பினர் பட்டியல் அளிக்காத சங்கங்கள் (F6)
+                </th>
+
+                <th>
+                    அளிக்காத சங்கங்களின் எண்ணிக்கை
+                </th>
+
+                <th>குறிப்பு</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr *ngFor="let r of tableRows">
+
+                <td>{{ r.department_name }}</td>
+                <td>{{ r.district_name }}</td>
+                <td>{{ r.zone_name }}</td>
+
+                <!-- F3 -->
+                <td class="wrap-col text-left">
+                    <div *ngFor="let s of r.masterzone_societies">
+                        {{ s }}
+                    </div>
+                </td>
+
+                <!-- F5 -->
+                <td class="wrap-col text-left total-cell">
+                    <div *ngFor="let s of r.selected_soc">
+                        {{ s }}
+                    </div>
+                </td>
+
+                <!-- F6 -->
+                <td class="wrap-col text-left danger-text">
+                    <div *ngFor="let s of r.non_selected_soc">
+                        {{ s }}
+                    </div>
+                </td>
+
+                <td>{{ r.non_selected_count }}</td>
+
+                <td class="note-cell">
+                    {{ r.remark }}
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>

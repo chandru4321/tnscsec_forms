@@ -1,0 +1,90 @@
+<div class="page-bg">
+
+    <h2 class="form-title">
+        வேட்புமனு தாக்கல் செய்த உறுப்பினர்களின் பெயர் மற்றும் விபரம்
+    </h2>
+
+    <!-- DISTRICT / ZONE -->
+    <div class="row">
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / மாவட்டம்</label>
+            <input class="input-box" [value]="district_name" readonly />
+        </div>
+
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / சபகம்</label>
+            <input class="input-box" [value]="zone_name" readonly />
+        </div>
+    </div>
+
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th>வ. எண்</th>
+                <th>சங்கத்தின் பெயர்</th>
+                <th>ப.தி./ப.கு</th>
+                <th>மகளிர்</th>
+                <th>பொது</th>
+                <th>சேர்க்க</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let row of form5List; let i = index" [class.submitted-row]="row.submitted">
+
+                <td>{{ i + 1 }}</td>
+                <td>{{ row.society_name }}</td>
+                <td>{{ row.sc_st }}</td>
+                <td>{{ row.women }}</td>
+                <td>{{ row.general }}</td>
+                <td>
+                    <button class="add-btn" [disabled]="row.submitted" (click)="addSociety(row)">
+                        {{ row.submitted ? 'சமர்ப்பிக்கப்பட்டது' : 'சேர்க்க +' }}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ================= MODAL ================= -->
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal-box">
+            <button class="close-btn" (click)="closeModal()">✕</button>
+
+            <h3>{{ selectedSociety?.society_name }}</h3>
+
+
+            <!-- SC/ST -->
+            <div class="category">
+                <h4>ப.தி./ப.கு</h4>
+                <div class="pair" *ngFor="let m of scstMembers">
+                    <input [(ngModel)]="m.member_name" placeholder="பெயர்" />
+                    <input [(ngModel)]="m.aadhar_no" placeholder="ஆதார் எண்" />
+                </div>
+            </div>
+
+            <!-- WOMEN -->
+            <div class="category">
+                <h4>மகளிர்</h4>
+                <div class="pair" *ngFor="let m of womenMembers">
+                    <input [(ngModel)]="m.member_name" placeholder="பெயர்" />
+                    <input [(ngModel)]="m.aadhar_no" placeholder="ஆதார் எண்" />
+                </div>
+            </div>
+
+            <!-- GENERAL -->
+            <div class="category">
+                <h4>பொது</h4>
+                <div class="pair" *ngFor="let m of generalMembers">
+                    <input [(ngModel)]="m.member_name" placeholder="பெயர்" />
+                    <input [(ngModel)]="m.aadhar_no" placeholder="ஆதார் எண்" />
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModal()">ரத்து செய்ய</button>
+                <button class="submit-btn" (click)="submitModal()">சமர்ப்பிக்க</button>
+            </div>
+
+        </div>
+    </div>

@@ -4,12 +4,12 @@
   <h3 class="sub-title">உறுப்பினர் பட்டியல் அளித்த/அளிக்காத சங்கங்கள் விவரம்</h3>
 
   <!-- =============== ROW 1 =============== -->
-  <div class="form-grid">    
+  <div class="form-grid">
 
     <!-- LEFT COLUMN -->
     <div class="form-column">
 
-      <label class="label">மாவட்டம்</label>
+      <label class="label">மாவட்டம்(f1)</label>
       <input type="text" class="input-box" [(ngModel)]="district_name" readonly>
 
       <label class="label">Form-1 ல் தேர்வு செய்யப்பட்ட சங்கங்கள் (F3)</label>
@@ -22,14 +22,15 @@
     <!-- RIGHT COLUMN -->
     <div class="form-column">
 
-      <label class="label">மண்டலம்</label>
+      <label class="label">மண்டலம்(f2)</label>
       <input type="text" class="input-box" [(ngModel)]="zone_name" readonly>
 
       <label class="label">உறுப்பினர் பட்டியல் வழங்கிய சங்கங்கள் (F4)</label>
 
       <div class="checkbox-list">
         <div *ngFor="let item of finalCheckboxList" class="checkbox-item">
-          <input type="checkbox" [checked]="item.checked" (change)="toggleCheckbox(item)">
+          <!-- <input type="checkbox" [checked]="item.checked" (change)="toggleCheckbox(item)"> -->
+          <input type="checkbox" [(ngModel)]="item.checked" (ngModelChange)="updateF5F6()">
           {{ item.society_name }}
         </div>
       </div>
@@ -62,7 +63,7 @@
 
     <!-- F6 PANEL -->
 
-         <div class="upload-panel">
+    <div class="upload-panel">
       <h3 class="panel-title">
         வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளிக்காத சங்கங்கள் (F6)
       </h3>
@@ -84,13 +85,9 @@
 
 
   <!-- =============== BUTTONS =============== -->
-   
+
   <div class="form-actions">
     <button class="button-box cancel">ரத்து</button>
     <button class="button-box submit" (click)="submitForm2()">சமர்ப்பிக்க</button>
   </div>
 </div>
-
-
-
-

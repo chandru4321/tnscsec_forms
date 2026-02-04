@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
 import { Router } from '@angular/router';
 
@@ -9,92 +9,107 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './form2.html',
-  styleUrls: ['./form2.css'],
+  styleUrls: ['./form2.css']
 })
 export class Form2 implements OnInit {
 
   district_name = '';
   zone_name = '';
-  form1_id = 43; 
 
-  selectedSocieties: any[] = [];
-  finalCheckboxList: any[] = [];
+  form1_id!: number;
 
-  f3List: string = '';
+  /* F3 */
+  f3List = '';
 
-  /* F5 = selected, F6 = unselected */
+  /* Checkbox master list */
+  finalCheckboxList: {
+    society_id: number;
+    society_name: string;
+    checked: boolean;
+  }[] = [];
+
+  /* UI preview */
   f5_selectedList: any[] = [];
   f6_unselectedList: any[] = [];
 
   constructor(
     private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit() {
+  /* ================= INIT ================= */
+  ngOnInit(): void {
+
+    const storedForm1Id = localStorage.getItem('form1_id');
+    this.form1_id = storedForm1Id ? Number(storedForm1Id) : 0;
+
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
 
-    this.loadForm1Selected();
+    if (this.form1_id) {
+      this.loadForm1Selected();
+    }
   }
 
-  /** API → Load F3 list */
-  loadForm1Selected() {
+  /* ================= API-1 : LOAD F3 ================= */
+  loadForm1Selected(): void {
     this.userService.getForm1Selected(this.form1_id).subscribe(res => {
-      if (res.success) {
 
-        this.selectedSocieties = res.data.selected_soc;
+      if (!res?.success) return;
 
-        this.f3List = this.selectedSocieties
-          .map(x => x.society_name)
-          .join('\n');
+      const list = res.data.selected_soc;
 
-        this.buildFinalList();
-      }
+      // F3 textarea
+      this.f3List = list.map((x: any) => x.society_name).join('\n');
+
+      // Build checkbox list
+      this.finalCheckboxList = list.map((x: any) => ({
+        society_id: x.society_id,
+        society_name: x.society_name,
+        checked: false
+      }));
+
+      this.updateF5F6();
     });
   }
 
-  /** Build F4 checkboxes (all OFF at first) */
-  buildFinalList() {
-    this.finalCheckboxList = this.selectedSocieties.map(soc => ({
-      society_id: soc.society_id,
-      society_name: soc.society_name,
-      checked: false
-    }));
-
-    this.updateF5F6();
-  }
-
-  /** Build F5 and F6 dynamically */
-  updateF5F6() {
+  /* ================= UI LOGIC ================= */
+  updateF5F6(): void {
     this.f5_selectedList = this.finalCheckboxList.filter(x => x.checked);
     this.f6_unselectedList = this.finalCheckboxList.filter(x => !x.checked);
   }
 
-  /** Checkbox clicked */
-  toggleCheckbox(item: any) {
-    item.checked = !item.checked;
-    this.updateF5F6();
-  }
+  /* ================= SUBMIT (🔥 FIXED) ================= */
+  submitForm2(): void {
 
-  /** ✅ FINAL SUBMIT API CALL */
-  submitForm2() {
+    // 🔥 BACKEND EXPECTS IDs ONLY
+    const selectedIds = this.finalCheckboxList
+      .filter(x => x.checked)
+      .map(x => x.society_id);
+
+    // Validation
+    if (selectedIds.length === 0) {
+      alert('⚠️ குறைந்தது ஒரு சங்கத்தை தேர்வு செய்ய வேண்டும்');
+      return;
+    }
 
     const payload = {
-      remark: "Form2 submission test",      // later replace with real remark
-      selected_soc: this.f5_selectedList,   // F5
-      non_selected_soc: this.f6_unselectedList  // F6
+      selectedIds,                    // ✅ THIS IS THE FIX
+      remark: 'Form2 submission test'
     };
 
-    this.userService.submitForm2(this.form1_id, payload)
-      .subscribe(res => {
-        if (res.success) {
-          alert("✔ Form2 Saved Successfully!");
+    console.log('🚀 FINAL PAYLOAD SENT TO BACKEND:', payload);
 
-          // OPTIONAL: redirect to Form3 or dashboard
-          // this.router.navigate(['/form3']);
-        }
-      });
+    this.userService.submitForm2(payload).subscribe(res => {
+
+      if (res?.success) {
+
+        // Save form2 id for future use
+        localStorage.setItem('form2_id', res.data.id);
+
+        alert('✔ Form-2 Saved Successfully');
+        this.router.navigate(['/layout/totalforms']);
+      }
+    });
   }
-
 }

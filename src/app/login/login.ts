@@ -37,8 +37,8 @@ export class Login {
           localStorage.setItem('district_name', res.data.district_name);
           localStorage.setItem('zone_name', res.data.zone_name);
           localStorage.setItem('auth_token', res.data.accessToken);
-          
-          
+
+
 
           // Redirect
           this.router.navigate(['/layout/totalforms']);

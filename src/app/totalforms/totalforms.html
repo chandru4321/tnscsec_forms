@@ -1,13 +1,70 @@
 <div class="forms-container">
   <table class="forms-table">
+
     <tr *ngFor="let f of formsList">
+
       <td class="title">{{ f.title }}</td>
-      <button routerLink="/layout/formtables/formt1">View</button>
+
+      <!-- View = TABLE -->
+      <td>
+        <button class="view-btn" [routerLink]="f.tableLink">
+          View
+        </button>
+      </td>
+
+      <!-- Form link -->
       <td class="link">
-        <a [routerLink]="f.routerLink">
+
+        <!-- Form1 ALWAYS clickable -->
+        <a *ngIf="f.code === 'Form1'" [routerLink]="f.formLink">
           ({{ f.code }})
         </a>
+
+        <!-- Form2 clickable ONLY after Form1 completed
+        <a *ngIf="f.code === 'Form2' && isForm1Completed()" [routerLink]="f.formLink">
+          ({{ f.code }})
+        </a> --->
+        <a *ngIf="f.code === 'Form2' " [routerLink]="f.formLink">
+          ({{ f.code }})
+        </a>
+        <!---
+         <span
+          *ngIf="f.code === 'Form2' && !isForm1Completed()"
+          class="disabled-text">
+          ({{ f.code }})
+        </span> -->
+        <!-- <span *ngIf="f.code === 'Form2' ">
+          ({{ f.code }})
+        </span> -->
+
+        <!-- 🔥 Form3 clickable ONLY after Form2 completed-->
+        <a *ngIf="f.code === 'Form3' " [routerLink]="f.formLink">
+          ({{ f.code }})
+        </a>
+
+        <a *ngIf="f.code === 'Form4' " [routerLink]="f.formLink">
+          ({{ f.code }})
+        </a>
+
+        <a *ngIf="f.code === 'Form5' " [routerLink]="f.formLink">
+          ({{ f.code }})
+        </a>
+        <a *ngIf="f.code === 'Form6' " [routerLink]="f.formLink">
+          ({{ f.code }})
+        </a>
+        <!-- 🔒 Form3 locked -->
+        <!-- <span
+          *ngIf="f.code === 'Form3' && !isForm2Completed()"
+          class="disabled-text">
+          ({{ f.code }})
+        </span> -->
+        <!-- <span *ngIf="f.code === 'Form3' ">
+          ({{ f.code }})
+        </span> -->
+
       </td>
+
     </tr>
+
   </table>
 </div>

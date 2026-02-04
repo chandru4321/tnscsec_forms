@@ -1,0 +1,211 @@
+.page-bg {
+    background: #c7e0c2;
+    padding: 35px 50px;
+    min-height: 100vh;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.form-subtitle {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.row {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 25px;
+}
+
+.col {
+    flex: 1;
+}
+
+.input-box {
+    width: 100%;
+    height: 42px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.section-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 35px 0 15px;
+}
+
+.large-box {
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+/* ---------- F4 ---------- */
+.f4-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.f4-name {
+    width: 60%;
+}
+
+.f4-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.f4-label {
+    background: #1e88b8;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px 0 0 4px;
+}
+
+.f4-input {
+    width: 120px;
+    height: 38px;
+    border: 1px solid #2e7d32;
+    border-left: none;
+}
+
+/* ---------- F5 ---------- */
+.f5-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.f5-name {
+    width: 65%;
+}
+
+.f5-radio label {
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+/* ---------- F6 ---------- */
+.f6-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.f6-name {
+    width: 40%;
+}
+
+.f6-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.f6-label {
+    background: #1e88b8;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px 0 0 4px;
+}
+
+.f6-input {
+    width: 120px;
+    height: 38px;
+    border: 1px solid #2e7d32;
+    border-left: none;
+}
+
+.empty-text {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+/* ---------- F7 ---------- */
+.f7-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.f7-name {
+    width: 60%;
+    line-height: 1.6;
+}
+
+.f7-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.f7-label {
+    background: #1e88b8;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px 0 0 4px;
+    white-space: nowrap;
+}
+
+.f7-input {
+    width: 120px;
+    height: 38px;
+    border: 1px solid #2e7d32;
+    border-left: none;
+    padding: 6px 10px;
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+/* ---------- FORM ACTION BUTTONS ---------- */
+/* ---------- ACTION BUTTONS (RIGHT ALIGNED) ---------- */
+.form-actions-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 18px;
+    margin-top: 40px;
+}
+
+/* Cancel button */
+.btn-cancel {
+    background-color: #6c757d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 36px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Submit button */
+.btn-submit {
+    background-color: #1e88ff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 36px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-submit:hover {
+    background-color: #0f6fd6;
+}

@@ -1,0 +1,163 @@
+/* =====================================
+   ACTION BUTTON BAR
+===================================== */
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin: 10px 0;
+    padding-right: 10px;
+}
+
+/* =====================================
+   SCROLL CONTAINER (BODY ONLY SCROLLS)
+===================================== */
+.table-scroll-wrapper {
+    width: 100%;
+    max-height: calc(100vh - 220px);
+    /* header + buttons + footer safe */
+    overflow-y: auto;
+    /* ✅ vertical scroll */
+    overflow-x: auto;
+    /* ✅ horizontal scroll */
+    border: 1px solid #4d7c0f;
+    background: #ffffff;
+}
+
+/* =====================================
+   TABLE BASE
+===================================== */
+.report-table {
+    min-width: 2200px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: "Noto Sans Tamil", sans-serif;
+    font-size: 14px;
+}
+
+/* =====================================
+   COMMON CELL STYLE
+===================================== */
+.report-table th,
+.report-table td {
+    border: 1px solid #4d7c0f;
+    padding: 8px;
+    /* 🔽 reduced */
+    vertical-align: top;
+}
+
+/* =====================================
+   TOP HEADER (STICKY)
+===================================== */
+.top-header th {
+    background: #b7e3a1;
+    font-size: 16px;
+    /* 🔽 reduced */
+    font-weight: 700;
+    padding: 10px;
+    /* 🔽 reduced */
+    text-align: center;
+
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+
+/* =====================================
+   TOP SUB HEADER (STICKY)
+===================================== */
+.top-sub-header th {
+    background: #c6efb3;
+    font-size: 13px;
+    font-weight: 600;
+
+    padding: 8px 16px;
+
+    /* 🔥 THIS IS THE FIX */
+    text-align: left;
+
+    position: sticky;
+    top: 42px;
+    z-index: 29;
+}
+
+
+/* =====================================
+   MAIN HEADER (STICKY)
+===================================== */
+.report-table thead tr:not(.top-header):not(.top-sub-header) th {
+    background: #61b9c0;
+    color: #ffffff;
+    font-size: 13px;
+    /* 🔽 reduced */
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+
+    position: sticky;
+    top: 74px;
+    z-index: 28;
+
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* =====================================
+   SUB HEADER (STICKY)
+===================================== */
+.sub-header th {
+    background: #b7bcce;
+    color: #ffffff;
+
+    position: sticky;
+    top: 116px;
+    z-index: 27;
+}
+
+/* =====================================
+   BODY CELLS
+===================================== */
+.report-table td {
+    background: #ffffff;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* =====================================
+   TEXT ALIGNMENTS
+===================================== */
+.text-left {
+    text-align: left;
+}
+
+.total-cell {
+    background: #e0f2fe;
+    font-weight: bold;
+}
+
+.danger-text {
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: 600;
+    text-align: left;
+}
+
+.note-cell {
+    background: #f8fafc;
+    font-style: italic;
+    text-align: left;
+}
+
+/* =====================================
+   FIXED WIDTH WRAP COLUMNS
+===================================== */
+.wrap-col {
+    width: 360px;
+    min-width: 360px;
+    max-width: 360px;
+
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.6;
+}

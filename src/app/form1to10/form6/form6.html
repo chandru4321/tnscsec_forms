@@ -1,0 +1,162 @@
+<div class="page-bg">
+
+    <h2 class="form-title">படிவம் 6</h2>
+
+    <!-- F1 & F2 -->
+    <div class="row">
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / மாவட்டம்</label>
+            <input class="input-box" [value]="district_name" readonly />
+        </div>
+
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / சரகம்</label>
+            <input class="input-box" [value]="zone_name" readonly />
+        </div>
+    </div>
+
+    <!-- ================= F3 ================= -->
+    <label class="section-label">
+        வேட்புமனு பரிசீலனையில் தகுதி பெற்ற சங்கங்கள் (F3)
+    </label>
+
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>ப.தி./ப.கு</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let s of societies; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ s.society_name }}</td>
+                    <td>{{ s.sc_st }}</td>
+                    <td>{{ s.women }}</td>
+                    <td>{{ s.general }}</td>
+                    <td>{{ s.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ================= F4 ================= -->
+    <label class="section-label">
+        வேட்புமனு பரிசீலனையின் போது தள்ளுபடி / நிறுத்தல் (F4)
+    </label>
+
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>ப.தி./ப.கு</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                    <th>நீக்கம்</th>
+                    <th>தேர்தலை நிறுத்த</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let s of societies; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ s.society_name }}</td>
+                    <td>{{ s.sc_st }}</td>
+                    <td>{{ s.women }}</td>
+                    <td>{{ s.general }}</td>
+                    <td>{{ s.total }}</td>
+
+                    <!-- REJECT -->
+                    <td>
+                        <button class="btn-blue" [disabled]="s.rejectDone" (click)="openRejectPopup(s)">
+                            {{ s.rejectDone ? 'திருத்தம் மேற்கொள்ளப்பட்டது' : 'திருத்தம் மேற்கொள்ள' }}
+                        </button>
+                    </td>
+
+                    <!-- STOP -->
+                    <td>
+                        <button class="btn-red" [disabled]="s.stopDone" (click)="openStopPopup(s)">
+                            {{ s.stopDone ? 'தேர்தல் நிறுத்தப்பட்டது' : 'தேர்தலை நிறுத்த' }}
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- ================= REJECT POPUP ================= -->
+<div class="modal-backdrop" *ngIf="showRejectPopup">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>தகுதி மறுத்தல்</h3>
+            <button class="close-btn" (click)="closeReject()">×</button>
+        </div>
+
+        <div class="modal-inner">
+            <h4>{{ selectedSociety?.society_name }}</h4>
+
+            <div class="member-grid">
+                <div class="member-col">
+                    <h5>ப.தி./ப.கு</h5>
+                    <div class="member-item" *ngFor="let m of getMembers('sc_st')">
+                        <span>{{ m.member_name }}</span>
+                        <input type="checkbox" [(ngModel)]="m.checked" />
+                    </div>
+                </div>
+
+                <div class="member-col">
+                    <h5>மகளிர்</h5>
+                    <div class="member-item" *ngFor="let m of getMembers('women')">
+                        <span>{{ m.member_name }}</span>
+                        <input type="checkbox" [(ngModel)]="m.checked" />
+                    </div>
+                </div>
+
+                <div class="member-col">
+                    <h5>பொது</h5>
+                    <div class="member-item" *ngFor="let m of getMembers('general')">
+                        <span>{{ m.member_name }}</span>
+                        <input type="checkbox" [(ngModel)]="m.checked" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-grey" (click)="closeReject()">ரத்து செய்</button>
+            <button class="btn-blue" (click)="submitRejectedMembers()">சமர்ப்பிக்க</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= STOP POPUP ================= -->
+<div class="modal-backdrop" *ngIf="showStopPopup">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h3>தேர்தலை நிறுத்த</h3>
+            <button class="close-btn" (click)="closeStop()">×</button>
+        </div>
+
+        <textarea [(ngModel)]="stopReason" placeholder="தேர்தல் நிறுத்தத்திற்கான காரணம்"></textarea>
+
+        <div class="modal-footer">
+            <button class="btn-grey" (click)="closeStop()">ரத்து செய்</button>
+            <button class="btn-red" (click)="submitStop()">சமர்ப்பிக்க</button>
+        </div>
+
+    </div>
+</div>
