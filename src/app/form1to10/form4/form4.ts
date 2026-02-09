@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-form4',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,],
   templateUrl: './form4.html',
   styleUrls: ['./form4.css']
 })
@@ -166,6 +167,7 @@ export class Form4 implements OnInit {
         if (res?.success) {
           alert('Form 4 submitted successfully');
           localStorage.setItem('form4_id', res.data.form4_id);
+
         }
       },
       error: err => console.error('Submit error', err)

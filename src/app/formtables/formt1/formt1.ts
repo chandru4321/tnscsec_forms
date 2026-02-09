@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { UserService } from '../../services/user';
-import { RouterLink, RouterModule } from "@angular/router";
+import { RouterModule } from "@angular/router";
 
 /* =========================
    INTERFACES
@@ -24,6 +24,8 @@ interface MasterzoneSociety {
 }
 
 interface Form1ApiRow {
+  id: number;
+  department_name: string;
   district_name: string;
   zone_name: string;
   masterzone_count: number;
@@ -34,8 +36,8 @@ interface Form1ApiRow {
 }
 
 interface TableRow {
-  id: number;   // 🔥 ADD THIS
-
+  id: number;
+  department_name: string;
   district_name: string;
   zone_name: string;
   masterzone_count: number;
@@ -63,11 +65,11 @@ interface TableRow {
   imports: [CommonModule, RouterModule],
   templateUrl: './formt1.html',
   styleUrls: ['./formt1.css']
-
 })
 export class Formt1 implements OnInit {
 
   tableRows: TableRow[] = [];
+  department_name = '';   // Header use (optional)
 
   constructor(private userService: UserService) { }
 
@@ -79,8 +81,14 @@ export class Formt1 implements OnInit {
      LOAD API DATA
   ========================= */
   loadForm1Table(): void {
-    this.userService.getForm1Table().subscribe(res => {
+    this.userService.getForm1Table().subscribe((res: any) => {
       if (res?.success && Array.isArray(res.data)) {
+
+        // For header display (if needed)
+        if (res.data.length > 0) {
+          this.department_name = res.data[0].department_name;
+        }
+
         this.prepareRows(res.data as Form1ApiRow[]);
       }
     });
@@ -92,34 +100,33 @@ export class Formt1 implements OnInit {
   private prepareRows(data: Form1ApiRow[]): void {
     this.tableRows = [];
 
-    data.forEach((row: any) => {
+    data.forEach((row: Form1ApiRow) => {
 
       const selectedMap = new Map<number, SelectedSociety>(
-        row.selected_soc.map((s: any) => [s.society_id, s])
+        (row.selected_soc || []).map(s => [s.society_id, s])
       );
 
       const totalRows = row.masterzone_societies.length;
 
-      row.masterzone_societies.forEach((mz: any, index: number) => {
+      row.masterzone_societies.forEach((mz, index) => {
 
         const selected = selectedMap.get(mz.society_id);
-        const isSelected = !!selected; // ✅ KEY LINE
+        const isSelected = !!selected;
 
         this.tableRows.push({
           id: row.id,
-
+          department_name: row.department_name,
           district_name: row.district_name,
           zone_name: row.zone_name,
           masterzone_count: row.masterzone_count,
           society_name: mz.society_name,
 
-          // ✅ numbers only for selected
           sc_st: isSelected ? selected!.sc_st : null,
           women: isSelected ? selected!.women : null,
           general: isSelected ? selected!.general : null,
           tot_voters: isSelected ? selected!.tot_voters : null,
 
-          isSelected: isSelected, // ✅ FIXED
+          isSelected: isSelected,
           remark: row.remark,
 
           rowSpan: index === 0 ? totalRows : undefined,
@@ -129,7 +136,6 @@ export class Formt1 implements OnInit {
       });
     });
   }
-
 
   /* =========================
      EXPORT EXCEL
@@ -156,6 +162,6 @@ export class Formt1 implements OnInit {
      DUMMY EDIT
   ========================= */
   onEdit(): void {
-    alert('Edit clicked (Dummy action)');
+    alert('Edit clicked');
   }
 }

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
+import { FilterByCategoryPipe } from '../../pipes/filter-by-category-pipe';
 
 @Component({
   selector: 'app-form6',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FilterByCategoryPipe],
   templateUrl: './form6.html',
   styleUrls: ['./form6.css']
 })
@@ -14,65 +15,73 @@ export class Form6 implements OnInit {
 
   district_name = '';
   zone_name = '';
-
-  // 🔥 REQUIRED FOR STOP ELECTION
   form6_id!: number;
 
-  societies: any[] = [];
+  // 🔥 NEW SEPARATION
+  f3Societies: any[] = [];   // STATIC
+  f4Societies: any[] = [];   // WORKING LIST
 
   showRejectPopup = false;
   showStopPopup = false;
+  showFinalSubmitPopup = false;
+  form6Submitted = false;
 
   selectedSociety: any = null;
-  stopReason = '';
+  stopRemark = '';
+
+  f5List: any[] = [];
+  f6List: any[] = [];
+  f7List: any[] = [];
+
+  showViewPopup = false;
+  viewSociety: any = null;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
-
-    // 🔥 INIT FORM 6 ONCE
     this.initForm6();
   }
 
-  /* ================= INIT FORM 6 ================= */
+  /* ================= INIT ================= */
   initForm6() {
     this.userService.initForm6().subscribe(res => {
       if (res?.success) {
-        this.form6_id = res.data.form6_id;   // ✅ SAVE IT
+        this.form6_id = res.data.form6_id;
         this.loadPreview();
       }
     });
   }
 
-  /* ================= LOAD PREVIEW ================= */
+  /* ================= PREVIEW ================= */
   loadPreview() {
     this.userService.getForm6Preview().subscribe(res => {
       if (!res?.success) return;
 
-      this.societies = res.data.societies.map((s: any) => ({
+      const prepared = res.data.societies.map((s: any) => ({
         ...s,
-        sc_st: Number(s.declared?.sc_st) || 0,
-        women: Number(s.declared?.women) || 0,
-        general: Number(s.declared?.general) || 0,
-        total:
-          (Number(s.declared?.sc_st) || 0) +
-          (Number(s.declared?.women) || 0) +
-          (Number(s.declared?.general) || 0),
+        sc_st: +s.declared.sc_st,
+        women: +s.declared.women,
+        general: +s.declared.general,
+        total: +s.declared.sc_st + +s.declared.women + +s.declared.general,
         rejectDone: false,
         stopDone: false,
-        members: (s.members || []).map((m: any) => ({
+        members: s.members.map((m: any) => ({
           ...m,
-          checked: false
+          checked: false,
+          withdrawn: false
         }))
       }));
+
+      this.f3Societies = JSON.parse(JSON.stringify(prepared)); // snapshot
+      this.f4Societies = prepared; // working list
     });
   }
 
-  /* ================= SIMULATE (REJECT) ================= */
-  openRejectPopup(s: any) {
-    this.selectedSociety = s;
+  /* ================= REJECT ================= */
+  openRejectPopup(soc: any) {
+    this.selectedSociety = soc;
     this.showRejectPopup = true;
   }
 
@@ -87,40 +96,100 @@ export class Form6 implements OnInit {
     ) || [];
   }
 
-  submitRejectedMembers() {
-
-    const withdrawIds = this.selectedSociety.members
+  /* ================= SIMULATE ================= */
+  onCheckboxChange() {
+    const ids = this.selectedSociety.members
       .filter((m: any) => m.checked)
       .map((m: any) => m.id);
 
-    if (!withdrawIds.length) {
-      alert('குறைந்தது ஒரு உறுப்பினரை தேர்வு செய்யவும்');
-      return;
-    }
+    if (!ids.length) return;
 
-    // ✅ SIMULATE PAYLOAD (NO form6_id)
-    const payload = {
+    this.userService.simulateForm6({
       form4_filed_soc_id: this.selectedSociety.form4_filed_soc_id,
-      withdraw_member_ids: withdrawIds
-    };
-
-    this.userService.simulateForm6(payload).subscribe(res => {
+      withdraw_member_ids: ids
+    }).subscribe(res => {
       if (!res?.success) return;
 
-      this.selectedSociety.sc_st = res.data.remaining_counts.sc_st;
-      this.selectedSociety.women = res.data.remaining_counts.women;
-      this.selectedSociety.general = res.data.remaining_counts.general;
-      this.selectedSociety.total = res.data.remaining_counts.total;
+      this.selectedSociety.election_status = res.data.election_status;
 
-      this.selectedSociety.rejectDone = true;
-      this.closeReject();
+      res.data.members.forEach((apiM: any) => {
+        const local = this.selectedSociety.members.find(
+          (m: any) => m.id === apiM.id
+        );
+        if (local) local.withdrawn = apiM.withdrawn;
+      });
     });
   }
 
-  /* ================= STOP ELECTION ================= */
-  openStopPopup(s: any) {
-    this.selectedSociety = s;
-    this.stopReason = '';
+  /* ================= FINAL WITHDRAW ================= */
+  finalWithdraw() {
+
+    let membersToWithdraw: any[] = [];
+
+    if (this.selectedSociety.election_status === 'UNOPPOSED') {
+      membersToWithdraw = [this.selectedSociety.members[0]];
+    } else {
+      membersToWithdraw = this.selectedSociety.members.filter(
+        (m: any) => m.checked || m.withdrawn
+      );
+    }
+
+    if (!membersToWithdraw.length) {
+      alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
+      return;
+    }
+
+    let completed = 0;
+
+    membersToWithdraw.forEach((m: any) => {
+      this.userService.withdrawForm6({
+        form6_id: this.form6_id,
+        form5_member_id: m.form5_member_id ?? m.id,
+        action: 'WITHDRAW'
+      }).subscribe(() => {
+        completed++;
+        if (completed === membersToWithdraw.length) {
+          this.moveSocietyAfterSubmit(this.selectedSociety);
+          this.closeReject();
+        }
+      });
+    });
+  }
+
+  /* ================= MOVE SOCIETY ================= */
+  private moveSocietyAfterSubmit(soc: any) {
+
+    soc.candidates = soc.members
+      .filter((m: any) => !m.withdrawn)
+      .map((m: any) => ({
+        member_name: m.member_name,
+        category_type: m.category_type
+      }));
+
+    this.f4Societies = this.f4Societies.filter(
+      s => s.form4_filed_soc_id !== soc.form4_filed_soc_id
+    );
+
+    if (soc.election_status === 'UNOPPOSED') this.f5List.push(soc);
+    else if (soc.election_status === 'UNQUALIFIED') this.f6List.push(soc);
+    else if (soc.election_status === 'QUALIFIED') this.f7List.push(soc);
+  }
+
+  /* ================= VIEW ================= */
+  openViewPopup(soc: any) {
+    this.viewSociety = { ...soc, candidates: soc.candidates || [] };
+    this.showViewPopup = true;
+  }
+
+  closeViewPopup() {
+    this.viewSociety = null;
+    this.showViewPopup = false;
+  }
+
+  /* ================= STOP ================= */
+  openStopPopup(soc: any) {
+    this.selectedSociety = soc;
+    this.stopRemark = '';
     this.showStopPopup = true;
   }
 
@@ -130,24 +199,29 @@ export class Form6 implements OnInit {
   }
 
   submitStop() {
-
-    if (!this.stopReason.trim()) {
-      alert('நிறுத்தக் காரணத்தை உள்ளிடவும்');
-      return;
-    }
-
-    // ✅ STOP-ELECTION PAYLOAD (form6_id REQUIRED)
-    const payload = {
-      form6_id: this.form6_id,   // 🔥 THIS FIXES YOUR ERROR
+    this.userService.stopElectionForm6({
+      form6_id: this.form6_id,
       form4_filed_soc_id: this.selectedSociety.form4_filed_soc_id,
       action: 'STOP',
-      reason: this.stopReason
-    };
-
-    this.userService.stopElectionForm6(payload).subscribe(res => {
+      remark: this.stopRemark
+    }).subscribe(res => {
       if (res?.success) {
         this.selectedSociety.stopDone = true;
         this.closeStop();
+      }
+    });
+  }
+
+  /* ================= FINAL FORM 6 SUBMIT ================= */
+  submitForm6Final() {
+    if (this.form6Submitted) return;
+
+    this.userService.submitForm6({
+      form6_id: this.form6_id
+    }).subscribe(res => {
+      if (res?.success) {
+        this.form6Submitted = true;
+        this.showFinalSubmitPopup = true;
       }
     });
   }

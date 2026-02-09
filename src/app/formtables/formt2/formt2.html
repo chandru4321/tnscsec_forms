@@ -1,6 +1,14 @@
+<div class="table-actions">
+    <button class="action-btn export-btn" (click)="exportToExcel()">
+        ⬇ Export Excel
+    </button>
+</div>
+
+
+
 <div class="table-scroll-wrapper">
 
-    <table class="report-table">
+    <table class="report-table" id="reportTable">
 
         <thead>
 
@@ -13,9 +21,10 @@
             <!-- SUB HEADER -->
             <tr class="top-sub-header">
                 <th colspan="13">
-                    துறை--கூட்டுறவு சங்கங்களின் பதிவாளர் (விவரம்)(department_name)
+                    துறை -- {{ department_name }}
                 </th>
             </tr>
+
 
             <!-- MAIN HEADER -->
             <tr>
@@ -47,40 +56,45 @@
 
             <tr *ngFor="let r of tableRows">
 
-                <td>{{ r.department_name }}</td>
-                <td>{{ r.district_name }}</td>
-                <td>{{ r.zone_name }}</td>
+                <!-- District -->
+                <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                    {{ r.district_name }}
+                </td>
+
+                <!-- Zone -->
+                <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                    {{ r.zone_name }}
+                </td>
 
                 <!-- F3 -->
                 <td class="wrap-col text-left">
-                    <div *ngFor="let s of r.masterzone_societies">
-                        {{ s }}
-                    </div>
+                    {{ r.f3_name || '-' }}
                 </td>
 
                 <!-- F5 -->
                 <td class="wrap-col text-left total-cell">
-                    <div *ngFor="let s of r.selected_soc">
-                        {{ s }}
-                    </div>
+                    {{ r.f5_name || '-' }}
                 </td>
 
                 <!-- F6 -->
                 <td class="wrap-col text-left danger-text">
-                    <div *ngFor="let s of r.non_selected_soc">
-                        {{ s }}
-                    </div>
+                    {{ r.f6_name || '-' }}
                 </td>
 
-                <td>{{ r.non_selected_count }}</td>
+                <!-- Count -->
+                <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                    {{ r.non_selected_count }}
+                </td>
 
-                <td class="note-cell">
+                <!-- Remark -->
+                <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan" class="note-cell">
                     {{ r.remark }}
                 </td>
 
             </tr>
 
         </tbody>
+
 
     </table>
 

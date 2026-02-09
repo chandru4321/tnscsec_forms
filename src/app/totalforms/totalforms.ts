@@ -58,10 +58,29 @@ export class totalforms {
       formLink: '/layout/form1to10/form6',
       tableLink: '/layout/formtables/formt5'
     },
-    { title: 'வாக்குப்பதிவு பற்றிய விபரங்கள்', code: 'Form7', link: '#' },
-    { title: 'வாக்கு எண்ணிக்கை பற்றிய விபரங்கள்', code: 'Form8', link: '#' },
-    { title: 'தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form9', link: '#' },
-    { title: ' துணை தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form10', link: '#' }
+    {
+      title: 'வாக்குப்பதிவு பற்றிய விபரங்கள்', code: 'Form7',
+      formLink: '/layout/form1to10/form7',
+      tableLink: '/layout/formtables/formt5'
+    },
+    {
+      title: 'வாக்கு எண்ணிக்கை பற்றிய விபரங்கள்', code: 'Form8',
+      formLink: '/layout/form1to10/form8',
+      tableLink: '/layout/formtables/formt5'
+    },
+
+    {
+      title: 'தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form9',
+      formLink: '/layout/form1to10/form9',
+      tableLink: '/layout/formtables/formt5'
+    },
+    {
+      title: ' துணை தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form10',
+      formLink: '/layout/form1to10/form10',
+      tableLink: '/layout/formtables/formt5'
+
+
+    }
   ];
 
   // /** ✅ Check Form-1 completion */

@@ -29,19 +29,19 @@ interface Form2ApiRow {
 }
 
 interface TableRow {
-  id: number;
-
-  department_name: string;
   district_name: string;
   zone_name: string;
 
-  masterzone_societies: string[];
-  selected_soc: string[];
-  non_selected_soc: string[];
+  f3_name: string | null;
+  f5_name: string | null;
+  f6_name: string | null;
 
-  non_selected_count: number;
-  remark: string;
+  non_selected_count?: number;
+  remark?: string;
+  rowSpan?: number;
 }
+
+
 
 /* =========================
    COMPONENT
@@ -55,6 +55,8 @@ interface TableRow {
   styleUrls: ['./formt2.css'] // ✅ reuse SAME CSS as Form-T1
 })
 export class Formt2 implements OnInit {
+  department_name: string = '';
+
 
   tableRows: TableRow[] = [];
 
@@ -70,15 +72,17 @@ export class Formt2 implements OnInit {
   loadForm2Table(): void {
     this.userService.getForm2Table().subscribe({
       next: (res) => {
-        console.log('FULL API RESPONSE:', res);
-        console.log('DATA:', res?.data);
 
         if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+
+          // 🔹 Get department name from first record
+          this.department_name = res.data[0].department_name;
+
           this.prepareRows(res.data as Form2ApiRow[]);
         } else {
-          console.warn('No data received for Form2');
           this.tableRows = [];
         }
+
       },
       error: (err) => {
         console.error('API ERROR:', err);
@@ -87,27 +91,40 @@ export class Formt2 implements OnInit {
   }
 
 
+
   /* =========================
      TRANSFORM API → TABLE
   ========================= */
   private prepareRows(data: Form2ApiRow[]): void {
-    this.tableRows = data.map(row => ({
-      id: row.id,
+    this.tableRows = [];
 
-      department_name: row.department_name,
-      district_name: row.district_name,
-      zone_name: row.zone_name,
+    data.forEach(row => {
 
-      masterzone_societies: row.masterzone_societies.map(s => s.society_name),
-      selected_soc: row.selected_soc.map(s => s.society_name),
-      non_selected_soc: row.non_selected_soc.map(s => s.society_name),
+      const f3List = row.masterzone_societies.map(s => s.society_name);
+      const f5List = row.selected_soc.map(s => s.society_name);
+      const f6List = row.non_selected_soc.map(s => s.society_name);
 
-      non_selected_count: row.non_selected_count,
-      remark: row.remark
-    }));
+      const totalRows = f3List.length;
+
+      f3List.forEach((society, index) => {
+
+        this.tableRows.push({
+          district_name: row.district_name,
+          zone_name: row.zone_name,
+
+          f3_name: society,
+          f5_name: f5List.includes(society) ? society : null,
+          f6_name: f6List.includes(society) ? society : null,
+
+          non_selected_count: index === 0 ? row.non_selected_count : undefined,
+          remark: index === 0 ? row.remark : undefined,
+          rowSpan: index === 0 ? totalRows : undefined
+        });
+
+      });
+
+    });
   }
-
-
 
   /* =========================
      EXPORT EXCEL

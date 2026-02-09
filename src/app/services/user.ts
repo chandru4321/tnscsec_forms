@@ -251,6 +251,40 @@ export class UserService {
 
 
 
+  withdrawForm6(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form6/withdraw`,
+      payload
+    );
+  }
+  getForm6list(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form6/list`);
+  }
+
+  submitForm6(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form6/submit`,
+      payload
+    );
+  }
+
+
+  // FORM 6 PREVIEW
+  getForm7Preview(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form7/preview`);
+  }
+
+
+
+  submitForm7(payload: any) {
+    return this.http.post<any>(`${this.baseUrl}/form7/submit`, payload);
+  }
+
+  getForm8Preview(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form8/preview`);
+  }
+
+
 }
 
 

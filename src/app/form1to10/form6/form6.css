@@ -201,3 +201,29 @@ textarea {
     height: 120px;
     padding: 10px;
 }
+
+.annapost-box {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-left: 6px solid #2e7d32;
+    background: #e8f5e9;
+    color: #1b5e20;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.final-submit-bar-right {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    /* ✅ RIGHT SIDE */
+    margin-top: 16px;
+    padding-right: 20px;
+    /* align with table edge */
+}
+
+.final-submit-bar-right .btn-blue {
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 600;
+}

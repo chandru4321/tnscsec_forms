@@ -1,0 +1,218 @@
+<div class="page-bg">
+
+    <h2 class="form-title">படிவம் 7</h2>
+
+    <!-- ================= F1 & F2 ================= -->
+    <div class="row">
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / மாவட்டம்</label>
+            <input class="input-box" [value]="district_name" readonly />
+        </div>
+
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர் / சரகம்</label>
+            <input class="input-box" [value]="Zone_name" readonly />
+        </div>
+    </div>
+
+    <!-- ================= F3 ================= -->
+    <label class="section-label">
+        F3 – கிராமப்புற வாக்காளர் எண்ணிக்கை
+    </label>
+
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>ப.தி./ப.கு</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let s of f3Societies; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ s.society_name }}</td>
+                    <td>{{ s.sc_st }}</td>
+                    <td>{{ s.women }}</td>
+                    <td>{{ s.general }}</td>
+                    <td>{{ s.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ================= F4 ================= -->
+    <label class="section-label">
+        F4 – தகுதி பெற்ற பிரிவுகள்
+    </label>
+
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>ப.தி./ப.கு</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let s of f4Societies; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ s.society_name }}</td>
+                    <td>{{ s.sc_st }}</td>
+                    <td>{{ s.women }}</td>
+                    <td>{{ s.general }}</td>
+                    <td>{{ s.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ================= F5 ================= -->
+    <label class="section-label">
+        F5 – பதிவான ஓட்டுகளின் எண்ணிக்கை
+    </label>
+
+    <div class="table-box scroll-table">
+        <table>
+            <thead class="f5-head">
+                <tr>
+                    <th>வ.எண்</th>
+
+                    <th>
+                        சங்கத்தின்<br>
+                        பெயர்
+                    </th>
+
+                    <th>
+                        மொத்த<br>
+                        வாக்காளர்களின்<br>
+                        எண்ணிக்கை
+                    </th>
+
+                    <!-- 🔥 Missing column added -->
+                    <th>
+                        பதிவான<br>
+                        ஓட்டுகளின்<br>
+                        எண்ணிக்கை
+                    </th>
+
+                    <th>
+                        வாக்குப்பதிவு<br>
+                        (%)
+                    </th>
+
+                    <th>
+                        பயன்படுத்தப்பட்ட<br>
+                        வாக்குப்பெட்டிகளின்<br>
+                        எண்ணிக்கை
+                    </th>
+
+                    <th>
+                        மீதமுள்ள<br>
+                        தாள்களின்<br>
+                        எண்ணிக்கை
+                    </th>
+
+                    <th>
+                        வாக்குப்பதிவு<br>
+                        நடைபெறாத<br>
+                        இடங்களின்<br>
+                        எண்ணிக்கை
+                    </th>
+
+                    <th>
+                        வாக்குப்பதிவின் போது<br>
+                        பயன்படுத்தப்பட்ட அலுவலர் /<br>
+                        உதவியாளர் எண்ணிக்கை
+                    </th>
+
+                    <th>
+                        வாக்குப்பதிவின் போது<br>
+                        தேர்தல் நிறுத்தப்பட்டதற்கான<br>
+                        காரணம் nfnrnfklrnklfnrklnflknrklfnklrnfklnrlkrnflkrn
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of f5Data; let i = index">
+                    <td>{{ i + 1 }}</td>
+
+                    <td class="society-cell">
+                        {{ s.society_name }}
+                    </td>
+
+                    <!-- form3_total -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.form3_total" readonly>
+                    </td>
+
+                    <!-- casted_votes_count -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.casted_votes_count"
+                            (input)="calculatePercentage(s)">
+                    </td>
+
+                    <!-- voting_percentage -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.voting_percentage" readonly>
+                    </td>
+
+                    <!-- ballot_box_count -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.ballot_box_count">
+                    </td>
+
+                    <!-- stamp_count -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.stamp_count">
+                    </td>
+
+                    <!-- polling_stations_count -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.polling_stations_count">
+                    </td>
+
+                    <!-- election_officers_count -->
+                    <td>
+                        <input type="number" class="table-input" [(ngModel)]="s.election_officers_count">
+                    </td>
+
+                    <!-- polling_suspension_count -->
+                    <td class="checkbox-cell">
+
+                        <!-- Rule 52 (18)(a) -->
+                        <label>
+                            <input type="checkbox" [checked]="s.polling_suspension_count === 'RULE_52_18'"
+                                (change)="setRule(s, 'RULE_52_18', $event)">
+                            விதி 52 (18)(a)
+                        </label>
+                        <br>
+
+                        <label>
+                            <input type="checkbox" [checked]="s.polling_suspension_count === 'RULE_52A_6'"
+                                (change)="setRule(s, 'RULE_52A_6', $event)">
+                            விதி 52-A(6)(b)
+                        </label>
+
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- ===== Buttons Right Side (F5) ===== -->
+    <div class="table-action-right">
+        <button class="btn-grey" (click)="onCancel()">ரத்து செய்</button>
+        <button class="btn-blue" (click)="onSubmit()">சமர்ப்பிக்க</button>
+    </div>
