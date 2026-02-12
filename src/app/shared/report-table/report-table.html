@@ -1,0 +1,38 @@
+<thead>
+
+    <!-- Title -->
+    <tr class="top-header">
+        <th [attr.colspan]="totalColumns">
+            {{ title }}
+        </th>
+    </tr>
+
+    <!-- Department -->
+    <tr class="top-sub-header">
+        <th [attr.colspan]="totalColumns">
+            துறை -- {{ departmentName }}
+        </th>
+    </tr>
+
+    <!-- Group Header (Level 1) -->
+    <tr *ngIf="groupHeaders.length" class="group-header">
+        <th *ngFor="let g of groupHeaders" [attr.colspan]="g.colspan || 1" [attr.rowspan]="g.rowspan || 1">
+            {{ g.header }}
+        </th>
+    </tr>
+
+    <!-- Sub Header (Level 2) -->
+    <tr *ngIf="subHeaders.length" class="sub-header">
+        <th *ngFor="let s of subHeaders" [attr.colspan]="s.colspan || 1" [attr.rowspan]="s.rowspan || 1">
+            {{ s.header }}
+        </th>
+    </tr>
+
+    <!-- Final Columns -->
+    <tr class="column-header">
+        <th *ngFor="let col of columns">
+            {{ col.header }}
+        </th>
+    </tr>
+
+</thead>

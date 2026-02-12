@@ -1,0 +1,94 @@
+/* Export Button */
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.export-btn {
+    padding: 6px 14px;
+    background: #e6f4e6;
+    border: 1px solid #4d7c0f;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background: #cdeacb;
+}
+
+/* Scroll */
+.table-scroll-wrapper {
+    width: 100%;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+    border: 1px solid #4d7c0f;
+    background: #fff;
+}
+
+/* Table */
+.report-table {
+    width: 100%;
+    min-width: 1400px;
+    border-collapse: collapse;
+    font-family: "Noto Sans Tamil", sans-serif;
+    font-size: 14px;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #4d7c0f;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Headers */
+.top-header th {
+    background: #b7e3a1;
+    font-size: 16px;
+    position: sticky;
+    top: 0;
+}
+
+.top-sub-header th {
+    background: #c6efb3;
+    text-align: left;
+    position: sticky;
+    top: 40px;
+}
+
+.main-header th {
+    background: #61b9c0;
+    color: #fff;
+    position: sticky;
+    top: 72px;
+}
+
+/* Zebra */
+.report-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.group-header th {
+    background: #61b9c0;
+    color: #fff;
+    font-weight: 600;
+    position: sticky;
+    top: 72px;
+    z-index: 28;
+}
+
+.sub-header th {
+    background: #a7d38f;
+    font-weight: 600;
+    position: sticky;
+    top: 104px;
+    z-index: 27;
+}
+
+.column-header th {
+    background: #9fd38a;
+    position: sticky;
+    top: 136px;
+    z-index: 26;
+}

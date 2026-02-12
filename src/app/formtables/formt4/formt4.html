@@ -1,0 +1,102 @@
+<div class="table-actions">
+    <button class="export-btn" (click)="exportToExcel()">
+        ⬇ Export Excel
+    </button>
+</div>
+<div class="formt4-container">
+
+    <div class="table-scroll-wrapper">
+        <table class="report-table">
+
+            <thead>
+
+                <!-- Title -->
+                <tr class="top-header">
+                    <th colspan="14">
+                        வேட்புமனு தாக்கல் பற்றிய விபரங்கள்
+                    </th>
+                </tr>
+
+                <!-- Department -->
+                <tr class="top-sub-header">
+                    <th colspan="14">
+                        துறை -- {{ department_name }}
+                    </th>
+                </tr>
+
+                <!-- Group Header -->
+                <tr class="group-header">
+                    <th rowspan="3">வ.எண்</th>
+                    <th rowspan="3">மாவட்டம்</th>
+                    <th rowspan="3">சரகம்</th>
+
+                    <th colspan="5">
+                        தேர்தல் அறிவிப்பின்படி (Rural)
+                    </th>
+
+                    <th colspan="5">
+                        தாக்கல் செய்யப்பட்டவை (Declared)
+                    </th>
+
+
+                </tr>
+
+                <tr class="mid-header">
+                    <th rowspan="2">சங்கம்</th>
+                    <th colspan="4">உறுப்பினர்கள்</th>
+
+                    <th rowspan="2">சங்கம்</th>
+                    <th colspan="4">உறுப்பினர்கள்</th>
+                </tr>
+
+                <tr class="sub-header">
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let r of tableRows; let i = index">
+
+                    <td>{{ i + 1 }}</td>
+
+                    <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                        {{ r.district_name }}
+                    </td>
+
+                    <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                        {{ r.zone_name }}
+                    </td>
+
+                    <!-- Rural -->
+                    <td class="wrap-col text-left">{{ r.society_name }}</td>
+                    <td>{{ r.rural_sc }}</td>
+                    <td>{{ r.rural_women }}</td>
+                    <td>{{ r.rural_general }}</td>
+                    <td>{{ r.rural_total }}</td>
+
+                    <!-- Declared -->
+                    <td class="wrap-col text-left">{{ r.society_name }}</td>
+                    <td>{{ r.dec_sc }}</td>
+                    <td>{{ r.dec_women }}</td>
+                    <td>{{ r.dec_general }}</td>
+                    <td>{{ r.dec_total }}</td>
+
+
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>

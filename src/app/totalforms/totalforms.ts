@@ -27,12 +27,14 @@ export class totalforms {
 
     },
     {
-      title: 'இந்நி வாக்காளர் பட்டியல் வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட விபரம்', code: 'Form3',
+      title: 'இந்நி வாக்காளர் பட்டியல் வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட விபரம்',
+      code: 'Form3',
       formLink: '/layout/form1to10/form3',
       tableLink: '/layout/formtables/formt3'
     },
     {
-      title: 'வேட்புமனு தாக்கல் பற்றிய விபரம்', code: 'Form4',
+      title: 'வேட்புமனு தாக்கல் பற்றிய விபரம்',
+      code: 'Form4',
 
       formLink: '/layout/form1to10/form4',
       tableLink: '/layout/formtables/formt4'
@@ -40,7 +42,8 @@ export class totalforms {
 
     },
     {
-      title: 'வேட்புமனு தாக்கல் செய்த விவரங்கள் மற்றும் எதிர்ப்பு விபரம்', code: 'Form5',
+      title: 'வேட்புமனு தாக்கல் செய்த விவரங்கள் மற்றும் எதிர்ப்பு விபரம்',
+      code: 'Form5',
 
       formLink: '/layout/form1to10/form5',
       tableLink: '/layout/formtables/formt5'
@@ -56,28 +59,28 @@ export class totalforms {
       title: 'வேட்புமனு திரும்ப பெறுதல் மற்றும் போட்டியிடும் வேட்பாளர்கள் விபரங்கள்', code: 'Form6',
 
       formLink: '/layout/form1to10/form6',
-      tableLink: '/layout/formtables/formt5'
+      tableLink: '/layout/formtables/formt6'
     },
     {
       title: 'வாக்குப்பதிவு பற்றிய விபரங்கள்', code: 'Form7',
       formLink: '/layout/form1to10/form7',
-      tableLink: '/layout/formtables/formt5'
+      tableLink: '/layout/formtables/formt7'
     },
     {
       title: 'வாக்கு எண்ணிக்கை பற்றிய விபரங்கள்', code: 'Form8',
       formLink: '/layout/form1to10/form8',
-      tableLink: '/layout/formtables/formt5'
+      tableLink: '/layout/formtables/formt8'
     },
 
     {
       title: 'தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form9',
       formLink: '/layout/form1to10/form9',
-      tableLink: '/layout/formtables/formt5'
+      tableLink: '/layout/formtables/formt9'
     },
     {
       title: ' துணை தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form10',
       formLink: '/layout/form1to10/form10',
-      tableLink: '/layout/formtables/formt5'
+      tableLink: '/layout/formtables/formt10'
 
 
     }

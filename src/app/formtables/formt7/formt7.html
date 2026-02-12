@@ -1,0 +1,103 @@
+<div class="page-content">
+
+    <div class="table-actions">
+        <button class="action-btn export-btn" (click)="exportToExcel()">
+            ⬇ Export Excel
+        </button>
+    </div>
+
+    <div class="table-scroll-wrapper">
+        <table class="report-table" id="reportTable">
+
+            <thead>
+
+                <!-- TITLE -->
+                <tr class="top-header">
+                    <th colspan="32">
+                        வேட்புமனு திரும்ப பெறுதல் மற்றும் இறுதி போட்டியிடும் வேட்பாளர்கள் பற்றிய முழு விவரங்கள்
+                    </th>
+                </tr>
+
+                <!-- DEPARTMENT -->
+                <tr class="top-sub-header">
+                    <th colspan="32">
+                        துறை -- {{ form7Data?.department?.name }}
+                    </th>
+                </tr>
+
+                <!-- HEADER -->
+                <tr class="main-header">
+                    <th rowspan="2">வ.எண்</th>
+                    <th rowspan="2">மாவட்டம்</th>
+                    <th rowspan="2">சரகம்</th>
+                    <th rowspan="2">சங்கம்</th>
+
+                    <th colspan="4">தேர்ந்தெடுக்கப்பட வேண்டிய நிர்வாகக்குழு <br>இயக்குநர்களின் எண்ணிக்கை</th>
+
+                    <th colspan="4">நிர்வாகக்குழு இயக்குநர் பதவிக்கு<br>
+                        போட்டியிடும் இயக்குநர்களின் எண்ணிக்கை</th>
+
+                    <th rowspan="2">வாக்குப்பதிவு நடைபெற்ற<br> சங்கங்களின் பெயர்</th>
+                    <th rowspan="2">மொத்த வாக்காளர்களின் எண்ணிக்கை</th>
+                    <th rowspan="2">பதிவான ஓட்டுகளின் எண்ணிக்கை</th>
+                    <th rowspan="2">வாக்குப்பதிவு (%)</th>
+                    <th rowspan="2">பயன்படுத்தப்பட்ட வாக்குப்பெட்டிகளின்<br> எணிக்கை</th>
+                    <th rowspan="2">முத்திரைத் தாள்களின் எண்ணிக்கை</th>
+                    <th rowspan="2">வாக்குப்பதிவு நடைபெற்ற இடங்களின் எண்ணிக்கை</th>
+                    <th rowspan="2">வாக்குப்பதிவின் போது பயன்படுத்தப்பட்ட<br> தேர்தல் அலுவலர் / உதவியாளர் எண்ணிக்கை</th>
+                    <th rowspan="2">வாக்குப்பதிவின் போது தேர்தல் <br>நிறுத்தப்பட்ட சங்கங்களின் பெயர்</th>
+                </tr>
+
+                <tr class="sub-header">
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let s of societies; let i = index">
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ form7Data?.district?.name }}</td>
+                    <td>{{ form7Data?.zone?.name }}</td>
+                    <td>{{ s.society_name }}</td>
+
+                    <!-- Rural -->
+                    <td>{{ getRuralValue(s,'sc_st') }}</td>
+                    <td>{{ getRuralValue(s,'women') }}</td>
+                    <td>{{ getRuralValue(s,'general') }}</td>
+                    <td>
+                        {{ getRuralValue(s,'sc_st') + getRuralValue(s,'women') + getRuralValue(s,'general') }}
+                    </td>
+
+                    <!-- Declared (eligible only) -->
+                    <td>{{ getDeclaredValue(s,'sc_st') }}</td>
+                    <td>{{ getDeclaredValue(s,'women') }}</td>
+                    <td>{{ getDeclaredValue(s,'general') }}</td>
+                    <td>{{ getDeclaredTotal(s) }}</td>
+
+                    <!-- Other Data -->
+                    <td>{{ s.society_name }}</td>
+                    <td>{{ s.form3_total }}</td>
+                    <td>{{ s.submitted_data?.casted_votes_count }}</td>
+                    <td>{{ s.submitted_data?.voting_percentage }}</td>
+                    <td>{{ s.submitted_data?.ballot_box_count }}</td>
+                    <td>{{ s.submitted_data?.stamp_count }}</td>
+                    <td>{{ s.submitted_data?.polling_stations_count }}</td>
+                    <td>{{ s.submitted_data?.election_officers_count }}</td>
+                    <td>{{ s.submitted_data?.polling_suspension_count }}</td>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

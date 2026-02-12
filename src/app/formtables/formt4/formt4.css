@@ -1,0 +1,84 @@
+/* Scroll */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+    border: 1px solid #4d7c0f;
+}
+
+/* Table */
+.report-table {
+    min-width: 1800px;
+    width: max-content;
+    border-collapse: collapse;
+    font-family: "Noto Sans Tamil", sans-serif;
+}
+
+/* Cells */
+.report-table th,
+.report-table td {
+    border: 1px solid #4d7c0f;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Header colors */
+.top-header th {
+    background: #b7e3a1;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.top-sub-header th {
+    background: #c6efb3;
+    position: sticky;
+    top: 40px;
+    z-index: 39;
+}
+
+.group-header {
+    background: #61b9c0;
+    color: #fff;
+    position: sticky;
+    top: 80px;
+    z-index: 38;
+}
+
+.mid-header th {
+    background: #a7d38f;
+    position: sticky;
+    top: 120px;
+    z-index: 37;
+}
+
+.sub-header th {
+    background: #9fd38a;
+    position: sticky;
+    top: 160px;
+    z-index: 36;
+}
+
+/* Remove red column */
+.danger-text {
+    background: transparent;
+    color: #000;
+}
+
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.export-btn {
+    background: #e6f4e6;
+    border: 1px solid #4d7c0f;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background: #cdeacb;
+}

@@ -1,0 +1,98 @@
+<div class="formt3-container">
+
+    <!-- Action button -->
+    <div class="table-actions">
+        <button class="action-btn" (click)="exportToExcel()">
+            ⬇ Export Excel
+        </button>
+    </div>
+
+    <!-- Scroll wrapper -->
+    <div class="table-scroll-wrapper">
+
+        <table class="report-table" id="reportTable">
+
+            <thead>
+
+                <!-- Title -->
+                <tr class="top-header">
+                    <th colspan="9">
+                        இறுதி வாக்காளர் பட்டியல் வெளியிடப்பட்ட விவரம்
+                    </th>
+                </tr>
+
+                <!-- Department -->
+                <tr class="top-sub-header">
+                    <th colspan="9">
+                        துறை -- {{ department_name }}
+                    </th>
+                </tr>
+
+                <!-- Main Header -->
+                <tr>
+                    <th rowspan="2">வ.எண்</th>
+                    <th rowspan="2">மாவட்டம்</th>
+                    <th rowspan="2">சரகம்</th>
+                    <th rowspan="2" class="wrap-col">
+                        சங்கத்தின் பெயர்
+                    </th>
+                    <th rowspan="2">உறுப்பினர் எண்ணிக்கை</th>
+                    <th rowspan="2">கோரிக்கை</th>
+
+                    <th colspan="2">
+                        திருத்தங்கள் செய்யப்பட்ட உறுப்பினர்கள்
+                    </th>
+
+                    <th rowspan="2">இறுதி வாக்காளர்கள்</th>
+                </tr>
+
+                <!-- Sub Header -->
+                <tr class="sub-header">
+                    <th>சேர்க்கப்பட்டது</th>
+                    <th>நீக்கப்பட்டது</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let r of tableRows; let i = index">
+
+                    <td>{{ i + 1 }}</td>
+
+                    <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                        {{ r.district_name }}
+                    </td>
+
+                    <td *ngIf="r.rowSpan" [attr.rowspan]="r.rowSpan">
+                        {{ r.zone_name }}
+                    </td>
+
+                    <td class="wrap-col text-left">
+                        {{ r.society_name }}
+                    </td>
+
+                    <td>{{ r.ass_memlist ?? '-' }}</td>
+
+                    <td>
+                        <span [ngClass]="{
+                            'yes-text': r.ero_claim === 'ஆம்',
+                            'no-text': r.ero_claim === 'இல்லை'
+                        }">
+                            {{ r.ero_claim }}
+                        </span>
+                    </td>
+
+                    <td>{{ r.jcount }}</td>
+                    <td>{{ r.rcount }}</td>
+                    <td>{{ r.tot_voters ?? '-' }}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

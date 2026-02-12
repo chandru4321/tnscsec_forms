@@ -1,0 +1,105 @@
+.formt3-container {
+    width: 100%;
+    padding: 10px;
+    background: #f3f4f6;
+}
+
+/* Button */
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.action-btn {
+    padding: 6px 14px;
+    border: 1px solid #4d7c0f;
+    background: #e6f4e6;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Scroll */
+.table-scroll-wrapper {
+    width: 100%;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+    border: 1px solid #4d7c0f;
+    background: #ffffff;
+}
+
+/* Table */
+.report-table {
+    width: 100%;
+    min-width: 1800px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: "Noto Sans Tamil", sans-serif;
+    font-size: 14px;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #4d7c0f;
+    padding: 8px;
+    text-align: center;
+    vertical-align: top;
+}
+
+/* Headers */
+.top-header th {
+    background: #b7e3a1;
+    font-size: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+
+.top-sub-header th {
+    background: #c6efb3;
+    text-align: left;
+    position: sticky;
+    top: 40px;
+    z-index: 29;
+}
+
+.report-table thead tr:not(.top-header):not(.top-sub-header):not(.sub-header) th {
+    background: #61b9c0;
+    color: #fff;
+    position: sticky;
+    top: 72px;
+    z-index: 28;
+}
+
+.sub-header th {
+    background: #9fd38a;
+    position: sticky;
+    top: 110px;
+    z-index: 27;
+}
+
+/* Body */
+.report-table tbody tr:nth-child(even) td {
+    background: #f8fafc;
+}
+
+.wrap-col {
+    width: 380px;
+    min-width: 380px;
+    text-align: left;
+    word-break: break-word;
+}
+
+.yes-text {
+    color: #15803d;
+    font-weight: bold;
+}
+
+.no-text {
+    color: #b91c1c;
+    font-weight: bold;
+}
+
+.text-left {
+    text-align: left;
+}

@@ -173,7 +173,11 @@ export class UserService {
   }
 
 
-  //form34
+  //form3 table 
+
+  getForm3Table(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form3`);
+  }
 
 
 
@@ -203,12 +207,20 @@ export class UserService {
     );
   }
 
+
+
+
   // 4️⃣ FINAL submit
   submitForm4(payload: any): Observable<any> {
     return this.http.post<any>(
       `${this.baseUrl}/form4/submit`,
       payload
     );
+  }
+
+
+  getForm4Table(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form4/list`);
   }
 
   // 2️⃣ LOAD FORM-5 DATA (for F5 – unselected societies)
@@ -223,6 +235,13 @@ export class UserService {
       payload
     );
   }
+  getForm5Table(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5`);
+  }
+
+
+
+
   // ================= FORM 6 =================
 
   // TABLE / PREVIEW DATA
@@ -257,7 +276,7 @@ export class UserService {
       payload
     );
   }
-  getForm6list(): Observable<any> {
+  getForm6Table(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form6/list`);
   }
 
@@ -280,8 +299,34 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/form7/submit`, payload);
   }
 
+  getForm7Table(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form7/list`);
+  }
+
+
+
+
+
+
   getForm8Preview(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form8/preview`);
+  }
+  saveForm8Checkbox(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form8/checkbox`,
+      payload
+    );
+  }
+
+
+  submitForm8(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form8/submit`,
+      payload
+    );
+  }
+  getForm8Table(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form8/list`);
   }
 
 
