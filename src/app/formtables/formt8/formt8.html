@@ -20,7 +20,7 @@
                 <!-- DEPARTMENT -->
                 <tr class="top-sub-header">
                     <th colspan="32">
-                        துறை --
+                        துறை --{{department_name}}
                     </th>
                 </tr>
 
@@ -74,3 +74,27 @@
                 </tr>
 
             </thead>
+            <tr *ngFor="let r of tableRows; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ r.district_name }}</td>
+                <td>{{ r.zone_name }}</td>
+                <td class="text-left">{{ r.society_name }}</td>
+
+                <td>{{ r.casted_votes }}</td>
+                <td>{{ r.ballot_votes }}</td>
+                <td>{{ r.valid_votes }}</td>
+                <td>{{ r.invalid_votes }}</td>
+
+                <!-- Names -->
+                <td>{{ r.sc_name }}</td>
+                <td>{{ r.women_name }}</td>
+                <td>{{ r.general_name }}</td>
+
+                <!-- Counts -->
+                <td>{{ r.sc_count }}</td>
+                <td>{{ r.women_count }}</td>
+                <td>{{ r.general_count }}</td>
+                <td>{{ r.total_count }}</td>
+
+                <td>{{ r.remarks }}</td>
+            </tr>
