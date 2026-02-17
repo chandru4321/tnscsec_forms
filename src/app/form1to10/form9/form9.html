@@ -1,1 +1,89 @@
-<p>form9 works!</p>
+<div class="page-bg">
+
+    <h2 class="form-title">
+        வேட்புமனு தாக்கல் செய்த உறுப்பினர்களின் பெயர் மற்றும் விபரம்
+    </h2>
+
+    <div class="row">
+        <div class="col">
+            <label>மாவட்டம்</label>
+            <input class="input-box" [value]="district_name" readonly>
+        </div>
+
+        <div class="col">
+            <label>சரம்</label>
+            <input class="input-box" [value]="zone_name" readonly>
+        </div>
+    </div>
+
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th>வ. எண்</th>
+                <th>சங்கத்தின் பெயர்</th>
+                <th>SC/ST</th>
+                <th>மகளிர்</th>
+                <th>பொது</th>
+                <th>மொத்தம்</th>
+                <th>செயல்</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let row of form9List; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ row.society_name }}</td>
+                <td>{{ row.sc_st }}</td>
+                <td>{{ row.women }}</td>
+                <td>{{ row.general }}</td>
+                <td>{{ row.total }}</td>
+                <td>
+                    <button class="add-btn" [disabled]="row.submitted" (click)="addSociety(row)">
+                        {{ row.submitted ? 'சமர்ப்பிக்கப்பட்டது' : 'தேர்வு செய்க' }}
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- MODAL -->
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal-box">
+
+            <button class="close-btn" (click)="closeModal()">✕</button>
+
+            <h3>{{ selectedSociety?.society_name }}</h3>
+
+            <div *ngIf="scstCandidates.length">
+                <h4>SC/ST ({{ selectedSociety.sc_st }})</h4>
+                <label *ngFor="let c of scstCandidates">
+                    <input type="checkbox" [(ngModel)]="c.is_elected">
+                    {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                </label>
+            </div>
+
+            <div *ngIf="womenCandidates.length">
+                <h4>மகளிர் ({{ selectedSociety.women }})</h4>
+                <label *ngFor="let c of womenCandidates">
+                    <input type="checkbox" [(ngModel)]="c.is_elected">
+                    {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                </label>
+            </div>
+
+            <div *ngIf="generalCandidates.length">
+                <h4>பொது ({{ selectedSociety.general }})</h4>
+                <label *ngFor="let c of generalCandidates">
+                    <input type="checkbox" [(ngModel)]="c.is_elected">
+                    {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                </label>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModal()">ரத்து</button>
+                <button class="submit-btn" (click)="submitModal()">சமர்ப்பிக்க</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

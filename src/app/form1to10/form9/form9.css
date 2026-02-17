@@ -1,0 +1,230 @@
+/* PAGE */
+.page-bg {
+    background: #c7e0c2;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+/* HEADER ROW */
+.row {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.col {
+    flex: 1;
+}
+
+.input-box {
+    width: 100%;
+    height: 38px;
+    padding: 6px;
+}
+
+/* TABLE */
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.form-table th {
+    background: #8fd3f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.form-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.soc-name {
+    text-align: left;
+}
+
+/* BUTTONS */
+.add-btn {
+    background: #1e88e5;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    cursor: pointer;
+}
+
+.action-row {
+    margin-top: 35px;
+    text-align: center;
+}
+
+.excel-btn {
+    background: #00bcd4;
+    color: #fff;
+    border: none;
+    padding: 14px 22px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #777;
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    cursor: pointer;
+}
+
+/* MODAL */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: #fff;
+    width: 80%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+/* MODAL HEADER */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* MODAL BODY */
+/* MODAL BODY */
+.modal-body {
+    padding: 20px;
+}
+
+.soc-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* CATEGORY BLOCK */
+.category {
+    margin-bottom: 30px;
+}
+
+.category-title {
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* GRID ROWS */
+.row-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* NAME + AADHAR PAIR */
+.pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* INPUT STYLE */
+.pair input {
+    height: 38px;
+    padding: 6px 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* RESPONSIVE SAFETY */
+@media (max-width: 900px) {
+    .pair {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* MODAL FOOTER */
+.modal-footer {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.submit-btn {
+    background: #1e88e5;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* SUBMITTED ROW COLOR */
+.submitted-row {
+    background-color: #e0f2f1;
+}
+
+/* DISABLED BUTTON */
+.add-btn:disabled {
+    background: #4caf50;
+    cursor: not-allowed;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: #fff;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 6px;
+    position: relative;
+}
+
+/* ✕ CLOSE BUTTON */
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-btn:hover {
+    color: red;
+}

@@ -330,6 +330,24 @@ export class UserService {
   }
 
 
+
+  form9init(payload: any) {
+    return this.http.post(`${this.baseUrl}/form9/init`, payload);
+  }
+
+  getForm9Preview(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form9/preview`);
+  }
+
+  form9reject(payload: any) {
+    return this.http.post(`${this.baseUrl}/form9/reject`, payload);
+  }
+
+
+
+
+
+
 }
 
 
