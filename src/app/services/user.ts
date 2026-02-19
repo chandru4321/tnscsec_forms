@@ -342,6 +342,15 @@ export class UserService {
   form9reject(payload: any) {
     return this.http.post(`${this.baseUrl}/form9/reject`, payload);
   }
+  form9withdraw(payload: any) {
+    return this.http.post(`${this.baseUrl}/form9/withdraw`, payload);
+  }
+  form9societyfinalize(payload: any) {
+    return this.http.post(`${this.baseUrl}/form9/society-finalize`, payload);
+  }
+  form9submit(payload: any) {
+    return this.http.post(`${this.baseUrl}/form9/submit`, payload);
+  }
 
 
 

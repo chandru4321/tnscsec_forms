@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Layout } from './layout';
+import { AdminDashboard } from '../admin-dashboard/admin-dashboard';
 
 const routes: Routes = [
   {
@@ -12,7 +13,12 @@ const routes: Routes = [
         path: 'totalforms',
         loadChildren: () =>
           import('../totalforms/totalforms-routingmodule')
+
+
             .then(m => m.default)
+      },
+      {
+        path: 'AdminDashboard', component: AdminDashboard
       },
 
       {
@@ -21,6 +27,7 @@ const routes: Routes = [
           import('../form1to10/form1to10-routing.module')
             .then(m => m.default)
       },
+
       {
         path: 'formtables',
         loadChildren: () =>

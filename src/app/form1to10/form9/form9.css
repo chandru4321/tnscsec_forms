@@ -228,3 +228,34 @@
 .close-btn:hover {
     color: red;
 }
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    /* Move to right */
+    gap: 15px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+/* Optional styling */
+.cancel-btn {
+    background-color: #6c757d;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 25px;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-btn:disabled {
+    background-color: #28a745;
+    cursor: not-allowed;
+}

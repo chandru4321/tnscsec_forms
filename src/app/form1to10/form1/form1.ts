@@ -29,6 +29,9 @@ export class Form1 implements OnInit {
   isEditMode = false;
   form1Id: number | null = null;
 
+  // 🔒 Prevent multiple checkbox API calls
+  isLoadingDetails = false;
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -107,6 +110,7 @@ export class Form1 implements OnInit {
           selected: selectedNames.includes(z.name.trim())
         }));
 
+        // Load existing rural details (no duplicate)
         this.ruralDetails = d.selected_soc.map((s: any) => ({
           name: s.society_name,
           sc: s.sc_st,
@@ -122,6 +126,9 @@ export class Form1 implements OnInit {
 
   onCheckboxChange() {
 
+    // 🔒 Stop if already loading (prevents double click issue)
+    if (this.isLoadingDetails) return;
+
     const selectedIDs = this.masterZones12
       .filter(x => x.selected)
       .map(x => x.id);
@@ -135,36 +142,56 @@ export class Form1 implements OnInit {
       return;
     }
 
+    this.isLoadingDetails = true;
+
     const body = { associationIds: selectedIDs };
 
     this.userService.PostCheckpointZones(body).subscribe(res => {
-      if (res.success) {
 
-        this.ruralDetails = [];
+      // Clear before reloading (avoids accumulation)
+      this.ruralDetails = [];
+
+      if (res.success) {
 
         const filtered = res.data.non_selected_soc
           .filter((x: any) => selectedIDs.includes(x.id));
 
-        filtered.forEach((soc: any) =>
-          this.loadRuralDetail(soc.id, soc.association_name)
-        );
+        filtered.forEach((soc: any) => {
+          this.loadRuralDetail(soc.id, soc.association_name);
+        });
       }
+
+      this.isLoadingDetails = false;
+    }, () => {
+      this.isLoadingDetails = false;
     });
   }
 
+  /* ================= LOAD DETAILS ================= */
+
   loadRuralDetail(id: number, name: string) {
+
+    // 🔒 Prevent duplicate before API
+    if (this.ruralDetails.some(r => r.name === name)) {
+      return;
+    }
+
     const body = { associationIds: [id] };
 
     this.userService.getRuralSocietyDetails(body).subscribe(r => {
       if (r.success && r.data.length > 0) {
         const d = r.data[0];
-        this.ruralDetails.push({
-          name,
-          sc: d.sc_st,
-          women: d.women,
-          general: d.general,
-          total: d.sc_st + d.women + d.general
-        });
+
+        // 🔒 Double protection (API race condition)
+        if (!this.ruralDetails.some(x => x.name === name)) {
+          this.ruralDetails.push({
+            name,
+            sc: d.sc_st,
+            women: d.women,
+            general: d.general,
+            total: d.sc_st + d.women + d.general
+          });
+        }
       }
     });
   }
@@ -209,7 +236,6 @@ export class Form1 implements OnInit {
 
       this.userService.editForm1(this.form1Id!, payload).subscribe(() => {
 
-        // 🔥 REQUIRED FOR FORM-2
         localStorage.setItem('form1_id', this.form1Id!.toString());
         localStorage.setItem('form1_completed', 'true');
 
@@ -225,7 +251,6 @@ export class Form1 implements OnInit {
 
         if (res.success) {
 
-          // 🔥 REQUIRED FOR FORM-2
           localStorage.setItem('form1_id', res.data.id);
           localStorage.setItem('form1_completed', 'true');
 

@@ -31,7 +31,8 @@
       <label class="label">மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்பட்ட சங்கங்களின் பெயர்</label>
       <div class="checkbox-list">
         <div *ngFor="let item of masterZones12; let i=index" class="checkbox-item">
-          <input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()" [name]="'z'+i">
+          <input type="checkbox" [(ngModel)]="item.selected" (change)="onCheckboxChange()" [disabled]="isLoadingDetails"
+            [name]="'z'+i">
           {{ item.name }}
         </div>
       </div>
