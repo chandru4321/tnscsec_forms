@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-form3',
@@ -34,7 +35,8 @@ export class Form3 implements OnInit {
   removedCounts: number[] = [];
   remainingCounts: number[] = [];
 
-  constructor(private userService: UserService,
+  constructor(private userService: UserService, private router: Router
+
   ) { }
 
   ngOnInit(): void {
@@ -107,10 +109,10 @@ export class Form3 implements OnInit {
     console.log('FINAL PAYLOAD', payload);
 
     this.userService.submitForm3(payload).subscribe({
-      next: () => alert('Form3 submitted successfully'),
-
-
-
+      next: () => {
+        alert('Form3 submitted successfully');
+        this.router.navigate(['/layout/totalforms']); // ✅ added line
+      },
 
       error: err => {
         console.error(err);

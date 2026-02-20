@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
+import { Router } from '@angular/router';
 
 type CategoryType = 'sc_st' | 'women' | 'general';
 
@@ -49,7 +50,7 @@ export class Form9 implements OnInit {
 
   form9_id!: number;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   // ======================
   // PAGE LOAD
@@ -310,6 +311,8 @@ export class Form9 implements OnInit {
         if (res?.success) {
           alert('Form9 Submitted Successfully');
           this.isFormSubmitted = true;
+          this.router.navigate(['/layout/totalforms']);
+
         }
       },
       error: err => alert(err?.error?.message || 'Submit failed')

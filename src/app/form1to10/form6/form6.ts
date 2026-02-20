@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
 import { FilterByCategoryPipe } from '../../pipes/filter-by-category-pipe';
+import { Router, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-form6',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterByCategoryPipe],
+  imports: [CommonModule, FormsModule, FilterByCategoryPipe,],
   templateUrl: './form6.html',
   styleUrls: ['./form6.css']
 })
@@ -36,7 +38,7 @@ export class Form6 implements OnInit {
   showViewPopup = false;
   viewSociety: any = null;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.district_name = localStorage.getItem('district_name') || '';
@@ -222,6 +224,8 @@ export class Form6 implements OnInit {
       if (res?.success) {
         this.form6Submitted = true;
         this.showFinalSubmitPopup = true;
+        this.router.navigate(['/layout/totalforms']);
+
       }
     });
   }

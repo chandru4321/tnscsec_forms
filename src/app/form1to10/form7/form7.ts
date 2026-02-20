@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-form7',
@@ -24,8 +26,7 @@ export class Form7 implements OnInit {
   // F5 – Final input table
   f5Data: any[] = [];
 
-  constructor(private userService: UserService) { }
-
+  constructor(private userService: UserService, Router: Router) { }
   ngOnInit(): void {
     this.district_name = localStorage.getItem('district_name') || '';
     this.Zone_name = localStorage.getItem('zone_name') || '';
@@ -162,6 +163,8 @@ export class Form7 implements OnInit {
       next: (res: any) => {
         if (res?.success) {
           alert('Form 7 வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது');
+
+
         }
       },
       error: () => {

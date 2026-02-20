@@ -25,7 +25,8 @@ export class Form4 implements OnInit {
   selectedSocietyList: any[] = [];
   unselectedSocietyList: any[] = [];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.district_name = localStorage.getItem('district_name') || '';
@@ -167,6 +168,8 @@ export class Form4 implements OnInit {
         if (res?.success) {
           alert('Form 4 submitted successfully');
           localStorage.setItem('form4_id', res.data.form4_id);
+          this.router.navigate(['/layout/totalforms']);
+
 
         }
       },
