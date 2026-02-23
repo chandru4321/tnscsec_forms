@@ -137,12 +137,18 @@ export class Form5Component implements OnInit {
 
     if (!this.selectedSociety) return;
 
-    const hasEmpty = this.members.some(
-      m => !m.member_name || !m.aadhar_no
+    const namePattern = /^[a-zA-Z\u0B80-\u0BFF ]+$/;
+    const aadharPattern = /^[0-9]{12}$/;
+
+    const invalidMember = this.members.some(m =>
+      !m.member_name ||
+      !namePattern.test(m.member_name) ||
+      !m.aadhar_no ||
+      !aadharPattern.test(m.aadhar_no)
     );
 
-    if (hasEmpty) {
-      alert('அனைத்து உறுப்பினர் விவரங்களையும் உள்ளிடவும்');
+    if (invalidMember) {
+      alert('சரியான பெயர் மற்றும் 12 இலக்க ஆதார் எண் உள்ளிடவும்');
       return;
     }
 
@@ -152,9 +158,7 @@ export class Form5Component implements OnInit {
       next: () => {
         alert('Form 5 successfully submitted');
 
-        // ✅ mark row as submitted
         this.selectedSociety.submitted = true;
-
         this.closeModal();
       },
       error: err => {

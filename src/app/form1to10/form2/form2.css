@@ -89,6 +89,7 @@
 .textarea-box::-webkit-scrollbar {
   width: 8px;
 }
+
 .textarea-box::-webkit-scrollbar-thumb {
   background-color: #009aa5;
   border-radius: 4px;
@@ -119,6 +120,7 @@
 .checkbox-list::-webkit-scrollbar {
   width: 8px;
 }
+
 .checkbox-list::-webkit-scrollbar-thumb {
   background-color: #009aa5;
   border-radius: 4px;
@@ -154,7 +156,7 @@
 }
 
 .unselected-item {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   padding: 8px 12px;
   margin: 6px 0;
   border-radius: 4px;
@@ -165,6 +167,7 @@
 .unselected-box::-webkit-scrollbar {
   width: 8px;
 }
+
 .unselected-box::-webkit-scrollbar-thumb {
   background: #7b7e7d;
   border-radius: 6px;
@@ -197,12 +200,14 @@
 .button-box.submit {
   background: #1a73e8;
 }
+
 /* MAIN BACKGROUND */
 .upload-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  background: #c3e1c0;   /* Green background in screenshot */
+  background: #c3e1c0;
+  /* Green background in screenshot */
   padding: 40px;
 }
 
@@ -233,8 +238,8 @@
 
 /* RED BOX (Right Panel F4) */
 .red-box {
-  background: #ff4c4c !important;
-  border: 1px solid #cc0000;
+  background: #cd9292 !important;
+  border: 1px solid #bf7272;
 }
 
 /* ITEMS */
@@ -248,7 +253,7 @@
 
 /* RED ITEMS */
 .panel-item-red {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   color: white;
   display: flex;
   align-items: center;
@@ -264,6 +269,7 @@
 .panel-box::-webkit-scrollbar {
   width: 8px;
 }
+
 .panel-box::-webkit-scrollbar-thumb {
   background: #666;
   border-radius: 4px;

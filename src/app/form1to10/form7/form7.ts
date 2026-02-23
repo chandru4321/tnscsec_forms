@@ -26,7 +26,7 @@ export class Form7 implements OnInit {
   // F5 – Final input table
   f5Data: any[] = [];
 
-  constructor(private userService: UserService, Router: Router) { }
+  constructor(private userService: UserService, private router: Router) { }
   ngOnInit(): void {
     this.district_name = localStorage.getItem('district_name') || '';
     this.Zone_name = localStorage.getItem('zone_name') || '';
@@ -163,6 +163,8 @@ export class Form7 implements OnInit {
       next: (res: any) => {
         if (res?.success) {
           alert('Form 7 வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது');
+          this.router.navigate(['/layout/totalforms']);
+
 
 
         }

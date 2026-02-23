@@ -1,21 +1,26 @@
 <div class="page-bg">
 
+
+    <h2 class="form">படிவம் 9</h2>
     <h2 class="form-title">
-        வேட்புமனு தாக்கல் செய்த உறுப்பினர்களின் பெயர் மற்றும் விபரம்
+        வாக்கு எண்ணிக்கை பற்றிய விபரங்கள்
     </h2>
 
     <div class="row">
         <div class="col">
-            <label>மாவட்டம்</label>
+            <label>மாவட்ட தேர்தல் அலுவலர்/ மாவட்டம்
+            </label>
             <input class="input-box" [value]="district_name" readonly>
         </div>
 
         <div class="col">
-            <label>சரம்</label>
+            <label>மாவட்ட தேர்தல் அலுவலர்/ சரகம்
+            </label>
             <input class="input-box" [value]="zone_name" readonly>
         </div>
     </div>
-    <label>தலைவர் தேர்தலுக்கு தாக்கல் செய்யப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள்(f3)
+    <label>தலைவர் தேர்தலுக்கு தாக்கல் செய்யப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள்
+
     </label>
     <table class="form-table">
         <thead>
@@ -98,7 +103,8 @@
     <!-- F5 TABLE -->
     <div *ngIf="showF5Table">
 
-        <label>Withdrawn Candidates (F5)</label>
+        <label>தலைவர் பதவிக்கு தகுதியான இறுதி வேட்பாளர் பட்டியல் (Select one user for president)
+        </label>
 
         <table class="form-table">
             <thead>

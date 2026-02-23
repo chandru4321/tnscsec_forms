@@ -1,4 +1,5 @@
 <div class="page-bg">
+    <h2 class="form">படிவம் 5</h2>
 
     <h2 class="form-title">
         வேட்புமனு தாக்கல் செய்த உறுப்பினர்களின் பெயர் மற்றும் விபரம்
@@ -17,6 +18,10 @@
         </div>
     </div>
 
+    <label class="section-label">வேட்புமனு தாக்கல் செய்த உறுப்பினர்களின் பெயர் மற்றும் ஆதார் எண் விபரங்களை பதிவு செய்க
+
+    </label>
+
     <table class="form-table">
         <thead>
             <tr>
@@ -25,7 +30,7 @@
                 <th>ப.தி./ப.கு</th>
                 <th>மகளிர்</th>
                 <th>பொது</th>
-                <th>தேர்வு செய்க</th>
+                <th>சேர்க்க</th>
             </tr>
         </thead>
 
@@ -55,29 +60,84 @@
 
 
             <!-- SC/ST -->
+            <!-- SC/ST -->
             <div class="category">
                 <h4>ப.தி./ப.கு</h4>
-                <div class="pair" *ngFor="let m of scstMembers">
-                    <input [(ngModel)]="m.member_name" placeholder="பெயர்" />
-                    <input [(ngModel)]="m.aadhar_no" placeholder="ஆதார் எண்" />
+
+                <div class="pair" *ngFor="let m of scstMembers; let i = index">
+
+                    <!-- Name Field -->
+                    <div class="field">
+                        <input [(ngModel)]="m.member_name" name="scst_name_{{i}}" required
+                            pattern="^[a-zA-Z\u0B80-\u0BFF ]+$" #scstName="ngModel" placeholder="பெயர்" />
+
+                        <div class="error" *ngIf="scstName.invalid && scstName.touched">
+                            சரியான பெயர் உள்ளிடவும்
+                        </div>
+                    </div>
+
+                    <!-- Aadhar Field -->
+                    <div class="field">
+                        <input [(ngModel)]="m.aadhar_no" name="scst_aadhar_{{i}}" required pattern="^[0-9]{12}$"
+                            maxlength="12" #scstAadhar="ngModel" placeholder="ஆதார் எண்" />
+
+                        <div class="error" *ngIf="scstAadhar.invalid && scstAadhar.touched">
+                            12 இலக்க ஆதார் எண் தேவை
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
             <!-- WOMEN -->
             <div class="category">
                 <h4>மகளிர்</h4>
-                <div class="pair" *ngFor="let m of womenMembers">
-                    <input [(ngModel)]="m.member_name" placeholder="பெயர்" />
-                    <input [(ngModel)]="m.aadhar_no" placeholder="ஆதார் எண்" />
+
+                <div class="pair" *ngFor="let m of womenMembers; let i = index">
+
+                    <div class="field">
+                        <input [(ngModel)]="m.member_name" name="women_name_{{i}}" required
+                            pattern="^[a-zA-Z\u0B80-\u0BFF ]+$" #wName="ngModel" placeholder="பெயர்" />
+
+                        <div class="error" *ngIf="wName.invalid && wName.touched">
+                            சரியான பெயர் உள்ளிடவும்
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <input [(ngModel)]="m.aadhar_no" name="women_aadhar_{{i}}" required pattern="^[0-9]{12}$"
+                            maxlength="12" #wAadhar="ngModel" placeholder="ஆதார் எண்" />
+
+                        <div class="error" *ngIf="wAadhar.invalid && wAadhar.touched">
+                            12 இலக்க ஆதார் எண் தேவை
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
             <!-- GENERAL -->
             <div class="category">
                 <h4>பொது</h4>
-                <div class="pair" *ngFor="let m of generalMembers">
-                    <input [(ngModel)]="m.member_name" placeholder="பெயர்" />
-                    <input [(ngModel)]="m.aadhar_no" placeholder="ஆதார் எண்" />
+
+                <div class="pair" *ngFor="let m of generalMembers; let i = index">
+
+                    <div class="field">
+                        <input [(ngModel)]="m.member_name" name="gen_name_{{i}}" required
+                            pattern="^[a-zA-Z\u0B80-\u0BFF ]+$" #gName="ngModel" placeholder="பெயர்" />
+
+                        <div class="error" *ngIf="gName.invalid && gName.touched">
+                            சரியான பெயர் உள்ளிடவும்
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <input [(ngModel)]="m.aadhar_no" name="gen_aadhar_{{i}}" required pattern="^[0-9]{12}$"
+                            maxlength="12" #gAadhar="ngModel" placeholder="ஆதார் எண்" />
+
+                        <div class="error" *ngIf="gAadhar.invalid && gAadhar.touched">
+                            12 இலக்க ஆதார் எண் தேவை
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

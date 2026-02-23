@@ -300,7 +300,7 @@ export class UserService {
   }
 
   getForm7Table(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/form7/list`);
+    return this.http.get<any>(`${this.baseUrl}/form7`);
   }
 
 
@@ -326,7 +326,7 @@ export class UserService {
     );
   }
   getForm8Table(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/form8/list`);
+    return this.http.get<any>(`${this.baseUrl}/form8`);
   }
 
 

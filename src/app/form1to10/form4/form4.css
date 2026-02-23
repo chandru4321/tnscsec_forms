@@ -2,17 +2,21 @@
     background: #c7e0c2;
     padding: 30px;
     min-height: 100vh;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .form-title {
     text-align: center;
     font-size: 26px;
     font-weight: bold;
+
 }
 
 .form-subtitle {
     text-align: center;
     margin-bottom: 25px;
+    font-size: 18px;
 }
 
 .row {
@@ -32,7 +36,7 @@
 }
 
 .section-label {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     margin: 25px 0 10px;
 }
@@ -49,6 +53,8 @@
     gap: 10px;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
+    font-size: 15px;
+
 }
 
 .f4-name {
@@ -60,6 +66,7 @@
 .f6-input-group {
     display: flex;
     align-items: center;
+    font-size: 15px;
 }
 
 .f4-label,
@@ -114,4 +121,17 @@
     color: #fff;
     padding: 10px 20px;
     border: none;
+}
+
+.textarea-large {
+    width: 200px;
+    /* full width */
+    min-height: 100px;
+    /* increase height */
+    resize: vertical;
+    /* user can expand vertically */
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }

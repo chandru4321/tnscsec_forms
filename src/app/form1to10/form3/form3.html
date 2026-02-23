@@ -2,7 +2,7 @@
 
     <h2 class="form-title">படிவம் 3</h2>
     <div class="form-subtitle">
-        இரதி வாக்காளர் பட்டியல் வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட விபரம்
+        இறுதி வாக்காளர் பட்டியல் வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட விபரம்
     </div>
 
     <!-- F1 & F2 -->
@@ -19,7 +19,8 @@
     </div>
 
     <!-- F3 -->
-    <div class="section-label">வாக்காளர் பட்டியல் அலுவலரால் உருவாக்கப்பட்ட சங்கங்கள் (F3)</div>
+    <div class="row">வாக்காளர் பட்டியல் அலுவலரால் உறுப்பினர் பட்டியல் வெளியிடப்பட்ட சங்கங்கள்
+    </div>
     <div class="large-box">
         <div *ngFor="let soc of f3SocietyList; let i = index">
             {{ i + 1 }}. {{ soc.society_name }}
@@ -27,7 +28,8 @@
     </div>
 
     <!-- F4 -->
-    <div class="section-label">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர்கள் எண்ணிக்கை (F4)</div>
+    <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர்கள் எண்ணிக்கை
+    </div>
     <div class="large-box">
         <div class="f4-row" *ngFor="let soc of f3SocietyList; let i = index">
             <div class="f4-name">{{ i + 1 }}. {{ soc.society_name }}</div>
@@ -39,7 +41,9 @@
     </div>
 
     <!-- F5 -->
-    <div class="section-label">வாக்காளர் பட்டியலில் வெளியிடப்பட்ட சங்கங்கள் கோரியமை (F5)</div>
+    <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர் பட்டியலுக்கு கோருரிமை அல்லது மறுப்பு
+        தெரிவிக்கப்பட்ட விபரம் (ஆம் / இல்லை)
+    </div>
     <div class="large-box">
         <div class="f5-row" *ngFor="let soc of f3SocietyList; let i = index">
             <div class="f5-name">{{ i + 1 }}. {{ soc.society_name }}</div>
@@ -55,7 +59,9 @@
     </div>
 
     <!-- F6 -->
-    <div class="section-label">வாக்காளர் பட்டியலில் இருந்து நீக்கப்பட்ட சங்கங்கள் (F6)</div>
+    <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர் பட்டியலில் திருத்தங்கள் மேற்கொள்ளப்பட்ட
+        சங்கங்கள் மற்றும் விபரம்
+    </div>
     <div class="large-box">
         <ng-container *ngFor="let soc of f3SocietyList; let i = index">
             <div class="f6-row" *ngIf="f5Answers[i] === 'YES'">
@@ -75,7 +81,8 @@
     </div>
 
     <!-- F7 -->
-    <div class="section-label">இறுதி வாக்காளர் பட்டியல் (F7)</div>
+    <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட இறுதி வாக்காளர் பட்டியல் - வாக்காளர்களின் எண்ணிக்கை
+    </div>
     <div class="large-box">
         <div class="f7-row" *ngFor="let soc of f3SocietyList; let i = index">
             <div class="f7-name">{{ i + 1 }}. {{ soc.society_name }}</div>

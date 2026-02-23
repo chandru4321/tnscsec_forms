@@ -82,49 +82,61 @@ export class Formt1 implements OnInit {
   ========================= */
   loadForm1Table(): void {
     this.userService.getForm1Table().subscribe((res: any) => {
-      if (res?.success && Array.isArray(res.data)) {
 
-        // For header display (if needed)
-        if (res.data.length > 0) {
-          this.department_name = res.data[0].department_name;
+      // ✅ Correct path: res.data.data
+      const apiData = res?.data?.data;
+
+      if (res?.success && Array.isArray(apiData)) {
+
+        // Header
+        if (apiData.length > 0) {
+          this.department_name = apiData[0].department_name;
         }
 
-        this.prepareRows(res.data as Form1ApiRow[]);
+        this.prepareRows(apiData as Form1ApiRow[]);
+      } else {
+        this.tableRows = [];
       }
+
     });
   }
 
   /* =========================
      TRANSFORM API → TABLE
   ========================= */
-  private prepareRows(data: Form1ApiRow[]): void {
+  private prepareRows(data: any[]): void {
     this.tableRows = [];
 
-    data.forEach((row: Form1ApiRow) => {
+    data.forEach((row: any) => {
 
-      const selectedMap = new Map<number, SelectedSociety>(
-        (row.selected_soc || []).map(s => [s.society_id, s])
+      // Combine selected + non-selected societies
+      const allSocieties = [
+        ...(row.selected_soc || []),
+        ...(row.non_selected_soc || [])
+      ];
+
+      const selectedIds = new Set(
+        (row.selected_soc || []).map((s: any) => s.society_id)
       );
 
-      const totalRows = row.masterzone_societies.length;
+      const totalRows = allSocieties.length;
 
-      row.masterzone_societies.forEach((mz, index) => {
+      allSocieties.forEach((soc: any, index: number) => {
 
-        const selected = selectedMap.get(mz.society_id);
-        const isSelected = !!selected;
+        const isSelected = selectedIds.has(soc.society_id);
 
         this.tableRows.push({
           id: row.id,
           department_name: row.department_name,
           district_name: row.district_name,
           zone_name: row.zone_name,
-          masterzone_count: row.masterzone_count,
-          society_name: mz.society_name,
+          masterzone_count: row.selected_count + row.non_selected_count,
+          society_name: soc.society_name,
 
-          sc_st: isSelected ? selected!.sc_st : null,
-          women: isSelected ? selected!.women : null,
-          general: isSelected ? selected!.general : null,
-          tot_voters: isSelected ? selected!.tot_voters : null,
+          sc_st: isSelected ? soc.sc_st : null,
+          women: isSelected ? soc.women : null,
+          general: isSelected ? soc.general : null,
+          tot_voters: isSelected ? soc.tot_voters : null,
 
           isSelected: isSelected,
           remark: row.remark,
@@ -134,9 +146,9 @@ export class Formt1 implements OnInit {
         });
 
       });
+
     });
   }
-
   /* =========================
      EXPORT EXCEL
   ========================= */

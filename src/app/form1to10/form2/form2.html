@@ -9,10 +9,12 @@
     <!-- LEFT COLUMN -->
     <div class="form-column">
 
-      <label class="label">மாவட்டம்(f1)</label>
+      <label class="label">மாவட்ட தேர்தல் அலுவலர்/ மாவட்டம்
+      </label>
       <input type="text" class="input-box" [(ngModel)]="district_name" readonly>
 
-      <label class="label">Form-1 ல் தேர்வு செய்யப்பட்ட சங்கங்கள் (F3)</label>
+      <label class="label">உறுப்பினர் பட்டியல் தயாரித்து வெளியிட வேண்டிய சங்கங்களின் பெயர்
+      </label>
 
       <textarea class="textarea-box" readonly>{{ f3List }}</textarea>
 
@@ -22,10 +24,11 @@
     <!-- RIGHT COLUMN -->
     <div class="form-column">
 
-      <label class="label">மண்டலம்(f2)</label>
+      <label class="label">மாவட்ட தேர்தல் அலுவலர்/ சரகம்</label>
       <input type="text" class="input-box" [(ngModel)]="zone_name" readonly>
 
-      <label class="label">உறுப்பினர் பட்டியல் வழங்கிய சங்கங்கள் (F4)</label>
+      <label class="label">உறுப்பினர் பட்டியல் தயாரித்து வெளியிட்டுள்ள சங்கங்களின் பெயர்
+      </label>
 
       <div class="checkbox-list">
         <div *ngFor="let item of finalCheckboxList" class="checkbox-item">
@@ -48,8 +51,7 @@
     <!-- F5 PANEL -->
     <div class="upload-panel">
       <h3 class="panel-title">
-        வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளித்த சங்கங்கள் (F5)
-      </h3>
+        வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளித்த சங்கங்களின்பெயர் </h3>
 
       <div class="panel-box">
         <div *ngFor="let item of f5_selectedList" class="panel-item">
@@ -65,8 +67,7 @@
 
     <div class="upload-panel">
       <h3 class="panel-title">
-        வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளிக்காத சங்கங்கள் (F6)
-      </h3>
+        வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளிக்காத சங்கங்களின் பெயர் </h3>
 
       <div class="panel-box red-box">
         <div *ngFor="let item of f6_unselectedList" class="panel-item panel-item-red">
@@ -79,7 +80,7 @@
   </div>
 
   <!-- =============== COUNT FIELD =============== -->
-  <label class="label">அளிக்காத சங்கங்களின் எண்ணிக்கை</label>
+  <label class="label">வாக்காளர் பட்டியல் அலுவலருக்கு உறுப்பினர் பட்டியல் அளிக்காத சங்கங்களின் எண்ணிக்கை</label>
   <input type="text" class="input-box" readonly [value]="f6_unselectedList.length">
 
 

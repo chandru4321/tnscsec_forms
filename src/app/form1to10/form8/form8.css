@@ -1,6 +1,8 @@
 .page-bg {
-    background: #d7e6d5;
-    padding: 20px;
+    background: #c7e0c2;
+    padding: 30px;
+    min-height: 100vh;
+    font-weight: bold;
 }
 
 .form-title {
@@ -21,15 +23,14 @@
 
 .input-box {
     width: 100%;
-    padding: 6px;
-    background: #eee;
-    border: 1px solid #aaa;
+    height: 40px;
 }
 
 .section-label {
     font-weight: bold;
     margin: 20px 0 8px;
     display: block;
+    font-size: 15px;
 }
 
 
@@ -59,6 +60,7 @@
 .table-title {
     margin-top: 20px;
     font-weight: bold;
+    font-size: 15px;
 }
 
 .no-data {
@@ -437,4 +439,15 @@
     padding: 10px 22px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.form-title {
+    font-size: 18px;
+    text-align: center;
+
+}
+
+.form {
+    font-size: 26px;
+    text-align: center;
 }

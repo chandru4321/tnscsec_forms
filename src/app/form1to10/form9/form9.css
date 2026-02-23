@@ -3,6 +3,7 @@
     background: #c7e0c2;
     padding: 30px;
     min-height: 100vh;
+    font-weight: bold;
 }
 
 .form-title {
@@ -258,4 +259,15 @@
 .submit-btn:disabled {
     background-color: #28a745;
     cursor: not-allowed;
+}
+
+.form-title {
+    font-size: 18px;
+    text-align: center;
+
+}
+
+.form {
+    font-size: 26px;
+    text-align: center;
 }
