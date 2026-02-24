@@ -4,31 +4,8 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { UserService } from '../../services/user';
 
-interface TableRow {
-  department_name: string;
-  district_name: string;
-  zone_name: string;
-  society_name: string;
-
-  casted_votes: number;
-  ballot_votes: number;
-  valid_votes: number;
-  invalid_votes: number;
-
-  sc_name: string;
-  women_name: string;
-  general_name: string;
-
-  sc_count: number;
-  women_count: number;
-  general_count: number;
-  total_count: number;
-
-  remarks: string;
-}
-
 @Component({
-  selector: 'app-formt8',
+  selector: 'app-formt9',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './formt9.html',
@@ -37,73 +14,60 @@ interface TableRow {
 export class formt9 implements OnInit {
 
   department_name = '';
-  tableRows: TableRow[] = [];
+  tableRows: any[] = [];
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.loadForm8();
+    this.loadForm9();
   }
 
-  loadForm8(): void {
-    this.userService.getForm8Table().subscribe(res => {
+  loadForm9(): void {
+    this.userService.getForm9List().subscribe(res => {
 
       if (!res?.success || !res.data?.length) return;
 
-      const rows: TableRow[] = [];
+      const rows: any[] = [];
 
-      // Loop all form8 records (safe)
       res.data.forEach((form: any) => {
 
         const department = form.department?.name || '';
         const district = form.district?.name || '';
         const zone = form.zone?.name || '';
 
-        // Set top header department (once)
+        // Set header department once
         this.department_name = department;
 
         form.societies?.forEach((soc: any) => {
 
-          const categories = soc.categories || [];
-
-          // ---------- Helpers ----------
-          const getNames = (type: string): string => {
-            const cat = categories.find((c: any) => c.category === type);
-            if (!cat?.winners?.length) return '-';
-            return cat.winners.map((w: any) => w.member_name).join('\n');
-          };
-
-          const getCount = (type: string): number => {
-            const cat = categories.find((c: any) => c.category === type);
-            return cat?.winners?.length || 0;
-          };
-
-          const sc_count = getCount('SC_ST');
-          const women_count = getCount('WOMEN');
-          const general_count = getCount('GENERAL');
-
-          // ---------- Push Row ----------
           rows.push({
-            department_name: department,
             district_name: district,
             zone_name: zone,
             society_name: soc.society_name || '-',
 
-            casted_votes: soc.casted_votes_count || 0,
-            ballot_votes: soc.polling_details?.ballot_votes_at_counting || 0,
-            valid_votes: soc.polling_details?.valid_votes || 0,
-            invalid_votes: soc.polling_details?.invalid_votes || 0,
+            // Final counts
+            final_sc: soc.final_counts?.sc_st || 0,
+            final_women: soc.final_counts?.women || 0,
+            final_general: soc.final_counts?.general || 0,
+            final_total: soc.final_counts?.total || 0,
 
-            sc_name: getNames('SC_ST'),
-            women_name: getNames('WOMEN'),
-            general_name: getNames('GENERAL'),
+            // Rejected counts
+            rejected_sc: soc.rejected_counts?.sc_st || 0,
+            rejected_women: soc.rejected_counts?.women || 0,
+            rejected_general: soc.rejected_counts?.general || 0,
+            rejected_total: soc.rejected_counts?.total || 0,
 
-            sc_count,
-            women_count,
-            general_count,
-            total_count: sc_count + women_count + general_count,
+            // Withdrawn counts
+            withdrawn_sc: soc.withdrawn_counts?.sc_st || 0,
+            withdrawn_women: soc.withdrawn_counts?.women || 0,
+            withdrawn_general: soc.withdrawn_counts?.general || 0,
+            withdrawn_total: soc.withdrawn_counts?.total || 0,
 
-            remarks: soc.polling_details?.remarks || '-'
+            // Winner
+            president_name: soc.president_winner?.member_name || '-',
+
+            // Election type
+            election_type: soc.election_type || '-'
           });
 
         });
@@ -122,6 +86,6 @@ export class formt9 implements OnInit {
     const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
 
     const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form8_Report.xlsx');
+    saveAs(new Blob([buffer]), 'Form9_Report.xlsx');
   }
 }

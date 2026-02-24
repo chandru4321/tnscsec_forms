@@ -331,6 +331,11 @@ export class UserService {
 
 
 
+
+
+
+
+
   form9init(payload: any) {
     return this.http.post(`${this.baseUrl}/form9/init`, payload);
   }
@@ -351,6 +356,74 @@ export class UserService {
   form9submit(payload: any) {
     return this.http.post(`${this.baseUrl}/form9/submit`, payload);
   }
+  getForm9List() {
+    return this.http.get<any>(`${this.baseUrl}/form9`);
+  }
+
+
+
+
+
+  form10init(payload: any) {
+    return this.http.post(`${this.baseUrl}/form10/init`, payload);
+  }
+
+  getForm10Preview(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form10/preview`);
+  }
+
+  form10reject(payload: any) {
+    return this.http.post(`${this.baseUrl}/form10/reject`, payload);
+  }
+  form10withdraw(payload: any) {
+    return this.http.post(`${this.baseUrl}/form10/withdraw`, payload);
+  }
+  form10societyfinalize(payload: any) {
+    return this.http.post(`${this.baseUrl}/form10/society-finalize`, payload);
+  }
+  form10submit(payload: any) {
+    return this.http.post(`${this.baseUrl}/form10/submit`, payload);
+  }
+  getForm10List() {
+    return this.http.get<any>(`${this.baseUrl}/form10`);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

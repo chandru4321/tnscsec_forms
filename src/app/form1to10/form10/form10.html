@@ -1,1 +1,260 @@
-<p>form10 works!</p>
+<div class="page-bg">
+
+
+    <h2 class="form">படிவம் 10</h2>
+    <h2 class="form-title">
+        வாக்கு எண்ணிக்கை பற்றிய விபரங்கள்
+    </h2>
+
+    <div class="row">
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர்/ மாவட்டம்
+            </label>
+            <input class="input-box" [value]="district_name" readonly>
+        </div>
+
+        <div class="col">
+            <label>மாவட்ட தேர்தல் அலுவலர்/ சரகம்
+            </label>
+            <input class="input-box" [value]="zone_name" readonly>
+        </div>
+    </div>
+    <label>தலைவர் தேர்தலுக்கு தாக்கல் செய்யப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள்
+
+    </label>
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th>வ. எண்</th>
+                <th>சங்கத்தின் பெயர்</th>
+                <th>SC/ST</th>
+                <th>மகளிர்</th>
+                <th>பொது</th>
+                <th>மொத்தம்</th>
+                <th>செயல்</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let row of f3List; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ row.society_name }}</td>
+                <td>{{ row.sc_st }}</td>
+                <td>{{ row.women }}</td>
+                <td>{{ row.general }}</td>
+                <td>{{ row.total }}</td>
+                <td>
+                    <!-- <button class="add-btn" [disabled]="row.submitted" (click)="addSociety(row)">
+                        {{ row.submitted ? 'சமர்ப்பிக்கப்பட்டது' : 'தேர்வு செய்க' }}
+                    </button> -->
+                    <button class="add-btn" (click)="addSociety(row, 'REJECT')">
+                        தேர்வு செய்க
+                    </button>
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- F4 TABLE -->
+    <label>பரிசீலனையில் நிராகரிக்கப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள் (F4)</label>
+    <div *ngIf="showF4Table">
+
+        <!-- <label>பரிசீலனையில் நிராகரிக்கப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள் (F4)</label> -->
+
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th>வ. எண்</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>SC/ST</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                    <th>நிலை</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let row of f4List; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ row.society_name }}</td>
+                    <td>{{ row.sc_st }}</td>
+                    <td>{{ row.women }}</td>
+                    <td>{{ row.general }}</td>
+                    <td>{{ row.total }}</td>
+                    <td>
+                        <!-- <button class="add-btn" (click)="addSociety(row)">
+                            தேர்வு செய்க
+                        </button> -->
+                        <button class="add-btn" (click)="addSociety(row, 'WITHDRAW')">
+                            தேர்வு செய்க
+                        </button>
+
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- F5 TABLE -->
+    <div *ngIf="showF5Table">
+
+        <label>தலைவர் பதவிக்கு தகுதியான இறுதி வேட்பாளர் பட்டியல் (Select one user for president)
+        </label>
+
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th>வ. எண்</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>SC/ST</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                    <th>நிலை</th> <!-- Added column -->
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let row of f5List; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ row.society_name }}</td>
+                    <td>{{ row.sc_st }}</td>
+                    <td>{{ row.women }}</td>
+                    <td>{{ row.general }}</td>
+                    <td>{{ row.total }}</td>
+
+                    <!-- Candidate names -->
+                    <!-- <td>
+                        <div *ngFor="let c of row.candidates">
+                            {{ c.member_name }}
+                        </div>
+                    </td> -->
+
+                    <!-- Next action button -->
+                    <td>
+                        <button class="add-btn" [disabled]="row.submitted" (click)="addSociety(row, 'FINALIZE')">
+
+                            {{ row.submitted ? 'சமர்ப்பிக்கப்பட்டது' : 'தேர்வு செய்க' }}
+                        </button>
+
+
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+
+
+
+
+
+    <div class="form-footer">
+        <button class="cancel-btn" (click)="goBack()">ரத்து செய்</button>
+
+        <button class="submit-btn" [disabled]="isFormSubmitted" (click)="submitForm10()">
+            {{ isFormSubmitted ? 'சமர்ப்பிக்கப்பட்டது' : 'சமர்ப்பிக்க' }}
+        </button>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- MODAL -->
+    <!-- MODAL -->
+    <div class="modal-backdrop" *ngIf="showModal">
+        <div class="modal-box">
+
+            <button class="close-btn" (click)="closeModal()">✕</button>
+
+            <h3>{{ selectedSociety?.society_name }}</h3>
+
+            <!-- ============================= -->
+            <!-- F3 / F4 → Multiple selection -->
+            <!-- ============================= -->
+            <div *ngIf="currentAction !== 'FINALIZE'">
+
+                <div *ngIf="scstCandidates.length">
+                    <h4>SC/ST ({{ selectedSociety.sc_st }})</h4>
+                    <label *ngFor="let c of scstCandidates">
+                        <input type="checkbox" [(ngModel)]="c.is_elected">
+                        {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                    </label>
+                </div>
+
+                <div *ngIf="womenCandidates.length">
+                    <h4>மகளிர் ({{ selectedSociety.women }})</h4>
+                    <label *ngFor="let c of womenCandidates">
+                        <input type="checkbox" [(ngModel)]="c.is_elected">
+                        {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                    </label>
+                </div>
+
+                <div *ngIf="generalCandidates.length">
+                    <h4>பொது ({{ selectedSociety.general }})</h4>
+                    <label *ngFor="let c of generalCandidates">
+                        <input type="checkbox" [(ngModel)]="c.is_elected">
+                        {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- ============================= -->
+            <!-- F5 → FINALIZE (Single select) -->
+            <!-- ============================= -->
+            <div *ngIf="currentAction === 'FINALIZE'">
+
+                <!-- VICE PRESIDENT ONLY -->
+                <h4>Vice President Selection</h4>
+
+                <label *ngFor="let c of candidates">
+                    <input type="radio" name="vicePresident" [value]="c.form5_member_id"
+                        [(ngModel)]="selectedVicePresidentId">
+                    {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                </label>
+
+                <hr>
+
+                <!-- Election Type -->
+                <h4>Election Type</h4>
+
+                <label>
+                    <input type="radio" name="electionType" [(ngModel)]="electionType" value="UNOPPOSED">
+                    UNOPPOSED
+                </label>
+
+                <label>
+                    <input type="radio" name="electionType" [(ngModel)]="electionType" value="POLL">
+                    POLL
+                </label>
+
+            </div>
+            <!-- ============================= -->
+            <!-- Footer -->
+            <!-- ============================= -->
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModal()">ரத்து</button>
+                <button class="submit-btn" (click)="submitModal()">சமர்ப்பிக்க</button>
+            </div>
+
+        </div>
+    </div>

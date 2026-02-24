@@ -19,6 +19,16 @@ export class Login {
   private router = inject(Router);
 
   login() {
+
+    // -------- ADMIN STATIC LOGIN --------
+    if (this.username === 'admin' && this.password === 'admin') {
+      localStorage.setItem('role', 'admin');
+      this.router.navigate(['/layout/admin-dashboard']);
+      return;
+    }
+    // ------------------------------------
+
+    // Normal user login (existing code)
     this.auth.login(this.username, this.password).subscribe({
       next: (res: any) => {
 
@@ -32,15 +42,14 @@ export class Login {
           // Store username
           localStorage.setItem('username', res.data.username);
 
-          // Store IDs for Form1
           localStorage.setItem('department_name', res.data.department_name);
           localStorage.setItem('district_name', res.data.district_name);
           localStorage.setItem('zone_name', res.data.zone_name);
           localStorage.setItem('auth_token', res.data.accessToken);
 
+          localStorage.setItem('role', 'user');
 
-
-          // Redirect
+          // Redirect normal user
           this.router.navigate(['/layout/totalforms']);
 
         } else {

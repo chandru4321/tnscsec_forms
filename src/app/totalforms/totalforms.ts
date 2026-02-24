@@ -75,7 +75,7 @@ export class totalforms {
     {
       title: ' துணை தலைவர் தேர்தல் தொடர்பான விபரம்', code: 'Form10',
       formLink: '/layout/form1to10/form10',
-      tableLink: '/layout/formtables/formt10'
+      tableLink: '/layout/formtables/Formt10'
 
 
     }

@@ -8,19 +8,28 @@ const routes: Routes = [
     component: Layout,
     children: [
 
-      // All pages INSIDE layout
       {
         path: 'totalforms',
         loadChildren: () =>
           import('../totalforms/totalforms-routingmodule')
-
-
             .then(m => m.default)
       },
-      {
-        path: 'AdminDashboard', component: AdminDashboard
-      },
 
+      // ✅ ADMIN ROUTE (PUT YOUR CODE HERE)
+
+      {
+        path: 'admin-dashboard',
+        component: AdminDashboard,
+        canActivate: [() => {
+          const role = localStorage.getItem('role');
+          if (role === 'admin') {
+            return true;
+          } else {
+            window.location.href = '/layout/totalforms';
+            return false;
+          }
+        }]
+      },
       {
         path: 'form1to10',
         loadChildren: () =>
@@ -35,8 +44,6 @@ const routes: Routes = [
             .then(m => m.default)
       },
 
-
-      // Default child
       { path: '', redirectTo: 'totalforms', pathMatch: 'full' }
     ]
   }
