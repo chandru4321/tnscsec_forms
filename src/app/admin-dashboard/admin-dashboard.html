@@ -1,1 +1,21 @@
-<p>admin-dashboard works!</p>
+<div class="forms-container">
+    <table class="forms-table">
+
+        <tr *ngFor="let f of formsList">
+
+            <!-- Form Name (NOT clickable) -->
+            <td class="title">
+                {{ f.title }}
+            </td>
+
+            <!-- Arrow Click → Table Page -->
+            <td class="link">
+                <a [routerLink]="f.tableLink" class="arrow-link">
+                    →
+                </a>
+            </td>
+
+        </tr>
+
+    </table>
+</div>

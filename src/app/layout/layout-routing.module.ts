@@ -36,6 +36,13 @@ const routes: Routes = [
           import('../form1to10/form1to10-routing.module')
             .then(m => m.default)
       },
+      {
+        path: 'admintable',
+        loadChildren: () =>
+          import('../admintable/admintable.routing.module')
+            .then(m => m.default)
+
+      },
 
       {
         path: 'formtables',

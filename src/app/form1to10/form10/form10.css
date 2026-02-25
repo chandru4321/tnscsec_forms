@@ -260,3 +260,14 @@
     background-color: #28a745;
     cursor: not-allowed;
 }
+
+.form-title {
+    font-size: 18px;
+    text-align: center;
+
+}
+
+.form {
+    font-size: 26px;
+    text-align: center;
+}

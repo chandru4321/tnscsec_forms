@@ -40,6 +40,16 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form1`);
   }
 
+  getform1tables(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form1?`);
+
+  }
+
+
+
+
+
+
 
   /** =========================
    * FORM-1 EDIT APIs

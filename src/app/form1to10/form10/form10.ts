@@ -69,6 +69,7 @@ export class Form10 implements OnInit {
     });
   }
 
+
   // ======================
   // PREVIEW
   // ======================
@@ -143,6 +144,10 @@ export class Form10 implements OnInit {
     });
   }
 
+
+
+
+
   // ======================
   // MODAL OPEN
   // ======================
@@ -173,11 +178,8 @@ export class Form10 implements OnInit {
     this.currentAction = null;
   }
 
-  // ======================
-  // SELECT PRESIDENT
 
 
-  // ======================
   // SELECT VICE PRESIDENT
   // ======================
   selectVicePresident(candidate: Candidate) {

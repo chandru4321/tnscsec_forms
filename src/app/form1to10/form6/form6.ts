@@ -224,6 +224,7 @@ export class Form6 implements OnInit {
       if (res?.success) {
         this.form6Submitted = true;
         this.showFinalSubmitPopup = true;
+        
         this.router.navigate(['/layout/totalforms']);
 
       }
