@@ -11,9 +11,30 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+
+  /** GET → Master Zones */
+  getdepartment(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/departments`);
+  }
+  getdistrict(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/districts`);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   /** =========================
    * FORM-1 APIs
    * ========================= */
+
 
   /** GET → Master Zones */
   getMasterZones(): Observable<any> {
@@ -36,13 +57,24 @@ export class UserService {
   }
 
   /** GET → FORM-1 TABLE / LIST */
-  getForm1Table(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/form1`);
+  getForm1Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form1`, { params });
   }
 
-  getform1tables(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/form1?`);
+  getForm1Filtered(departmentId?: number, districtId?: number): Observable<any> {
 
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form1`, { params });
   }
 
 

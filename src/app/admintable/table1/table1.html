@@ -14,7 +14,29 @@
 
 
 
+    <!-- FILTER SECTION -->
+    <!-- FILTER SECTION -->
+    <div class="filter-section">
 
+        <label>Department:</label>
+        <select [(ngModel)]="selectedDepartment" (change)="applyFilter()">
+            <option value="">All</option>
+            <option *ngFor="let d of departmentList" [value]="d.name">
+                {{ d.name }}
+            </option>
+        </select>
+
+        <label>District:</label>
+        <select [(ngModel)]="selectedDistrict" (change)="applyFilter()">
+            <option value="">All</option>
+            <option *ngFor="let d of districtList" [value]="d.name">
+                {{ d.name }}
+            </option>
+        </select>
+
+        <button (click)="clearFilter()">Clear</button>
+
+    </div>
 
 
 

@@ -4,6 +4,8 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { UserService } from '../../services/user';
 import { RouterModule } from "@angular/router";
+import { FormsModule } from '@angular/forms';
+
 
 /* =========================
    INTERFACES
@@ -62,52 +64,98 @@ interface TableRow {
 @Component({
   selector: 'app-formt1',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './table1.html',
   styleUrls: ['./table1.css']
 })
 export class Table1 implements OnInit {
 
   tableRows: TableRow[] = [];
-  department_name = '';   // Header use (optional)
+  originalRows: TableRow[] = [];   // ✅ Keep original data
 
+  department_name = '';
+
+  // 🔽 Filter values
+  // Selected values
+  selectedDepartment: string = '';
+  selectedDistrict: string = '';
+
+  // Master lists
+  departmentList: { id: number; name: string }[] = [];
+  districtList: { id: number; name: string }[] = [];
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadform1Tables();
+    this.loadDepartments();
+    this.loadDistricts();
   }
 
-  /* =========================
-     LOAD API DATA
-  ========================= */
-  loadform1Tables(): void {
-    this.userService.getform1tables().subscribe((res: any) => {
 
-      // ✅ Correct path: res.data.data
-      const apiData = res?.data?.data;
-
-      if (res?.success && Array.isArray(apiData)) {
-
-        // Header
-        if (apiData.length > 0) {
-          this.department_name = apiData[0].department_name;
-        }
-
-        this.prepareRows(apiData as Form1ApiRow[]);
-      } else {
-        this.tableRows = [];
+  loadDepartments(): void {
+    this.userService.getdepartment().subscribe((res: any) => {
+      if (res?.success && Array.isArray(res.data)) {
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
       }
-
     });
   }
 
+
+
+  loadDistricts(): void {
+    this.userService.getdistrict().subscribe((res: any) => {
+      if (res?.success && Array.isArray(res.data)) {
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+      }
+    });
+  }
   /* =========================
-     TRANSFORM API → TABLE
+     LOAD API DATA
   ========================= */
-  private prepareRows(data: any[]): void {
+
+  loadform1Tables(): void {
+    this.userService.getForm1Table(1, 50).subscribe((res: any) => {
+
+      console.log('Network Pagination:', res?.data?.pagination);
+
+      const apiData = res?.data?.data?.data || res?.data?.data;
+
+      console.log('Total records received:', apiData?.length);
+
+      if (Array.isArray(apiData)) {
+        this.prepareRows(apiData);
+        this.originalRows = [...this.tableRows];
+      }
+    });
+  }
+  private prepareRows(data: Form1ApiRow[]): void {
+
     this.tableRows = [];
 
     data.forEach((row: any) => {
+
+      // 🔹 Clean department & district names (important for filter match)
+      const cleanDepartment = row.department_name
+        ? row.department_name.replace(/\r?\n/g, ' ').trim()
+        : '';
+
+      const cleanDistrict = row.district_name
+        ? row.district_name.trim()
+        : '';
+
+      const cleanZone = row.zone_name
+        ? row.zone_name.trim()
+        : '';
 
       // Combine selected + non-selected societies
       const allSocieties = [
@@ -127,9 +175,9 @@ export class Table1 implements OnInit {
 
         this.tableRows.push({
           id: row.id,
-          department_name: row.department_name,
-          district_name: row.district_name,
-          zone_name: row.zone_name,
+          department_name: cleanDepartment,   // ✅ cleaned
+          district_name: cleanDistrict,       // ✅ cleaned
+          zone_name: cleanZone,               // ✅ cleaned
           masterzone_count: row.selected_count + row.non_selected_count,
           society_name: soc.society_name,
 
@@ -148,13 +196,16 @@ export class Table1 implements OnInit {
       });
 
     });
+
   }
-  /* =========================
-     EXPORT EXCEL
-  ========================= */
+
   exportToExcel(): void {
     const table = document.getElementById('reportTable');
-    if (!table) return;
+
+    if (!table) {
+      console.error('Table not found');
+      return;
+    }
 
     const worksheet = XLSX.utils.table_to_sheet(table);
     const workbook = {
@@ -162,18 +213,59 @@ export class Table1 implements OnInit {
       SheetNames: ['Report']
     };
 
-    const buffer = XLSX.write(workbook, {
+    const excelBuffer = XLSX.write(workbook, {
       bookType: 'xlsx',
       type: 'array'
     });
 
-    saveAs(new Blob([buffer]), 'Form1_Report.xlsx');
+    const blob = new Blob([excelBuffer], {
+      type: 'application/octet-stream'
+    });
+
+    saveAs(blob, 'Form1_Report.xlsx');
   }
 
+
   /* =========================
-     DUMMY EDIT
+     CREATE FILTER LISTS
+  
+  /* =========================
+     FILTER FUNCTION
   ========================= */
-  onEdit(): void {
-    alert('Edit clicked');
+  applyFilter(): void {
+
+    const deptId = this.departmentList
+      .find(d => d.name === this.selectedDepartment)?.id;
+
+    const distId = this.districtList
+      .find(d => d.name === this.selectedDistrict)?.id;
+
+    console.log('Filter Params:', deptId, distId);
+
+    this.userService.getForm1Filtered(deptId, distId).subscribe((res: any) => {
+
+      console.log('Filtered Response:', res);
+
+      const apiData = res?.data?.data?.data || res?.data?.data;
+
+      console.log('Filtered Form1 count:', apiData?.length);
+
+      if (Array.isArray(apiData) && apiData.length > 0) {
+        this.prepareRows(apiData);
+        this.originalRows = [...this.tableRows];
+      } else {
+        this.tableRows = [];
+        this.originalRows = [];
+      }
+
+    });
+  }
+  /* =========================
+     CLEAR FILTER
+  ========================= */
+  clearFilter(): void {
+    this.selectedDepartment = '';
+    this.selectedDistrict = '';
+    this.loadform1Tables();   // reload all data from backend
   }
 }
