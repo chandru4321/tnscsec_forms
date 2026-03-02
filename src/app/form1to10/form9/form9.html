@@ -226,7 +226,7 @@
                 <h4>President Selection</h4>
 
                 <label *ngFor="let c of candidates">
-                    <input type="radio" name="president" [checked]="c.form5_member_id === selectedPresidentId"
+                    <input type="checkbox" name="president" [checked]="c.form5_member_id === selectedPresidentId"
                         (change)="selectPresident(c)">
                     {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
                 </label>

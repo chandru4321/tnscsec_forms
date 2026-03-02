@@ -451,3 +451,11 @@
     font-size: 26px;
     text-align: center;
 }
+
+.member-col input[type="checkbox"] {
+    transform: scale(1.3);
+    /* increase checkbox size */
+    margin-right: 8px;
+    /* space between box and text */
+    cursor: pointer;
+}

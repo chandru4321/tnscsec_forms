@@ -130,6 +130,21 @@ export class Form5Component implements OnInit {
     this.members = [];
   }
 
+
+  formatAadhar(event: any, member: any) {
+    // Remove all non-numbers
+    let value = event.target.value.replace(/\D/g, '');
+
+    // Limit to 12 digits
+    value = value.substring(0, 12);
+
+    // Add hyphen after every 4 digits
+    let formatted = value
+      .replace(/(\d{4})(?=\d)/g, '$1-');
+
+    member.aadhar_no = formatted;
+  }
+
   /* ===============================
      SUBMIT FORM 5
      =============================== */
@@ -138,8 +153,7 @@ export class Form5Component implements OnInit {
     if (!this.selectedSociety) return;
 
     const namePattern = /^[a-zA-Z\u0B80-\u0BFF ]+$/;
-    const aadharPattern = /^[0-9]{12}$/;
-
+    const aadharPattern = /^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$/;
     const invalidMember = this.members.some(m =>
       !m.member_name ||
       !namePattern.test(m.member_name) ||
@@ -175,3 +189,4 @@ export class Form5Component implements OnInit {
     alert('Excel export logic here');
   }
 }
+

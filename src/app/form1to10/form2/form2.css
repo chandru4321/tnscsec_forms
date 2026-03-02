@@ -274,3 +274,12 @@
   background: #666;
   border-radius: 4px;
 }
+
+
+/* Increase checkbox size */
+.checkbox-item input[type="checkbox"] {
+  transform: scale(1.3);
+  /* increases size without layout break */
+  margin-right: 6px;
+  cursor: pointer;
+}

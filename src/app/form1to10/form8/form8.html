@@ -201,15 +201,17 @@
                     <td>{{ s.casted_votes_count }}</td>
 
                     <td>
-                        <input type="number" class="table-input" [(ngModel)]="s.ballot_box_votes">
+                        <input type="number" class="table-input" [(ngModel)]="s.ballot_box_votes"
+                            (input)="calculateInvalidVotes(s)">
                     </td>
 
                     <td>
-                        <input type="number" class="table-input" [(ngModel)]="s.valid_votes">
+                        <input type="number" class="table-input" [(ngModel)]="s.valid_votes"
+                            (input)="calculateInvalidVotes(s)">
                     </td>
 
                     <td>
-                        <input type="number" class="table-input" [(ngModel)]="s.invalid_votes">
+                        <input type="number" class="table-input" [(ngModel)]="s.invalid_votes" readonly>
                     </td>
 
                     <td>

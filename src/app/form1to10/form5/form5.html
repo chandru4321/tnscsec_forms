@@ -78,8 +78,9 @@
 
                     <!-- Aadhar Field -->
                     <div class="field">
-                        <input [(ngModel)]="m.aadhar_no" name="scst_aadhar_{{i}}" required pattern="^[0-9]{12}$"
-                            maxlength="12" #scstAadhar="ngModel" placeholder="ஆதார் எண்" />
+                        <input [(ngModel)]="m.aadhar_no" (input)="formatAadhar($event, m)" name="scst_aadhar_{{i}}"
+                            required pattern="^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$" maxlength="14"
+                            #scstAadhar="ngModel" placeholder="XXXX-XXXX-XXXX" />
 
                         <div class="error" *ngIf="scstAadhar.invalid && scstAadhar.touched">
                             12 இலக்க ஆதார் எண் தேவை
@@ -104,9 +105,9 @@
                     </div>
 
                     <div class="field">
-                        <input [(ngModel)]="m.aadhar_no" name="women_aadhar_{{i}}" required pattern="^[0-9]{12}$"
-                            maxlength="12" #wAadhar="ngModel" placeholder="ஆதார் எண்" />
-
+                        <input [(ngModel)]="m.aadhar_no" (input)="formatAadhar($event, m)" name="women_aadhar_{{i}}"
+                            required pattern="^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$" maxlength="14"
+                            #wAadhar="ngModel" placeholder="XXXX-XXXX-XXXX" />
                         <div class="error" *ngIf="wAadhar.invalid && wAadhar.touched">
                             12 இலக்க ஆதார் எண் தேவை
                         </div>
@@ -130,8 +131,9 @@
                     </div>
 
                     <div class="field">
-                        <input [(ngModel)]="m.aadhar_no" name="gen_aadhar_{{i}}" required pattern="^[0-9]{12}$"
-                            maxlength="12" #gAadhar="ngModel" placeholder="ஆதார் எண்" />
+                        <input [(ngModel)]="m.aadhar_no" (input)="formatAadhar($event, m)" name="gen_aadhar_{{i}}"
+                            required pattern="^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$" maxlength="14"
+                            #gAadhar="ngModel" placeholder="XXXX-XXXX-XXXX" />
 
                         <div class="error" *ngIf="gAadhar.invalid && gAadhar.touched">
                             12 இலக்க ஆதார் எண் தேவை

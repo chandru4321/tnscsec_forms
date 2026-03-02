@@ -111,6 +111,26 @@ export class Form8 implements OnInit {
         }
     }
 
+    calculateInvalidVotes(s: any) {
+
+        const ballot = Number(s.ballot_box_votes) || 0;
+        const valid = Number(s.valid_votes) || 0;
+
+        // Validation: valid cannot exceed ballot
+        if (valid > ballot) {
+            alert('செல்லுபடியான வாக்குகள் மொத்த வாக்குகளை விட அதிகமாக இருக்க முடியாது');
+            s.valid_votes = ballot;
+        }
+
+        // Auto calculate invalid
+        s.invalid_votes = ballot - s.valid_votes;
+
+        // Prevent negative
+        if (s.invalid_votes < 0) {
+            s.invalid_votes = 0;
+        }
+    }
+
     /* ================= SAVE WINNERS (Popup Submit) ================= */
     submitPreview() {
 
@@ -207,7 +227,7 @@ export class Form8 implements OnInit {
             },
             error: () => {
                 alert('Form 8 சமர்ப்பிப்பதில் பிழை ஏற்பட்டது');
-                
+
             }
         });
     }
