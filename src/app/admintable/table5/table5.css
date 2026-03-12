@@ -1,0 +1,67 @@
+.formt4-container {
+    width: 100%;
+    padding: 10px;
+    background: #f3f4f6;
+}
+
+.table-scroll-wrapper {
+    width: 100%;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+    border: 1px solid #4d7c0f;
+    background: #fff;
+}
+
+.report-table {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+    font-family: "Noto Sans Tamil", sans-serif;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #4d7c0f;
+    padding: 6px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.top-header th {
+    background: #b7e3a1;
+    font-size: 16px;
+    position: sticky;
+    top: 0;
+}
+
+.top-sub-header th {
+    background: #c6efb3;
+    text-align: left;
+    position: sticky;
+    top: 35px;
+}
+
+.group-header th {
+    background: #61b9c0;
+    color: #fff;
+}
+
+.sub-header th {
+    background: #9fd38a;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.export-btn {
+    background: #e6f4e6;
+    border: 1px solid #4d7c0f;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background: #cdeacb;
+}

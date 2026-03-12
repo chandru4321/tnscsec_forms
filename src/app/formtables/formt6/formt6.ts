@@ -76,156 +76,118 @@ export class Formt6 implements OnInit {
   }
 
   loadForm6(): void {
-    this.userService.getForm6Table().subscribe(res => {
-      if (!res?.success) return;
+    this.userService.getForm6Table().subscribe({
+      next: (res) => {
 
-      const data = res.data;
+        console.log("FORM6 RESPONSE:", res);
 
-      this.department_name = data.department?.name || '';
+        const apiData = res?.data;
 
-      const district = data.district?.name || '';
-      const zone = data.zone?.name || '';
+        if (!res?.success || !apiData) {
+          this.tableRows = [];
+          return;
+        }
 
-      const rows: TableRow[] = [];
+        this.department_name = apiData.department_name || '';
 
-      data.societies.forEach((soc: any) => {
+        const district = apiData.district_name || '';
+        const zone = apiData.zone_name || '';
 
-        const candidates = soc.candidates || [];
+        const societies = apiData.data || [];   // ✅ IMPORTANT
 
-        // helper
-        const filterBy = (cat: string, status?: string) =>
-          candidates
-            .filter((c: any) =>
+        const rows: TableRow[] = [];
+
+        societies.forEach((soc: any) => {
+
+          const candidates = soc.candidates || [];
+
+          const filterBy = (cat: string, status?: string) =>
+            candidates
+              .filter((c: any) =>
+                c.category_type === cat &&
+                (!status || c.status === status)
+              )
+              .map((c: any) => c.member_name)
+              .join('\n');
+
+          const countBy = (cat: string, status?: string) =>
+            candidates.filter((c: any) =>
               c.category_type === cat &&
               (!status || c.status === status)
-            )
-            .map((c: any) => c.member_name)
-            .join('\n');
+            ).length;
 
-        const countBy = (cat: string, status?: string) =>
-          candidates.filter((c: any) =>
-            c.category_type === cat &&
-            (!status || c.status === status)
-          ).length;
+          const isQualified = soc.election_status === 'QUALIFIED';
+          const isUnopposed = soc.election_status === 'UNOPPOSED';
+          const isUnqualified = soc.election_status === 'UNQUALIFIED';
 
-        // ======================
-        // f1 – UNQUALIFIED + WITHDRAWN
-        // ======================
-        const f1Applicable = soc.election_status === 'UNQUALIFIED';
+          const w_sc = isUnqualified ? countBy('sc_st', 'WITHDRAWN') : 0;
+          const w_women = isUnqualified ? countBy('women', 'WITHDRAWN') : 0;
+          const w_general = isUnqualified ? countBy('general', 'WITHDRAWN') : 0;
 
-        const w_sc_name = f1Applicable ? filterBy('sc_st', 'WITHDRAWN') : '-';
-        const w_women_name = f1Applicable ? filterBy('women', 'WITHDRAWN') : '-';
-        const w_general_name = f1Applicable ? filterBy('general', 'WITHDRAWN') : '-';
+          const f_sc = isQualified ? countBy('sc_st', 'ACTIVE') : 0;
+          const f_women = isQualified ? countBy('women', 'ACTIVE') : 0;
+          const f_general = isQualified ? countBy('general', 'ACTIVE') : 0;
 
-        const w_sc = f1Applicable ? countBy('sc_st', 'WITHDRAWN') : 0;
-        const w_women = f1Applicable ? countBy('women', 'WITHDRAWN') : 0;
-        const w_general = f1Applicable ? countBy('general', 'WITHDRAWN') : 0;
+          const eq_sc = isUnopposed ? countBy('sc_st', 'ACTIVE') : 0;
+          const eq_women = isUnopposed ? countBy('women', 'ACTIVE') : 0;
+          const eq_general = isUnopposed ? countBy('general', 'ACTIVE') : 0;
 
-        // ======================
-        // f2 – QUALIFIED
-        // ======================
-        const isQualified = soc.election_status === 'QUALIFIED';
+          rows.push({
+            district_name: district,
+            zone_name: zone,
+            society_name: soc.society_name || '-',
 
-        const f_sc_name = isQualified ? filterBy('sc_st', 'ACTIVE') : '-';
-        const f_women_name = isQualified ? filterBy('women', 'ACTIVE') : '-';
-        const f_general_name = isQualified ? filterBy('general', 'ACTIVE') : '-';
+            w_sc_name: isUnqualified ? filterBy('sc_st', 'WITHDRAWN') : '-',
+            w_women_name: isUnqualified ? filterBy('women', 'WITHDRAWN') : '-',
+            w_general_name: isUnqualified ? filterBy('general', 'WITHDRAWN') : '-',
+            w_sc,
+            w_women,
+            w_general,
+            w_total: w_sc + w_women + w_general,
 
-        const f_sc = isQualified ? soc.final_counts?.sc_st || 0 : 0;
-        const f_women = isQualified ? soc.final_counts?.women || 0 : 0;
-        const f_general = isQualified ? soc.final_counts?.general || 0 : 0;
-        const f_total = isQualified ? soc.final_counts?.total || 0 : 0;
+            f_sc_name: isQualified ? filterBy('sc_st', 'ACTIVE') : '-',
+            f_women_name: isQualified ? filterBy('women', 'ACTIVE') : '-',
+            f_general_name: isQualified ? filterBy('general', 'ACTIVE') : '-',
+            f_sc,
+            f_women,
+            f_general,
+            f_total: f_sc + f_women + f_general,
 
-        // ======================
-        // f3 – UNOPPOSED
-        // ======================
-        const isUnopposed = soc.election_status === 'UNOPPOSED';
+            eq_sc_name: isUnopposed ? filterBy('sc_st', 'ACTIVE') : '-',
+            eq_women_name: isUnopposed ? filterBy('women', 'ACTIVE') : '-',
+            eq_general_name: isUnopposed ? filterBy('general', 'ACTIVE') : '-',
+            eq_sc,
+            eq_women,
+            eq_general,
+            eq_total: eq_sc + eq_women + eq_general,
 
-        const eq_sc_name = isUnopposed ? filterBy('sc_st', 'ACTIVE') : '-';
-        const eq_women_name = isUnopposed ? filterBy('women', 'ACTIVE') : '-';
-        const eq_general_name = isUnopposed ? filterBy('general', 'ACTIVE') : '-';
+            less_sc_name: '-',
+            less_women_name: '-',
+            less_general_name: '-',
+            less_sc: 0,
+            less_women: 0,
+            less_general: 0,
+            less_total: 0,
 
-        const eq_sc = isUnopposed ? countBy('sc_st', 'ACTIVE') : 0;
-        const eq_women = isUnopposed ? countBy('women', 'ACTIVE') : 0;
-        const eq_general = isUnopposed ? countBy('general', 'ACTIVE') : 0;
+            final_sc_name: isQualified ? filterBy('sc_st', 'ACTIVE') : '-',
+            final_women_name: isQualified ? filterBy('women', 'ACTIVE') : '-',
+            final_general_name: isQualified ? filterBy('general', 'ACTIVE') : '-',
+            final_sc: f_sc,
+            final_women: f_women,
+            final_general: f_general,
+            final_total: f_sc + f_women + f_general,
 
-        // ======================
-        // f4 – UNQUALIFIED ACTIVE
-        // ======================
-        const less_sc_name = f1Applicable ? filterBy('sc_st', 'ACTIVE') : '-';
-        const less_women_name = f1Applicable ? filterBy('women', 'ACTIVE') : '-';
-        const less_general_name = f1Applicable ? filterBy('general', 'ACTIVE') : '-';
+            rowSpan: 1
+          });
 
-        const less_sc = f1Applicable ? countBy('sc_st', 'ACTIVE') : 0;
-        const less_women = f1Applicable ? countBy('women', 'ACTIVE') : 0;
-        const less_general = f1Applicable ? countBy('general', 'ACTIVE') : 0;
-
-        // ======================
-        // f5 – same as qualified final list
-        // ======================
-        // F5 = QUALIFIED ACTIVE members
-        const final_sc_name = isQualified ? filterBy('sc_st', 'ACTIVE') : '-';
-        const final_women_name = isQualified ? filterBy('women', 'ACTIVE') : '-';
-        const final_general_name = isQualified ? filterBy('general', 'ACTIVE') : '-';
-
-        const final_sc = isQualified ? countBy('sc_st', 'ACTIVE') : 0;
-        const final_women = isQualified ? countBy('women', 'ACTIVE') : 0;
-        const final_general = isQualified ? countBy('general', 'ACTIVE') : 0;
-        const final_total = final_sc + final_women + final_general;
-
-        rows.push({
-          district_name: district,
-          zone_name: zone,
-          society_name: soc.society_name,
-
-          w_sc_name,
-          w_women_name,
-          w_general_name,
-          w_sc,
-          w_women,
-          w_general,
-          w_total: w_sc + w_women + w_general,
-
-          f_sc_name,
-          f_women_name,
-          f_general_name,
-          f_sc,
-          f_women,
-          f_general,
-          f_total,
-
-          eq_sc_name,
-          eq_women_name,
-          eq_general_name,
-          eq_sc,
-          eq_women,
-          eq_general,
-          eq_total: eq_sc + eq_women + eq_general,
-
-          less_sc_name,
-          less_women_name,
-          less_general_name,
-          less_sc,
-          less_women,
-          less_general,
-          less_total: less_sc + less_women + less_general,
-
-          final_sc_name,
-          final_women_name,
-          final_general_name,
-          final_sc: f_sc,
-          final_women: f_women,
-          final_general: f_general,
-          final_total: f_total,
-
-          rowSpan: 1
         });
 
-      });
+        this.tableRows = rows;
 
-      this.tableRows = rows;
+      },
+      error: err => console.error("FORM6 ERROR:", err)
     });
   }
-
   exportToExcel(): void {
     const table = document.getElementById('reportTable');
     if (!table) return;

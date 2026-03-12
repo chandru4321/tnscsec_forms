@@ -27,6 +27,18 @@
         </div>
     </div>
 
+    <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட உறுப்பினர் எண்ணிக்கை
+    </div>
+    <div class="large-box">
+        <div class="f4-row" *ngFor="let soc of f3SocietyList; let i = index">
+            <div class="f4-name">{{ i + 1 }}. {{ soc.society_name }}</div>
+            <div class="f4-input-group">
+                <span class="f4-label">உறுப்பினர் எண்ணிக்கை</span>
+                <input type="number" class="f4-input" [(ngModel)]="voterCounts[i]" readonly />
+            </div>
+        </div>
+    </div>
+
     <!-- F4 -->
     <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர்கள் எண்ணிக்கை
     </div>
@@ -92,6 +104,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- ACTIONS -->
     <div class="form-actions-right">

@@ -38,12 +38,16 @@ export class Form4 implements OnInit {
 
   /* ================= LOAD F3 ================= */
   loadF3() {
+
     this.userService.getForm4().subscribe(res => {
+
       if (!res?.success) return;
 
+      const rows = res?.data?.selectedSocList || [];
       const map = new Map<number, any>();
 
-      res.data.selectedSocList.forEach((s: any) => {
+      rows.forEach((s: any) => {
+
         if (!map.has(s.society_id)) {
 
           const sc = Number(s.sc_st) || 0;
@@ -51,6 +55,7 @@ export class Form4 implements OnInit {
           const general = Number(s.general) || 0;
 
           map.set(s.society_id, {
+
             society_id: s.society_id,
             society_name: s.society_name,
             rural_id: s.rural_id,
@@ -58,27 +63,28 @@ export class Form4 implements OnInit {
             sc_st: sc,
             women: women,
             general: general,
-            total: sc + women + general,
+            total: s.tot_voters,
 
-            selected: false,
+            selected: s.selected || false,
 
-            declared_sc_st: 0,
-            declared_women: 0,
-            declared_general: 0,
+            declared_sc_st: Number(s.declared_sc_st) || 0,
+            declared_women: Number(s.declared_women) || 0,
+            declared_general: Number(s.declared_general) || 0,
 
-            remarks: null   // ✅ ONLY remarks
+            remarks: s.remarks || null
           });
+
         }
+
       });
 
       this.societyList = Array.from(map.values());
 
-      if (this.form4_id) {
-        this.loadCheckboxStatus();
-      }
-    });
-  }
+      this.updateLists();
 
+    });
+
+  }
   /* ============== FETCH CHECKBOX PREVIEW ============== */
   loadCheckboxStatus() {
     this.userService.getForm4Checkbox(this.form4_id).subscribe(res => {

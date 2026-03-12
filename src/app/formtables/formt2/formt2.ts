@@ -73,12 +73,15 @@ export class Formt2 implements OnInit {
     this.userService.getForm2Table().subscribe({
       next: (res) => {
 
-        if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+        console.log("FULL RESPONSE:", res);
 
-          // 🔹 Get department name from first record
-          this.department_name = res.data[0].department_name;
+        const apiData = res?.data?.data;   // ✅ FIXED LINE
 
-          this.prepareRows(res.data as Form2ApiRow[]);
+        if (res?.success && Array.isArray(apiData) && apiData.length > 0) {
+
+          this.department_name = apiData[0].department_name;
+
+          this.prepareRows(apiData as Form2ApiRow[]);
         } else {
           this.tableRows = [];
         }
@@ -89,7 +92,6 @@ export class Formt2 implements OnInit {
       }
     });
   }
-
 
 
   /* =========================

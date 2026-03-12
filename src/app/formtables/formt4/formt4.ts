@@ -49,12 +49,21 @@ export class Formt4 implements OnInit {
   loadForm4(): void {
     this.userService.getForm4Table().subscribe({
       next: (res) => {
-        if (res?.success && res.data?.length) {
-          this.department_name = res.data[0].department_name;
-          this.prepareRows(res.data);
+
+        console.log("FORM4 FULL RESPONSE:", res);
+
+        const apiData = res?.data?.data;   // ✅ IMPORTANT FIX
+
+        if (res?.success && Array.isArray(apiData) && apiData.length > 0) {
+
+          this.department_name = apiData[0].department?.name || '';
+          this.prepareRows(apiData);
+        } else {
+          this.tableRows = [];
         }
+
       },
-      error: err => console.error(err)
+      error: err => console.error("FORM4 API ERROR:", err)
     });
   }
 
@@ -72,12 +81,12 @@ export class Formt4 implements OnInit {
 
       societies.forEach((soc: any, index: number) => {
 
-        const rural = soc.rural || {};
-        const declared = soc.declared || {};
+        const rural = soc.rural_counts || {};
+        const declared = soc.declared_counts || {};
 
         rows.push({
-          district_name: item.district_name,
-          zone_name: item.zone_name,
+          district_name: item.district?.name,
+          zone_name: item.zone?.name,
           society_name: soc.society_name || '-',
 
           rural_sc: rural.sc_st || 0,
@@ -97,6 +106,7 @@ export class Formt4 implements OnInit {
 
           rowSpan: index === 0 ? span : 0
         });
+
       });
 
       // if no societies

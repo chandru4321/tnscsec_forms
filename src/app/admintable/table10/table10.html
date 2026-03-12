@@ -1,1 +1,124 @@
-<p>table10 works!</p>
+<div class="page-content">
+    <div class="table-actions">
+        <button class="action-btn export-btn" (click)="exportToExcel()">
+            ⬇ Export Excel
+        </button>
+    </div>
+
+    <div class="table-scroll-wrapper">
+        <table class="report-table" id="reportTable">
+
+            <thead>
+
+                <!-- TITLE -->
+                <tr class="top-header">
+                    <th colspan="32">
+                        வேட்புமனு திரும்ப பெறுதல் மற்றும் இறுதி போட்டியிடும் வேட்பாளர்கள் பற்றிய முழு விவரங்கள்
+                    </th>
+                </tr>
+
+                <!-- DEPARTMENT -->
+                <tr class="top-sub-header">
+                    <th colspan="32">
+                        துறை --{{department_name}}
+                    </th>
+                </tr>
+
+                <!-- HEADER LEVEL 1 -->
+                <tr class="main-header">
+                    <th rowspan="2" class="col-small">வ.எண்</th>
+                    <th rowspan="2" class="col-medium">மாவட்டம்</th>
+                    <th rowspan="2" class="col-medium">சரகம்</th>
+                    <th rowspan="2" class="col-wide">வாக்குப்பதிவு நடைபெற்ற சங்கங்களின் பெயர்</th>
+
+                    <th colspan="4">தலைவர் தேர்தலுக்கு தாக்கல் செய்யப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள்</th>
+
+                    <!-- Withdrawal Count -->
+                    <th colspan="4">பரிசீலனையில் நிராகரிக்கப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள்
+                    </th>
+                    <th colspan="4">தலைவர் பதவிக்கு தகுதியான இறுதி வேட்பாளர் பட்டியல் உறுப்பினர்கள்
+                    </th>
+
+
+
+
+
+                    <th rowspan="2" class="col-medium"> Final President or தலைவர் Name </th>
+                    <th rowspan="2" class="col-medium"> Election Type </th>
+
+
+
+
+
+
+
+                    <!-- HEADER LEVEL 2 -->
+                <tr class="sub-header">
+
+
+
+                    <!-- Withdrawal Count -->
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+
+
+
+                    <!-- Final Names -->
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+
+                    <!-- withdrawn  Names -->
+                    <th>SC/ST</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+
+                    <!-- Final Names -->
+
+
+
+
+
+
+
+
+
+
+
+                </tr>
+
+            </thead>
+            <tr *ngFor="let r of tableRows; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ r.district_name }}</td>
+                <td>{{ r.zone_name }}</td>
+                <td class="text-left">{{ r.society_name }}</td>
+
+                <!-- Final Counts -->
+                <td>{{ r.final_sc }}</td>
+                <td>{{ r.final_women }}</td>
+                <td>{{ r.final_general }}</td>
+                <td>{{ r.final_total }}</td>
+
+                <!-- Rejected Counts -->
+                <td>{{ r.rejected_sc }}</td>
+                <td>{{ r.rejected_women }}</td>
+                <td>{{ r.rejected_general }}</td>
+                <td>{{ r.rejected_total }}</td>
+
+                <!-- Withdrawn Counts -->
+                <td>{{ r.withdrawn_sc }}</td>
+                <td>{{ r.withdrawn_women }}</td>
+                <td>{{ r.withdrawn_general }}</td>
+                <td>{{ r.withdrawn_total }}</td>
+
+                <!-- President -->
+                <td>{{ r.president_name }}</td>
+
+                <!-- Election Type -->
+                <td>{{ r.election_type }}</td>
+            </tr>

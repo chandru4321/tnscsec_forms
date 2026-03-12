@@ -63,10 +63,10 @@ export class Form6 implements OnInit {
 
       const prepared = res.data.societies.map((s: any) => ({
         ...s,
-        sc_st: +s.declared.sc_st,
-        women: +s.declared.women,
-        general: +s.declared.general,
-        total: +s.declared.sc_st + +s.declared.women + +s.declared.general,
+        sc_st: +s.active_counts.sc_st,
+        women: +s.active_counts.women,
+        general: +s.active_counts.general,
+        total: +s.active_counts.sc_st + +s.active_counts.women + +s.active_counts.general,
         rejectDone: false,
         stopDone: false,
         members: s.members.map((m: any) => ({
@@ -224,7 +224,7 @@ export class Form6 implements OnInit {
       if (res?.success) {
         this.form6Submitted = true;
         this.showFinalSubmitPopup = true;
-        
+
         this.router.navigate(['/layout/totalforms']);
 
       }

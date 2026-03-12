@@ -184,6 +184,26 @@ export class UserService {
 
 
 
+  loadForm2Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form2`, { params });
+  }
+
+  loadForm2Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form2`, { params });
+  }
+
 
 
 
@@ -220,6 +240,31 @@ export class UserService {
   getForm3Table(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form3`);
   }
+
+  loadForm3Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form3`, { params });
+  }
+
+  loadForm3Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form3`, { params });
+  }
+
+
+
+
+
 
 
 
@@ -265,6 +310,53 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form4/list`);
   }
 
+
+
+  loadForm4Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form4`, { params });
+  }
+
+  loadForm4Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form4`, { params });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // 2️⃣ LOAD FORM-5 DATA (for F5 – unselected societies)
   // 3️⃣ LOAD FORM-5 ELIGIBLE DATA
   getForm5Eligible(): Observable<any> {
@@ -280,6 +372,98 @@ export class UserService {
   getForm5Table(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form5`);
   }
+
+
+
+
+  loadForm5Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form5`, { params });
+  }
+
+  loadForm5Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form5`, { params });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  getForm5bpreview(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5b/preview`);
+  }
+
+  postsocietystop(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form5b/stop-society`,
+      payload
+    );
+  }
+  postcandidatestop(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form5b/stop-candidates`,
+      payload
+    );
+  }
+  submitForm5b(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.baseUrl}/form5b/submit`,
+      payload
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -330,6 +514,34 @@ export class UserService {
   }
 
 
+
+  loadForm6Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form6`, { params });
+  }
+
+  loadForm6Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form6`, { params });
+  }
+
+
+
+
+
+
+
+
   // FORM 6 PREVIEW
   getForm7Preview(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form7/preview`);
@@ -344,6 +556,30 @@ export class UserService {
   getForm7Table(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form7`);
   }
+
+  loadForm7Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form7`, { params });
+  }
+
+  loadForm7Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form7`, { params });
+  }
+
+
+
+
 
 
 
@@ -370,6 +606,30 @@ export class UserService {
   getForm8Table(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form8`);
   }
+
+
+  loadForm8Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form8`, { params });
+  }
+
+  loadForm8Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form8`, { params });
+  }
+
+
+
 
 
 
@@ -402,6 +662,31 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form9`);
   }
 
+  loadForm9Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form9`, { params });
+  }
+
+  loadForm9Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form9`, { params });
+  }
+
+
+
+
+
+
 
 
 
@@ -429,6 +714,30 @@ export class UserService {
   getForm10List() {
     return this.http.get<any>(`${this.baseUrl}/form10`);
   }
+  loadForm10Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form10`, { params });
+  }
+
+  loadForm10Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+    let params: any = {};
+
+    if (departmentId) params.department_id = departmentId;
+    if (districtId) params.district_id = districtId;
+
+    return this.http.get<any>(`${this.baseUrl}/form10`, { params });
+  }
+
+
+
+
+
 
 
 

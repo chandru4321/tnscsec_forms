@@ -44,7 +44,7 @@ export class Form1 implements OnInit {
 
     this.department_name = localStorage.getItem('department_name') || '';
     this.district_name = localStorage.getItem('district_name') || '';
-    this.zone_name = localStorage.getItem('zone_name') || '';
+    this.zone_name = localStorage.getItem('zone_names') || '';
 
     this.route.queryParams.subscribe(p => {
       if (p['id']) {

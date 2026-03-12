@@ -35,15 +35,17 @@ export class Formt7 implements OnInit {
     this.userservice.getForm7Table().subscribe({
       next: (res: any) => {
         console.log('Form7 Response:', res);
-        this.form7Data = res.data;
-        this.societies = this.form7Data?.societies || [];
+
+        if (res.data && res.data.length > 0) {
+          this.form7Data = res.data[0];   // take first object
+          this.societies = this.form7Data.societies || [];
+        }
       },
       error: (err) => {
         console.error('Form7 Error:', err);
       }
     });
   }
-
   // Rural values
   getRuralValue(society: any, type: string) {
     return society.rural?.[type] || 0;

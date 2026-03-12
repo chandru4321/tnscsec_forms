@@ -51,6 +51,15 @@ export class totalforms {
     },
 
     {
+      title: 'வேட்புமனு தாக்கல் செய்த விவரங்கள் மற்றும் எதிர்ப்பு விபரம்',
+      code: 'Form5b',
+
+      formLink: '/layout/form1to10/form5b',
+      tableLink: '/layout/formtables/formt5b'
+
+    },
+
+    {
       title: 'வேட்புமனு திரும்ப பெறுதல் மற்றும் போட்டியிடும் வேட்பாளர்கள் விபரங்கள்', code: 'Form6',
 
       formLink: '/layout/form1to10/form6',

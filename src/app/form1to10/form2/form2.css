@@ -82,7 +82,9 @@
   color: #333;
   line-height: 1.45;
   margin-bottom: 20px;
+  line-height: 2.3;
   overflow-y: auto;
+
 }
 
 /* Scrollbar styling */
@@ -105,6 +107,8 @@
   border-radius: 6px;
   max-height: 260px;
   overflow-y: auto;
+  line-height: 2.3;
+
 }
 
 .checkbox-item {
@@ -238,9 +242,14 @@
 
 /* RED BOX (Right Panel F4) */
 .red-box {
-  background: #cd9292 !important;
-  border: 1px solid #bf7272;
+  background: #75bc75 !important;
+
+
+
+  border: 1px solid #241f1f;
 }
+
+
 
 /* ITEMS */
 .panel-item {

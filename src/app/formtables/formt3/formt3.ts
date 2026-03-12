@@ -35,10 +35,24 @@ export class Formt3 implements OnInit {
   }
 
   loadForm3(): void {
-    this.userService.getForm3Table().subscribe(res => {
-      if (res?.success && res.data?.length) {
-        this.department_name = res.data[0].department_name;
-        this.prepareRows(res.data);
+    this.userService.getForm3Table().subscribe({
+      next: (res) => {
+
+        console.log("FORM3 FULL RESPONSE:", res);
+
+        const apiData = res?.data?.data;   // ✅ FIX HERE
+
+        if (res?.success && Array.isArray(apiData) && apiData.length > 0) {
+
+          this.department_name = apiData[0].department_name;
+
+          this.prepareRows(apiData);
+        } else {
+          this.tableRows = [];
+        }
+      },
+      error: (err) => {
+        console.error("FORM3 API ERROR:", err);
       }
     });
   }

@@ -39,23 +39,34 @@ export class Formt5 implements OnInit {
   loadForm5(): void {
     this.userService.getForm5Table().subscribe({
       next: (res) => {
-        if (res?.success && res.data) {
-          this.department_name = res.data.department_name;
-          this.prepareRows(res.data);
+
+        console.log("FORM5 RESPONSE:", res);
+
+        const apiData = res?.data;
+
+        if (res?.success && apiData) {
+
+          this.department_name = apiData.department_name;
+
+          this.prepareRows(apiData);
+
+        } else {
+          this.tableRows = [];
         }
+
       },
-      error: err => console.error(err)
+      error: err => console.error("FORM5 API ERROR:", err)
     });
   }
 
   private prepareRows(data: any): void {
 
-    const members = data.members || [];
+    const members = data.data || [];   // ✅ FIXED HERE
 
-    // Group by society
     const societyMap: any = {};
 
     members.forEach((m: any) => {
+
       const key = m.society_name;
 
       if (!societyMap[key]) {
@@ -80,7 +91,6 @@ export class Formt5 implements OnInit {
       }
     });
 
-    // Convert to table rows
     this.tableRows = Object.values(societyMap).map((s: any) => ({
       district_name: s.district_name,
       zone_name: s.zone_name,

@@ -82,3 +82,11 @@
 .export-btn:hover {
     background: #cdeacb;
 }
+
+.top-sub-header th {
+    background: #c6efb3;
+    text-align: left;
+    position: sticky;
+    top: 40px;
+    z-index: 29;
+}

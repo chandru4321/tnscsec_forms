@@ -169,25 +169,20 @@
   margin-bottom: 10px;
 }
 
-/* Export button */
-.export-btn {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
+/* Button style */
+.action-btn {
+  padding: 6px 14px;
   font-size: 14px;
-  font-weight: 600;
   border-radius: 4px;
+  border: 1px solid #4d7c0f;
+  background: #e5f7e5;
   cursor: pointer;
-
-  /* Make text in two lines */
-  width: 100px;
-  text-align: center;
-  line-height: 1.2;
-  white-space: normal;
 }
 
-/* Hover effect */
-.export-btn:hover {
-  background-color: #3e8e41;
+.action-btn:hover {
+  background: #c7e9c7;
+}
+
+.export-btn {
+  font-weight: 600;
 }

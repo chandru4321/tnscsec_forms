@@ -55,32 +55,39 @@ export class Form3 implements OnInit {
       if (!res?.success) return;
 
       const societies: any[] = [];
+      const voterCounts: number[] = [];
 
       res.data.form2List.forEach((f2: any) => {
 
-        // ✅ FIX: get form2_id correctly
         if (!this.form2_id && f2.form2_id) {
           this.form2_id = f2.form2_id;
         }
 
         f2.selected_soc.forEach((soc: any) => {
+
           societies.push({
             society_id: soc.society_id,
             society_name: soc.society_name
           });
+
+          // ✅ Get total voters from API
+          voterCounts.push(Number(soc.tot_voters || 0));
+
         });
+
       });
 
       this.f3SocietyList = societies;
 
-      // initialize arrays
-      this.voterCounts = societies.map(() => 0);
+      // ✅ Use API voter counts
+      this.voterCounts = voterCounts;
+
       this.f5Answers = societies.map(() => 'NO');
       this.removedCounts = societies.map(() => 0);
       this.remainingCounts = societies.map(() => 0);
+
     });
   }
-
   // ================= SUBMIT =================
   onSubmit() {
 
