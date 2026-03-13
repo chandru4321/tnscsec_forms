@@ -150,7 +150,7 @@ export class Formt4 implements OnInit {
       type: 'array'
     });
 
-    saveAs(new Blob([buffer]), 'Form3_Report.xlsx');
+    saveAs(new Blob([buffer]), 'Form4_Report.xlsx');
   }
 }
 

@@ -43,7 +43,7 @@ export class totalforms {
     },
     {
       title: 'வேட்புமனு தாக்கல் செய்த விவரங்கள் மற்றும் எதிர்ப்பு விபரம்',
-      code: 'Form5',
+      code: 'Form5a',
 
       formLink: '/layout/form1to10/form5',
       tableLink: '/layout/formtables/formt5'
@@ -51,7 +51,7 @@ export class totalforms {
     },
 
     {
-      title: 'வேட்புமனு தாக்கல் செய்த விவரங்கள் மற்றும் எதிர்ப்பு விபரம்',
+      title: 'வேட்புமனு பரிசீலனை மற்றும் செல்லத்தக்க வேட்புமனுக்கள் பட்டியல் பற்றிய விபரங்கள்',
       code: 'Form5b',
 
       formLink: '/layout/form1to10/form5b',

@@ -81,85 +81,56 @@ export class Formt6 implements OnInit {
 
         console.log("FORM6 RESPONSE:", res);
 
-        const apiData = res?.data;
+        const apiData = res?.data?.data;
 
-        if (!res?.success || !apiData) {
+        if (!res?.success || !Array.isArray(apiData) || apiData.length === 0) {
           this.tableRows = [];
           return;
         }
 
-        this.department_name = apiData.department_name || '';
+        const main = apiData[0];
 
-        const district = apiData.district_name || '';
-        const zone = apiData.zone_name || '';
+        this.department_name = main.department_name || '';
 
-        const societies = apiData.data || [];   // ✅ IMPORTANT
+        const district = main.district_name || '';
+        const zone = main.zone_name || '';
+
+        const societies = main.societies || [];
 
         const rows: TableRow[] = [];
 
         societies.forEach((soc: any) => {
 
-          const candidates = soc.candidates || [];
-
-          const filterBy = (cat: string, status?: string) =>
-            candidates
-              .filter((c: any) =>
-                c.category_type === cat &&
-                (!status || c.status === status)
-              )
-              .map((c: any) => c.member_name)
-              .join('\n');
-
-          const countBy = (cat: string, status?: string) =>
-            candidates.filter((c: any) =>
-              c.category_type === cat &&
-              (!status || c.status === status)
-            ).length;
-
-          const isQualified = soc.election_status === 'QUALIFIED';
-          const isUnopposed = soc.election_status === 'UNOPPOSED';
-          const isUnqualified = soc.election_status === 'UNQUALIFIED';
-
-          const w_sc = isUnqualified ? countBy('sc_st', 'WITHDRAWN') : 0;
-          const w_women = isUnqualified ? countBy('women', 'WITHDRAWN') : 0;
-          const w_general = isUnqualified ? countBy('general', 'WITHDRAWN') : 0;
-
-          const f_sc = isQualified ? countBy('sc_st', 'ACTIVE') : 0;
-          const f_women = isQualified ? countBy('women', 'ACTIVE') : 0;
-          const f_general = isQualified ? countBy('general', 'ACTIVE') : 0;
-
-          const eq_sc = isUnopposed ? countBy('sc_st', 'ACTIVE') : 0;
-          const eq_women = isUnopposed ? countBy('women', 'ACTIVE') : 0;
-          const eq_general = isUnopposed ? countBy('general', 'ACTIVE') : 0;
+          const counts = soc.final_counts || {};
 
           rows.push({
             district_name: district,
             zone_name: zone,
             society_name: soc.society_name || '-',
 
-            w_sc_name: isUnqualified ? filterBy('sc_st', 'WITHDRAWN') : '-',
-            w_women_name: isUnqualified ? filterBy('women', 'WITHDRAWN') : '-',
-            w_general_name: isUnqualified ? filterBy('general', 'WITHDRAWN') : '-',
-            w_sc,
-            w_women,
-            w_general,
-            w_total: w_sc + w_women + w_general,
+            w_sc_name: '-',
+            w_women_name: '-',
+            w_general_name: '-',
+            w_sc: 0,
+            w_women: 0,
+            w_general: 0,
+            w_total: 0,
 
-            f_sc_name: isQualified ? filterBy('sc_st', 'ACTIVE') : '-',
-            f_women_name: isQualified ? filterBy('women', 'ACTIVE') : '-',
-            f_general_name: isQualified ? filterBy('general', 'ACTIVE') : '-',
-            f_sc,
-            f_women,
-            f_general,
-            f_total: f_sc + f_women + f_general,
+            f_sc_name: '-',
+            f_women_name: '-',
+            f_general_name: '-',
+            f_sc: counts.sc_st || 0,
+            f_women: counts.women || 0,
+            f_general: counts.general || 0,
+            f_total: counts.total || 0,
 
-            eq_sc_name: isUnopposed ? filterBy('sc_st', 'ACTIVE') : '-',
-            eq_women_name: isUnopposed ? filterBy('women', 'ACTIVE') : '-',
-            eq_general_name: isUnopposed ? filterBy('general', 'ACTIVE') : '-',
-            eq_sc,
-            eq_women,
-            eq_general,
-            eq_total: eq_sc + eq_women + eq_general,
+            eq_sc_name: '-',
+            eq_women_name: '-',
+            eq_general_name: '-',
+            eq_sc: 0,
+            eq_women: 0,
+            eq_general: 0,
+            eq_total: 0,
 
             less_sc_name: '-',
             less_women_name: '-',
@@ -169,13 +140,13 @@ export class Formt6 implements OnInit {
             less_general: 0,
             less_total: 0,
 
-            final_sc_name: isQualified ? filterBy('sc_st', 'ACTIVE') : '-',
-            final_women_name: isQualified ? filterBy('women', 'ACTIVE') : '-',
-            final_general_name: isQualified ? filterBy('general', 'ACTIVE') : '-',
-            final_sc: f_sc,
-            final_women: f_women,
-            final_general: f_general,
-            final_total: f_sc + f_women + f_general,
+            final_sc_name: '-',
+            final_women_name: '-',
+            final_general_name: '-',
+            final_sc: counts.sc_st || 0,
+            final_women: counts.women || 0,
+            final_general: counts.general || 0,
+            final_total: counts.total || 0,
 
             rowSpan: 1
           });
