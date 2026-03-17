@@ -1,0 +1,99 @@
+/* ===== Scroll Wrapper ===== */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: calc(100vh - 180px);
+    border: 1px solid #4d7c0f;
+}
+
+/* ===== Table ===== */
+.report-table {
+    min-width: 2400px;
+    /* முக்கியம் */
+    width: max-content;
+    border-collapse: collapse;
+    font-family: "Noto Sans Tamil", sans-serif;
+}
+
+/* ===== Cells ===== */
+.report-table th,
+.report-table td {
+    border: 1px solid #4d7c0f;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* ===== Prevent header break ===== */
+.report-table th {
+    white-space: nowrap;
+}
+
+/* ===== Header Colors ===== */
+.top-header th {
+    background: #b7e3a1;
+}
+
+.top-sub-header th {
+    background: #c6efb3;
+    text-align: left;
+}
+
+.group-header th {
+    background: #5fa9b0;
+    color: #fff;
+}
+
+.sub-header th {
+    background: #9fd38a;
+}
+
+/* ===== STICKY FIX (IMPORTANT) ===== */
+.top-header th {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.top-sub-header th {
+    position: sticky;
+    top: 45px;
+    z-index: 99;
+}
+
+.group-header th {
+    position: sticky;
+    top: 90px;
+    z-index: 98;
+}
+
+.sub-header th {
+    position: sticky;
+    top: 135px;
+    z-index: 97;
+}
+
+/* ===== Row styling ===== */
+.report-table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* ===== Button ===== */
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.export-btn {
+    background: #e6f4e6;
+    border: 1px solid #4d7c0f;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background: #cdeacb;
+}

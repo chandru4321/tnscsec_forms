@@ -425,7 +425,14 @@ export class UserService {
       `${this.baseUrl}/form5b/stop-candidates`,
       payload
     );
+
   }
+  getForm5blisttable(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5b/list`);
+  }
+
+
+
   submitForm5b(payload: any): Observable<any> {
     return this.http.post<any>(
       `${this.baseUrl}/form5b/submit`,

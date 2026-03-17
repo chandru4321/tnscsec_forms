@@ -10,7 +10,7 @@ describe('Formt5b', () => {
     await TestBed.configureTestingModule({
       imports: [Formt5b]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(Formt5b);
     component = fixture.componentInstance;

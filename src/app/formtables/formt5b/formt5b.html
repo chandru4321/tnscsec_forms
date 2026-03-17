@@ -1,1 +1,96 @@
-<p>formt5b works!</p>
+<div class="table-actions">
+    <button class="export-btn" (click)="exportToExcel()">
+        ⬇ Export Excel
+    </button>
+</div>
+
+<div class="formt5b-container">
+    <div class="table-scroll-wrapper">
+        <table class="report-table" id="reportTable">
+
+            <thead>
+
+                <!-- Title -->
+                <tr class="top-header">
+                    <th colspan="11">
+                        வேட்புமனு பரிசீலனை மற்றும் செல்லத்தக்க வேட்புமனுக்கள் பட்டியல்
+                    </th>
+                </tr>
+
+                <!-- Department -->
+                <tr class="top-sub-header">
+                    <th colspan="11">
+                        துறை -- {{ department_name }}
+                    </th>
+                </tr>
+
+                <!-- Group Header -->
+                <tr class="group-header">
+                    <th rowspan="2">வ.எண்</th>
+                    <th rowspan="2">மாவட்டம்</th>
+                    <th rowspan="2">சரகம்</th>
+
+                    <!-- Declared -->
+                    <th colspan="4">
+                        தகுதி பெற்ற சங்கங்கள் எண்ணிக்கை
+                    </th>
+
+                    <!-- Remaining -->
+                    <th colspan="3">
+                        தள்ளுபடி / நிறுத்தல் பின்னர் எண்ணிக்கை
+                    </th>
+
+                    <!-- Stopped -->
+                    <th colspan="1">
+                        தேர்தல் நிறுத்தப்பட்ட சங்கங்கள்
+                    </th>
+                </tr>
+
+                <!-- Sub Header -->
+                <tr class="sub-header">
+
+                    <!-- Declared -->
+                    <th>சங்கங்கள்</th>
+                    <th>ப.இ./ப.கு</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+
+                    <!-- Remaining -->
+                    <th>ப.இ./ப.கு</th>
+                    <th>பெண்கள்</th>
+                    <th>பொது</th>
+
+                    <!-- Stopped -->
+                    <th>சங்கத்தின் பெயர்</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let row of tableRows; let i = index">
+
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ row.district_name }}</td>
+                    <td>{{ row.zone_name }}</td>
+
+                    <!-- Declared -->
+                    <td>{{ row.dec_total }}</td>
+                    <td>{{ row.dec_sc }}</td>
+                    <td>{{ row.dec_women }}</td>
+                    <td>{{ row.dec_general }}</td>
+
+                    <!-- Remaining -->
+                    <td>{{ row.rem_sc }}</td>
+                    <td>{{ row.rem_women }}</td>
+                    <td>{{ row.rem_general }}</td>
+
+                    <!-- Stopped -->
+                    <td>{{ row.stopped_society_name }}</td>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
