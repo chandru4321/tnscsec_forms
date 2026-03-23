@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private baseUrl = 'https://lg0w5w01-4000.inc1.devtunnels.ms/api';
+  private baseUrl = 'https://tnsec.bontonsoftwares.com/api';
 
   constructor(private http: HttpClient) { }
 
