@@ -58,7 +58,7 @@ export class Formt8 implements OnInit {
         // const department = form.department?.name || '';
         // const district = form.district?.name || '';
         // const zone = form.zone?.name || '';
-
+        //fjfj
         const department = localStorage.getItem('department_name') || '';
         const district = localStorage.getItem('district_name') || '';
         const zone = localStorage.getItem('zone_name') || '';
