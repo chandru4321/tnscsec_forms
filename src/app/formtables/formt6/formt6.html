@@ -1,7 +1,7 @@
 <div class="page-content">
     <div class="table-actions">
-        <button class="action-btn export-btn" (click)="exportToExcel()">
-            ⬇ Export Excel
+        <button class="export-btn" (click)="downloadPdf()">
+            📄 Download PDF
         </button>
     </div>
 
@@ -133,6 +133,11 @@
             </thead>
 
             <tbody>
+                <tr *ngIf="tableRows.length === 0">
+                    <td colspan="13" class="empty-table-message">
+                        தயவுசெய்து முதலில் படிவம் 6-ஐ பூர்த்தி செய்யவும்.
+                    </td>
+                </tr>
 
                 <tr *ngFor="let r of tableRows; let i = index">
 

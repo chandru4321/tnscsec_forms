@@ -55,9 +55,13 @@ export class Formt8 implements OnInit {
       // Loop all form8 records (safe)
       res.data.forEach((form: any) => {
 
-        const department = form.department?.name || '';
-        const district = form.district?.name || '';
-        const zone = form.zone?.name || '';
+        // const department = form.department?.name || '';
+        // const district = form.district?.name || '';
+        // const zone = form.zone?.name || '';
+
+        const department = localStorage.getItem('department_name') || '';
+        const district = localStorage.getItem('district_name') || '';
+        const zone = localStorage.getItem('zone_name') || '';
 
         // Set top header department (once)
         this.department_name = department;
@@ -114,14 +118,22 @@ export class Formt8 implements OnInit {
     });
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+    const departmentId = 2;
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form8_Report.xlsx');
+    this.userService.getForm8Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form8_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 }

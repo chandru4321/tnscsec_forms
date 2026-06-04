@@ -166,37 +166,69 @@
    CHECKBOX DISPLAY LIKE FIRST SCREENSHOT
 ================================================== */
 .checkbox-list {
-  background: #ffffff;
+  /* background: #ffffff; */
   /* white background like screenshot */
-  border: 1px solid #dcdcdc;
+  /* border: 1px solid #dcdcdc; */
   /* same border style as textarea */
-  padding: 12px;
-  border-radius: 6px;
-  max-height: 260px;
+  /* padding: 12px; */
+  /* border-radius: 6px; */
+  /* max-height: 260px; */
   /* matching size with master textarea */
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* scroll enabled */
-  line-height: 2.3;
+  /* line-height: 2.3; */
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 15px;
+  max-height: 320px;
+  overflow-y: auto;
+
+
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cell-text {
+  background: #dcdcdc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* checkbox item spacing + alignment neat */
 .checkbox-item {
-  display: flex;
+  /* display: flex;
   align-items: center;
   gap: 6px;
   margin-bottom: 6px;
   font-size: 14px;
+  font-weight: 500; */
+  align-items: flex-start;
+  gap: 20px;
+  background: #d9d9d9;
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  line-height: 1.8;
   font-weight: 500;
 }
 
 /* Scrollbar match textarea */
 .checkbox-list::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 .checkbox-list::-webkit-scrollbar-thumb {
-  background-color: #009aa5;
-  border-radius: 4px;
+  background: #009aa5;
+  border-radius: 10px;
 }
 
 
@@ -265,6 +297,15 @@
   background: #eef7e9;
   transition: 0.2s;
 }
+
+.checkbox-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 
 
 
@@ -371,4 +412,48 @@
   /* increases size without layout break */
   margin-right: 6px;
   cursor: pointer;
+}
+
+.society-list-box {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 15px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* .society-item {
+  background: #dcdcdc;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+} */
+
+
+
+.society-item {
+  background: #dcdcdc;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+
+  color: #000 !important;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+
+  display: block;
+  min-height: 20px;
+}
+
+.society-list-box::-webkit-scrollbar {
+  width: 10px;
+}
+
+.society-list-box::-webkit-scrollbar-thumb {
+  background: #009aa5;
+  border-radius: 10px;
 }

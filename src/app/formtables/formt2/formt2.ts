@@ -131,21 +131,24 @@ export class Formt2 implements OnInit {
   /* =========================
      EXPORT EXCEL
   ========================= */
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
 
-    const buffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
+  downloadPdf(): void {
+
+    const departmentId = 2;
+
+    this.userService.getForm2Pdf(departmentId).subscribe((res: Blob) => {
+
+      saveAs(
+        new Blob([res], { type: 'application/pdf' }),
+        'Form2_Report.pdf'
+      );
+
+    }, error => {
+
+      console.error('PDF download error:', error);
+
     });
 
-    saveAs(new Blob([buffer]), 'Form2_Report.xlsx');
   }
 }

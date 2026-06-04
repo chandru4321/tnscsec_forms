@@ -100,7 +100,7 @@
 /* --------------------------------------------------
    CHECKBOX LIST
 -------------------------------------------------- */
-.checkbox-list {
+/* .checkbox-list {
   background: #ffffff;
   border: 1px solid #dcdcdc;
   padding: 12px;
@@ -118,16 +118,50 @@
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
+} */
+
+/* CHECKBOX CONTAINER */
+.checkbox-list {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 15px;
+  max-height: 320px;
+  overflow-y: auto;
 }
+
+/* EACH ROW CARD */
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  background: #d9d9d9;
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+/* BIGGER CHECKBOX */
+.checkbox-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+
 
 /* Scrollbar match */
 .checkbox-list::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 .checkbox-list::-webkit-scrollbar-thumb {
-  background-color: #009aa5;
-  border-radius: 4px;
+  background: #009aa5;
+  border-radius: 10px;
 }
 
 /* --------------------------------------------------

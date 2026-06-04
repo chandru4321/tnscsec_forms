@@ -135,22 +135,22 @@ export class Formt4 implements OnInit {
 
     this.tableRows = rows;
   }
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
+    const departmentId = 2;
 
-    const buffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
-    });
+    this.userService.getForm4Pdf(departmentId).subscribe(
+      (res: Blob) => {
 
-    saveAs(new Blob([buffer]), 'Form4_Report.xlsx');
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form2_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 }
-

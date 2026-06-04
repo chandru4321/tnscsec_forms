@@ -51,7 +51,7 @@
 
         <div class="modal-footer">
             <button class="btn-grey" (click)="closeStop()">ரத்து செய்</button>
-            <button class="btn-red" (click)="submitStop()">சமர்ப்பிக்க</button>
+            <button class="btn-red" (click)="submitStop()">சமர்ப்பிக்கbgggu</button>
         </div>
 
     </div>
@@ -267,30 +267,48 @@
         </button>
     </div> -->
     <!-- ================= FINAL SUBMIT BAR ================= -->
-    <div class="final-submit-bar-right" *ngIf="!formSubmitted">
+    <!-- <div class="final-submit-bar-right" *ngIf="!formSubmitted">
 
     </div>
-    <button class="btn-blue" (click)="submitForm5bFinal()">
+    <!-- <button class="cancel-btn" (click)="cancel()">ரத்து செய்ய</button> -->
+
+    <!-- <button class="btn-blue" (click)="submitForm5bFinal()">
         சமர்ப்பிக்க
     </button>
-</div>
+</div> -->
 
-<!-- ================= FINAL SUCCESS POPUP ================= -->
-<div class="modal-backdrop" *ngIf="showFinalSubmitPopup">
-    <div class="modal-box small">
-        <div class="modal-header">
-            <h3>Form 6</h3>
-            <button class="close-btn" (click)="showFinalSubmitPopup=false">×</button>
-        </div>
+    <div class="final-submit-bar-right" *ngIf="!formSubmitted">
+        <button class="btn-blue" (click)="submitForm5bFinal()">
+            சமர்ப்பிக்க
+        </button>
+    </div>
 
-        <div class="success-box">
-            ✔️ Form 6 வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது
-        </div>
 
-        <div class="modal-footer">
-            <button class="btn-blue" (click)="showFinalSubmitPopup=false">
-                சரி
-            </button>
+
+
+
+
+
+
+
+
+    '
+    <!-- ================= FINAL SUCCESS POPUP ================= -->
+    <div class="modal-backdrop" *ngIf="showFinalSubmitPopup">
+        <div class="modal-box small">
+            <div class="modal-header">
+                <h3>Form 6</h3>
+                <button class="close-btn" (click)="showFinalSubmitPopup=false">×</button>
+            </div>
+
+            <div class="success-box">
+                ✔️ Form 6 வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-blue" (click)="showFinalSubmitPopup=false">
+                    சரி
+                </button>
+            </div>
         </div>
     </div>
-</div>

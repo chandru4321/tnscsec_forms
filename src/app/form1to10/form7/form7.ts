@@ -126,9 +126,7 @@ export class Form7 implements OnInit {
 
   /* ================= CANCEL ================= */
   onCancel() {
-    if (confirm('உறுதியாக ரத்து செய்யவா?')) {
-      this.loadPreview();
-    }
+    window.history.back();
   }
 
   /* ================= SUBMIT ================= */

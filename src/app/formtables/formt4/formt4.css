@@ -22,6 +22,22 @@
     text-align: center;
 }
 
+
+.empty-table-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #d32f2f;
+
+    background: #fff;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+
+
 /* Header colors */
 .top-header th {
     background: #b7e3a1;

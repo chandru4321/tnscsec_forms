@@ -12,12 +12,15 @@
         </button>
       </td>
 
+
       <!-- Form link -->
       <td class="link">
 
         <!-- Form1 ALWAYS clickable -->
         <a *ngIf="f.code === 'Form1'" [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
 
         <!-- Form2 clickable ONLY after Form1 completed
@@ -25,7 +28,10 @@
           ({{ f.code }})
         </a> --->
         <a *ngIf="f.code === 'Form2' " [routerLink]="f.formLink">
+
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <!---
          <span
@@ -40,32 +46,50 @@
         <!-- 🔥 Form3 clickable ONLY after Form2 completed-->
         <a *ngIf="f.code === 'Form3' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
 
         <a *ngIf="f.code === 'Form4' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
 
         <a *ngIf="f.code === 'Form5a' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <a *ngIf="f.code === 'Form5b' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <a *ngIf="f.code === 'Form6' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <a *ngIf="f.code === 'Form7' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <a *ngIf="f.code === 'Form8' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <a *ngIf="f.code === 'Form9' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
         <a *ngIf="f.code === 'Form10' " [routerLink]="f.formLink">
           ({{ f.code }})
+          <span class="arrow">➜</span>
+
         </a>
 
         <!-- 🔒 Form3 locked -->

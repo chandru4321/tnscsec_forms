@@ -4,8 +4,9 @@ import { Injectable } from "@angular/core";
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private loginApi = 'https://tnsec.bontonsoftwares.com/api/auth/login';
+  private loginApi = 'https://jk901cnt-5000.inc1.devtunnels.ms/api/auth/login';
   private tokenKey = 'token'; // 🔥 FIX
+
 
   constructor(private http: HttpClient) { }
 

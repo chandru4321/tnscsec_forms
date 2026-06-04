@@ -4,6 +4,8 @@ import { UserService } from '../../services/user';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
+
+
 @Component({
   selector: 'app-formt5b',
   standalone: true,
@@ -85,21 +87,22 @@ export class Formt5b implements OnInit {
     this.tableRows = rows;
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
+    const departmentId = 2;
 
-    const buffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
-    });
+    this.userService.getForm5bPdf(departmentId).subscribe(
+      (res: Blob) => {
 
-    saveAs(new Blob([buffer]), 'Form5B_Report.xlsx');
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form5B_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 }

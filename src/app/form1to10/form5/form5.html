@@ -80,7 +80,7 @@
                     <div class="field">
                         <input [(ngModel)]="m.aadhar_no" (input)="formatAadhar($event, m)" name="scst_aadhar_{{i}}"
                             required pattern="^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$" maxlength="14"
-                            #scstAadhar="ngModel" placeholder="XXXX-XXXX-XXXX" />
+                            #scstAadhar="ngModel" placeholder="ஆதார் 12 இலக்க எண்" />
 
                         <div class="error" *ngIf="scstAadhar.invalid && scstAadhar.touched">
                             12 இலக்க ஆதார் எண் தேவை
@@ -107,7 +107,7 @@
                     <div class="field">
                         <input [(ngModel)]="m.aadhar_no" (input)="formatAadhar($event, m)" name="women_aadhar_{{i}}"
                             required pattern="^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$" maxlength="14"
-                            #wAadhar="ngModel" placeholder="XXXX-XXXX-XXXX" />
+                            #wAadhar="ngModel" placeholder="ஆதார் 12 இலக்க எண்" />
                         <div class="error" *ngIf="wAadhar.invalid && wAadhar.touched">
                             12 இலக்க ஆதார் எண் தேவை
                         </div>
@@ -133,7 +133,7 @@
                     <div class="field">
                         <input [(ngModel)]="m.aadhar_no" (input)="formatAadhar($event, m)" name="gen_aadhar_{{i}}"
                             required pattern="^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$" maxlength="14"
-                            #gAadhar="ngModel" placeholder="XXXX-XXXX-XXXX" />
+                            #gAadhar="ngModel" placeholder="ஆதார் 12 இலக்க எண்" />
 
                         <div class="error" *ngIf="gAadhar.invalid && gAadhar.touched">
                             12 இலக்க ஆதார் எண் தேவை

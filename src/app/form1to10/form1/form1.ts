@@ -196,6 +196,14 @@ export class Form1 implements OnInit {
     });
   }
 
+
+
+
+  cancel() {
+    this.router.navigate(['/layout/totalforms']);
+  }
+
+
   /* ================= SUBMIT ================= */
 
   submitForm() {

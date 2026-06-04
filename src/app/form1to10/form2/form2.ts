@@ -79,6 +79,11 @@ export class Form2 implements OnInit {
     this.f6_unselectedList = this.finalCheckboxList.filter(x => !x.checked);
   }
 
+
+  cancel() {
+    this.router.navigate(['/layout/totalforms']);
+  }
+
   /* ================= SUBMIT (🔥 FIXED) ================= */
   submitForm2(): void {
 

@@ -78,14 +78,22 @@ export class Formt10 implements OnInit {
     });
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+    const departmentId = 2;
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form10_Report.xlsx');
+    this.userService.getForm10Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form10_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 }

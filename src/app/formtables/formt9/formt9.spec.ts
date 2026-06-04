@@ -10,7 +10,7 @@ describe('Formt9', () => {
     await TestBed.configureTestingModule({
       imports: [Formt9]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(Formt9);
     component = fixture.componentInstance;

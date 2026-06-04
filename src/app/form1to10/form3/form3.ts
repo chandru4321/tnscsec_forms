@@ -52,25 +52,32 @@ export class Form3 implements OnInit {
   // ================= LOAD F3 DATA =================
   loadF3() {
     this.userService.getForm3Form2List(this.form1_id).subscribe(res => {
+
+      console.log('API Response:', res);
+
       if (!res?.success) return;
 
       const societies: any[] = [];
       const voterCounts: number[] = [];
 
-      res.data.form2List.forEach((f2: any) => {
+      // API structure: res.data.data
+      const form2List = res.data?.data || [];
 
-        if (!this.form2_id && f2.form2_id) {
-          this.form2_id = f2.form2_id;
+      form2List.forEach((f2: any) => {
+
+        // API uses "id", not "form2_id"
+        if (!this.form2_id && f2.id) {
+          this.form2_id = f2.id;
         }
 
-        f2.selected_soc.forEach((soc: any) => {
+        (f2.selected_soc || []).forEach((soc: any) => {
 
           societies.push({
             society_id: soc.society_id,
             society_name: soc.society_name
           });
 
-          // ✅ Get total voters from API
+          // API response currently doesn't contain tot_voters
           voterCounts.push(Number(soc.tot_voters || 0));
 
         });
@@ -78,13 +85,15 @@ export class Form3 implements OnInit {
       });
 
       this.f3SocietyList = societies;
-
-      // ✅ Use API voter counts
       this.voterCounts = voterCounts;
 
       this.f5Answers = societies.map(() => 'NO');
       this.removedCounts = societies.map(() => 0);
       this.remainingCounts = societies.map(() => 0);
+
+      // console.log('Societies:', this.f3SocietyList);
+      // console.log('Voter Counts:', this.voterCounts);
+      // console.log('Form2 ID:', this.form2_id);
 
     });
   }

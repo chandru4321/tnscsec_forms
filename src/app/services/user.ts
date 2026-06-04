@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private baseUrl = 'https://tnsec.bontonsoftwares.com/api';
+  private baseUrl = 'https://jk901cnt-5000.inc1.devtunnels.ms/api';
 
   constructor(private http: HttpClient) { }
 
@@ -98,6 +98,15 @@ export class UserService {
   // }
   editForm1(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/form1/edit/${id}`, data);
+  }
+
+  getForm1Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form1/pdf?department_id=${department_id}`,
+      {
+        responseType: 'blob'   // 🔥 VERY IMPORTANT for PDF
+      }
+    );
   }
 
 
@@ -205,6 +214,15 @@ export class UserService {
   }
 
 
+  getForm2Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form2/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
+
+
+
 
 
 
@@ -218,12 +236,25 @@ export class UserService {
   //     `${this.baseUrl}/api/form3/form2-list/${form1_id}`
   //   );
   // }
+  // getForm3Form2List(form1_id: number): Observable<any> {
+  //   return this.http.get<any>(
+  //     `${this.baseUrl}/form3/form2-list`,
+  //     { params: { form1_id } }
+  //   );
+  // }
+
+
   getForm3Form2List(form1_id: number): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/form3/form2-list`,
+      `${this.baseUrl}/form2`,
       { params: { form1_id } }
     );
   }
+
+
+
+
+
 
 
   // ---------- FORM 3 SUBMIT ----------
@@ -259,6 +290,14 @@ export class UserService {
     if (districtId) params.district_id = districtId;
 
     return this.http.get<any>(`${this.baseUrl}/form3`, { params });
+  }
+
+
+  getForm3Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form3/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
   }
 
 
@@ -333,6 +372,13 @@ export class UserService {
   }
 
 
+  getForm4Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form4/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
+
 
 
 
@@ -398,6 +444,13 @@ export class UserService {
 
 
 
+  getForm5Pdf(departmentId: number) {
+    return this.http.get(
+      `${this.baseUrl}/form5/pdf?department_id=${departmentId}`,
+      { responseType: 'blob' }
+    );
+  }
+
 
 
 
@@ -440,6 +493,12 @@ export class UserService {
     );
   }
 
+  getForm5bPdf(departmentId: number) {
+    return this.http.get(
+      `${this.baseUrl}/form5/pdf?department_id=${departmentId}`,
+      { responseType: 'blob' }
+    );
+  }
 
 
 
@@ -521,6 +580,15 @@ export class UserService {
   }
 
 
+  getForm6Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form6/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
+
+
+
 
   loadForm6Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
 
@@ -586,6 +654,24 @@ export class UserService {
 
 
 
+  // getForm7Pdf(departmentId: number) {
+  //   return this.http.get(
+  //     `${this.baseUrl}/form7/pdf/${departmentId}`,
+  //     {
+  //       responseType: 'blob'
+  //     }
+  //   );
+  // }
+
+
+  getForm7Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form7/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
+
+
 
 
 
@@ -634,6 +720,16 @@ export class UserService {
 
     return this.http.get<any>(`${this.baseUrl}/form8`, { params });
   }
+
+
+
+  getForm8Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form8/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
+
 
 
 
@@ -690,6 +786,12 @@ export class UserService {
   }
 
 
+  getForm9Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form9/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
 
 
 
@@ -741,6 +843,13 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form10`, { params });
   }
 
+
+  getForm10Pdf(department_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/form10/pdf?department_id=${department_id}`,
+      { responseType: 'blob' }
+    );
+  }
 
 
 

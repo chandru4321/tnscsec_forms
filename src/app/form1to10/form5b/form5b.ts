@@ -115,7 +115,7 @@ export class Form5b implements OnInit {
 
       alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
       return;
-
+      ``
     }
 
     const payload = {
@@ -156,6 +156,10 @@ export class Form5b implements OnInit {
 
   }
 
+
+  // cancel() {
+  //   window.history.back();ss
+  // }
   submitStop() {
 
     if (!this.stopRemark) {

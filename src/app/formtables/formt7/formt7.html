@@ -1,8 +1,8 @@
 <div class="page-content">
 
     <div class="table-actions">
-        <button class="action-btn export-btn" (click)="exportToExcel()">
-            ⬇ Export Excel
+        <button class="export-btn" (click)="downloadPdf()">
+            📄 Download PDF
         </button>
     </div>
 
@@ -62,6 +62,7 @@
             </thead>
 
             <tbody>
+
                 <tr *ngFor="let s of societies; let i = index">
 
                     <td>{{ i + 1 }}</td>

@@ -106,15 +106,23 @@ export class Formt5 implements OnInit {
     }));
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Form5');
+    const departmentId = 2;
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form5a_Report.xlsx');
+    this.userService.getForm5Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form5a_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
+
 }

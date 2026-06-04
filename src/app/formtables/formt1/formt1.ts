@@ -152,24 +152,29 @@ export class Formt1 implements OnInit {
   /* =========================
      EXPORT EXCEL
   ========================= */
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
+    const departmentId = 2; // dynamic if needed
 
-    const buffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
+    this.userService.getForm1Pdf(departmentId).subscribe({
+
+      next: (res: Blob) => {
+
+        const blob = new Blob([res], {
+          type: 'application/pdf'
+        });
+
+        saveAs(blob, 'Form1_Report.pdf');
+
+      },
+
+      error: (error) => {
+        console.error('PDF download error:', error);
+      }
+
     });
 
-    saveAs(new Blob([buffer]), 'Form1_Report.xlsx');
   }
-
   /* =========================
      DUMMY EDIT
   ========================= */

@@ -69,14 +69,23 @@ export class Formt7 implements OnInit {
   }
 
   // Excel Export
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+  downloadPdf(): void {
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form7_Report.xlsx');
+    const departmentId = 2;
+
+    this.userservice.getForm7Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form7_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 }
