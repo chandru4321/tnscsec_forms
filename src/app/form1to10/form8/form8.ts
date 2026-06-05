@@ -134,38 +134,38 @@ export class Form8 implements OnInit {
     /* ================= SAVE WINNERS (Popup Submit) ================= */
     submitPreview() {
 
-        const selected = this.selectedSociety.selectedMembers;
+        // const selected = this.selectedSociety.selectedMembers;
 
-        if (!selected || selected.length === 0) {
-            alert('உறுப்பினரை தேர்வு செய்யவும்');
-            return;
-        }
+        // if (!selected || selected.length === 0) {
+        //     alert('உறுப்பினரை தேர்வு செய்யவும்');
+        //     return;
+        // }
 
         // Count category
-        const count = { SC_ST: 0, WOMEN: 0, GENERAL: 0 };
+        // const count = { SC_ST: 0, WOMEN: 0, GENERAL: 0 };
 
-        selected.forEach((m: any) => {
-            if (m.category_type === 'SC_ST') count.SC_ST++;
-            if (m.category_type === 'WOMEN') count.WOMEN++;
-            if (m.category_type === 'GENERAL') count.GENERAL++;
-        });
+        // selected.forEach((m: any) => {
+        //     if (m.category_type === 'SC_ST') count.SC_ST++;
+        //     if (m.category_type === 'WOMEN') count.WOMEN++;
+        //     if (m.category_type === 'GENERAL') count.GENERAL++;
+        // });
 
-        const limit = this.selectedSociety.rural;
+        // const limit = this.selectedSociety.rural;
 
-        // Validation
-        if (
-            count.SC_ST !== limit.sc_st ||
-            count.WOMEN !== limit.women ||
-            count.GENERAL !== limit.general
-        ) {
-            alert(
-                `தேர்வு எண்ணிக்கை தவறு!\n` +
-                `SC/ST: ${limit.sc_st}\n` +
-                `மகளிர்: ${limit.women}\n` +
-                `பொது: ${limit.general}`
-            );
-            return;
-        }
+        // // Validation
+        // if (
+        //     count.SC_ST !== limit.sc_st ||
+        //     count.WOMEN !== limit.women ||
+        //     count.GENERAL !== limit.general
+        // ) {
+        //     alert(
+        //         `தேர்வு எண்ணிக்கை தவறு!\n` +
+        //         `SC/ST: ${limit.sc_st}\n` +
+        //         `மகளிர்: ${limit.women}\n` +
+        //         `பொது: ${limit.general}`
+        //     );
+        //     return;
+        // }
 
         // Mark as saved locally
         this.selectedSociety.submitted = true;

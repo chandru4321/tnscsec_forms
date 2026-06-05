@@ -23,11 +23,13 @@ export class Formt10 implements OnInit {
   }
 
   loadForm10(): void {
+
     this.userService.getForm10List().subscribe(res => {
 
       if (!res?.success || !res.data?.length) return;
 
       const rows: any[] = [];
+      const addedSocieties = new Set<number>();
 
       res.data.forEach((form: any) => {
 
@@ -35,48 +37,46 @@ export class Formt10 implements OnInit {
         const district = form.district?.name || '';
         const zone = form.zone?.name || '';
 
-        // Set header department once
         this.department_name = department;
 
         form.societies?.forEach((soc: any) => {
+
+          if (addedSocieties.has(soc.society_id)) {
+            return;
+          }
+
+          addedSocieties.add(soc.society_id);
 
           rows.push({
             district_name: district,
             zone_name: zone,
             society_name: soc.society_name || '-',
 
-            // Final counts
             final_sc: soc.final_counts?.sc_st || 0,
             final_women: soc.final_counts?.women || 0,
             final_general: soc.final_counts?.general || 0,
             final_total: soc.final_counts?.total || 0,
 
-            // Rejected counts
             rejected_sc: soc.rejected_counts?.sc_st || 0,
             rejected_women: soc.rejected_counts?.women || 0,
             rejected_general: soc.rejected_counts?.general || 0,
             rejected_total: soc.rejected_counts?.total || 0,
 
-            // Withdrawn counts
             withdrawn_sc: soc.withdrawn_counts?.sc_st || 0,
             withdrawn_women: soc.withdrawn_counts?.women || 0,
             withdrawn_general: soc.withdrawn_counts?.general || 0,
             withdrawn_total: soc.withdrawn_counts?.total || 0,
 
-            // Winner
-            president_name: soc.president_winner?.member_name || '-',
-
-            // Election type
+            president_name: soc.vice_president_winner?.member_name || '-',
             election_type: soc.election_type || '-'
           });
-
         });
-
       });
 
       this.tableRows = rows;
     });
   }
+
 
   downloadPdf(): void {
 
