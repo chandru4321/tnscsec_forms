@@ -222,11 +222,13 @@ export class Form6 implements OnInit {
       form6_id: this.form6_id
     }).subscribe(res => {
       if (res?.success) {
+
         this.form6Submitted = true;
         this.showFinalSubmitPopup = true;
 
-        this.router.navigate(['/layout/totalforms']);
+        alert('Form 6 submitted successfully');
 
+        this.router.navigate(['/layout/totalforms']);
       }
     });
   }

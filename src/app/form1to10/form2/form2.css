@@ -276,7 +276,7 @@
 
 /* RED BOX (Right Panel F4) */
 .red-box {
-  background: #75bc75 !important;
+  background: #88d688 !important;
 
 
 
@@ -314,7 +314,7 @@
 }
 
 .panel-box::-webkit-scrollbar-thumb {
-  background: #666;
+  background: #b49e9e;
   border-radius: 4px;
 }
 
@@ -325,4 +325,34 @@
   /* increases size without layout break */
   margin-right: 6px;
   cursor: pointer;
+}
+
+
+
+
+.society-list-box {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 15px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.society-item {
+  background: #d9d9d9;
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.society-list-box::-webkit-scrollbar {
+  width: 10px;
+}
+
+.society-list-box::-webkit-scrollbar-thumb {
+  background: #009aa5;
+  border-radius: 10px;
 }

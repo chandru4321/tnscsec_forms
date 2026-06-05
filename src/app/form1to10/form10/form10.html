@@ -59,7 +59,7 @@
 
 
     <!-- F4 TABLE -->
-    <label>பரிசீலனையில் நிராகரிக்கப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள் (F4)</label>
+    <label>பரிசீலனையில் நிராகரிக்கப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள் </label>
     <div *ngIf="showF4Table">
 
         <!-- <label>பரிசீலனையில் நிராகரிக்கப்பட்ட வேட்பு மனுக்கள்/உறுப்பினர்கள் (F4)</label> -->
@@ -226,9 +226,18 @@
                 <!-- VICE PRESIDENT ONLY -->
                 <h4>Vice President Selection</h4>
 
-                <label *ngFor="let c of candidates">
+                <!-- <label *ngFor="let c of candidates">
                     <input type="checkbox" name="vicePresident" [value]="c.form5_member_id"
                         [(ngModel)]="selectedVicePresidentId">
+                    {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
+                </label> -->
+
+
+
+                <label *ngFor="let c of candidates">
+                    <input type="radio" name="vicePresident" [value]="c.form5_member_id"
+                        [(ngModel)]="selectedVicePresidentId">
+
                     {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
                 </label>
 

@@ -51,15 +51,18 @@ export class Formt5b implements OnInit {
 
     data.forEach(item => {
 
-      const societies = item.active_societies || [];
+      this.department_name = item.department_name || '';
 
-      societies.forEach((soc: any) => {
+      /* ACTIVE SOCIETIES */
+      const activeSocieties = item.active_societies || [];
+
+      activeSocieties.forEach((soc: any) => {
 
         rows.push({
 
-          district_name: item.district_id,
-          zone_name: item.zone_id,
-          society_name: soc.society_name,
+          district_name: item.district_name || '',
+          zone_name: item.zone_name || '',
+          society_name: soc.society_name || '',
 
           // Declared
           dec_sc: soc.declared?.sc_st || 0,
@@ -72,11 +75,35 @@ export class Formt5b implements OnInit {
           rem_women: soc.remaining_after_stop?.women || 0,
           rem_general: soc.remaining_after_stop?.general || 0,
 
-          // Stopped Society Name
-          stopped_society_name:
-            soc.election_status === 'STOPPED'
-              ? soc.society_name
-              : '-'
+          // Don't show stopped society here
+          stopped_society_name: '-'
+
+        });
+
+      });
+
+      /* STOPPED / UNQUALIFIED SOCIETIES */
+      const stoppedSocieties = item.stopped_societies || [];
+
+      stoppedSocieties.forEach((soc: any) => {
+
+        rows.push({
+
+          district_name: item.district_name || '',
+          zone_name: item.zone_name || '',
+          society_name: soc.society_name || '',
+
+          dec_sc: soc.declared?.sc_st || 0,
+          dec_women: soc.declared?.women || 0,
+          dec_general: soc.declared?.general || 0,
+          dec_total: soc.declared?.total || 0,
+
+          rem_sc: 0,
+          rem_women: 0,
+          rem_general: 0,
+
+          // Show stopped society name only here
+          stopped_society_name: soc.society_name || '-'
 
         });
 
@@ -85,8 +112,9 @@ export class Formt5b implements OnInit {
     });
 
     this.tableRows = rows;
-  }
 
+    console.log('TABLE ROWS:', this.tableRows);
+  }
   downloadPdf(): void {
 
     const departmentId = 2;

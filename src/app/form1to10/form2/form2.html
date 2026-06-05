@@ -16,7 +16,15 @@
       <label class="label">உறுப்பினர் பட்டியல் தயாரித்து வெளியிட வேண்டிய சங்கங்களின் பெயர்
       </label>
 
-      <textarea class="textarea-box" readonly>{{ f3List }}</textarea>
+      <!-- <textarea class="textarea-box" readonly>{{ f3List }}</textarea> -->
+
+      <div class="society-list-box">
+        <div *ngFor="let item of finalCheckboxList" class="society-item">
+          {{ item.society_name }}
+        </div>
+      </div>
+
+
 
     </div>
 

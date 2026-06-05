@@ -17,7 +17,17 @@
       <input type="text" class="input-box" [(ngModel)]="zone_name" readonly>
 
       <label class="label">தேர்தல் ஆணையத்தால் தேர்தல் திட்டம் வழங்கப்பட்ட சங்கங்களின் பெயர்</label>
-      <textarea class="textarea-box" [(ngModel)]="masterZonesText" readonly></textarea>
+      <!-- <textarea class="textarea-box" [(ngModel)]="masterZonesText" readonly></textarea> -->
+      <div class="society-list-box">
+        <div *ngFor="let item of masterZones12" class="society-item">
+          {{ item.name }}
+        </div>
+      </div>
+
+
+
+
+
     </div>
   </div>
 
