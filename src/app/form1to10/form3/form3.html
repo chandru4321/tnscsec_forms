@@ -8,28 +8,35 @@
     <!-- F1 & F2 -->
     <div class="row">
         <div class="col">
-            <label>மாவட்ட தேர்தல் அலுவலர் / மாவட்டம் (F1)</label>
+            <label>மாவட்ட தேர்தல் அலுவலர் / மாவட்டம் </label>
             <input class="input-box" [(ngModel)]="district_name" readonly />
         </div>
 
         <div class="col">
-            <label>மாவட்ட தேர்தல் அலுவலர் / சபகம் (F2)</label>
+            <label>மாவட்ட தேர்தல் அலுவலர் / சரகம்</label>
             <input class="input-box" [(ngModel)]="zone_name" readonly />
         </div>
     </div>
+    <br>
 
     <!-- F3 -->
     <div class="row">வாக்காளர் பட்டியல் அலுவலரால் உறுப்பினர் பட்டியல் வெளியிடப்பட்ட சங்கங்கள்
     </div>
-    <div class="large-box">
+    <!-- <div class="large-box">
         <div *ngFor="let soc of f3SocietyList; let i = index">
             {{ i + 1 }}. {{ soc.society_name }}
         </div>
-    </div>
+    </div> -->
 
+    <div class="large-box">
+        <div class="society-card" *ngFor="let soc of f3SocietyList; let i = index">
+            {{ i + 1 }}. {{ soc.society_name }}
+        </div>
+    </div>
+    <br>
     <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட உறுப்பினர் எண்ணிக்கை
     </div>
-    <div class="large-box">
+    <!-- <div class="large-box">
         <div class="f4-row" *ngFor="let soc of f3SocietyList; let i = index">
             <div class="f4-name">{{ i + 1 }}. {{ soc.society_name }}</div>
             <div class="f4-input-group">
@@ -37,7 +44,23 @@
                 <input type="number" class="f4-input" [(ngModel)]="voterCounts[i]" readonly />
             </div>
         </div>
+    </div> -->
+
+    <div class="large-box">
+        <div class="f4-row" *ngFor="let soc of f3SocietyList; let i = index">
+            <div class="f4-name">
+                {{ i + 1 }}. {{ soc.society_name }}
+            </div>
+
+            <div class="f4-input-group">
+                <span class="f4-label">உறுப்பினர் எண்ணிக்கை</span>
+
+                <input type="number" class="f4-input" [value]="voterCounts[i]" readonly />
+            </div>
+        </div>
     </div>
+
+    <br>
 
     <!-- F4 -->
     <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர்கள் எண்ணிக்கை
@@ -51,6 +74,9 @@
             </div>
         </div>
     </div>
+
+    <br>
+
 
     <!-- F5 -->
     <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர் பட்டியலுக்கு கோருரிமை அல்லது மறுப்பு
@@ -69,6 +95,8 @@
             </div>
         </div>
     </div>
+
+    <br>
 
     <!-- F6 -->
     <div class="row">வாக்காளர் பட்டியல் அலுவலரால் வெளியிடப்பட்ட வாக்காளர் பட்டியலில் திருத்தங்கள் மேற்கொள்ளப்பட்ட

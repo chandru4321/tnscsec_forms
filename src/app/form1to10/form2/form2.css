@@ -275,12 +275,28 @@
 }
 
 /* RED BOX (Right Panel F4) */
-.red-box {
+/* .red-box {
   background: #88d688 !important;
 
 
 
   border: 1px solid #241f1f;
+} */
+.red-box {
+  background: #ffe5e5 !important;
+  /* light red */
+  border: 1px solid #e0b4b4;
+}
+
+.panel-item-red {
+  background: #ffd6d6 !important;
+  /* light red card */
+  color: #000 !important;
+  /* force black text */
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 

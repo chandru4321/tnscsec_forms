@@ -1,6 +1,6 @@
 <div class="login-container">
   <div class="login-card">
-    <h2>Welcome Back</h2>
+    <h2>User Login</h2>
 
     <!-- Username -->
     <label>Username</label>
@@ -13,8 +13,13 @@
       <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Enter password">
 
       <!-- Eye Button -->
-      <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
+      <!-- <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
         {{ showPassword ? '🙈' : '👁️' }}
+      </button> -->
+
+
+      <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
+        <span style="font-size:24px;">👁</span>
       </button>
     </div>
 

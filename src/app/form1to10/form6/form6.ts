@@ -81,6 +81,8 @@ export class Form6 implements OnInit {
     });
   }
 
+
+
   /* ================= REJECT ================= */
   openRejectPopup(soc: any) {
     this.selectedSociety = soc;
@@ -114,13 +116,27 @@ export class Form6 implements OnInit {
 
       this.selectedSociety.election_status = res.data.election_status;
 
+      //   res.data.members.forEach((apiM: any) => {
+      //     const local = this.selectedSociety.members.find(
+      //       (m: any) => m.id === apiM.id
+      //     );
+      //     if (local) local.withdrawn = apiM.withdrawn;
+
       res.data.members.forEach((apiM: any) => {
+
         const local = this.selectedSociety.members.find(
           (m: any) => m.id === apiM.id
         );
-        if (local) local.withdrawn = apiM.withdrawn;
+
+        if (local) {
+          local.withdrawn = apiM.withdrawn;
+        }
       });
+
+      this.updateCounts(this.selectedSociety);
     });
+
+
   }
 
   /* ================= FINAL WITHDRAW ================= */
@@ -136,10 +152,10 @@ export class Form6 implements OnInit {
       );
     }
 
-    if (!membersToWithdraw.length) {
-      alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
-      return;
-    }
+    // if (!membersToWithdraw.length) {
+    //   alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
+    //   return;
+    // }
 
     let completed = 0;
 
@@ -212,6 +228,27 @@ export class Form6 implements OnInit {
         this.closeStop();
       }
     });
+  }
+
+  //newly added method  
+
+  updateCounts(soc: any) {
+
+    const activeMembers = soc.members.filter((m: any) => !m.withdrawn);
+
+    soc.sc_st = activeMembers.filter(
+      (m: any) => m.category_type === 'sc_st'
+    ).length;
+
+    soc.women = activeMembers.filter(
+      (m: any) => m.category_type === 'women'
+    ).length;
+
+    soc.general = activeMembers.filter(
+      (m: any) => m.category_type === 'general'
+    ).length;
+
+    soc.total = soc.sc_st + soc.women + soc.general;
   }
 
   /* ================= FINAL FORM 6 SUBMIT ================= */

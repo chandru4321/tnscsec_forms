@@ -169,9 +169,50 @@
 
             <h4>{{ selectedSociety?.society_name }}</h4>
 
-            <div class="annapost-box" *ngIf="selectedSociety?.election_status === 'UNOPPOSED'">
+            <!-- <div class="annapost-box" *ngIf="selectedSociety?.election_status === 'UNOPPOSED'">
                 ✔️ இச்சங்கத்தில் <b>அன்னப்போஸ்ட்</b> தேர்தல் நடைபெறுகிறது
-            </div>
+            </div> -->
+
+
+            <ng-container *ngIf="
+    selectedSociety?.election_status === 'QUALIFIED' ||
+    selectedSociety?.election_status === 'UNOPPOSED'
+  ">
+
+                <!-- SC/ST -->
+                <div class="member-column">
+                    <h4>ப.தி./ப.கு</h4>
+
+                    <div *ngFor="let member of scStMembers">
+                        <input type="checkbox">
+                        {{ member.member_name }}
+                    </div>
+                </div>
+
+                <!-- Women -->
+                <div class="member-column">
+                    <h4>மகளிர்</h4>
+
+                    <div *ngFor="let member of womenMembers">
+                        <input type="checkbox">
+                        {{ member.member_name }}
+                    </div>
+                </div>
+
+                <!-- General -->
+                <div class="member-column">
+                    <h4>பொது</h4>
+
+                    <div *ngFor="let member of generalMembers">
+                        <input type="checkbox">
+                        {{ member.member_name }}
+                    </div>
+                </div>
+
+            </ng-container>
+
+
+
 
             <div class="member-grid" *ngIf="selectedSociety?.election_status !== 'UNOPPOSED'">
                 <div class="member-col" *ngFor="let type of ['sc_st','women','general']">

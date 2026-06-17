@@ -29,6 +29,13 @@ export class Form5b implements OnInit {
   stopRemark = '';
   formSubmitted = false;
 
+
+
+
+  scStMembers: any[] = [];
+  womenMembers: any[] = [];
+  generalMembers: any[] = [];
+
   constructor(
     private userService: UserService,
     private router: Router
@@ -111,12 +118,12 @@ export class Form5b implements OnInit {
       .filter((m: any) => m.checked)
       .map((m: any) => m.id);
 
-    if (!candidateIds.length) {
+    // if (!candidateIds.length) {
 
-      alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
-      return;
-      ``
-    }
+    //   alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
+    //   return;
+    //   ``
+    // }
 
     const payload = {
 
@@ -135,6 +142,29 @@ export class Form5b implements OnInit {
       }
 
     });
+
+  }
+
+
+  openSocietyModal(society: any) {
+
+    console.log('SELECTED SOCIETY', society);
+
+    const members = society.members || [];
+
+    console.log('MEMBERS', members);
+
+    this.scStMembers = members.filter(
+      (m: any) => m.category_type === 'sc_st'
+    );
+
+    this.womenMembers = members.filter(
+      (m: any) => m.category_type === 'women'
+    );
+
+    this.generalMembers = members.filter(
+      (m: any) => m.category_type === 'general'
+    );
 
   }
 

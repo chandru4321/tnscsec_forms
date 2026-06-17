@@ -244,25 +244,46 @@ export class Table2 implements OnInit {
      EXPORT
   ========================= */
 
-  exportToExcel(): void {
+  //   exportToExcel(): void {
 
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  //     const table = document.getElementById('reportTable');
+  //     if (!table) return;
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
+  //     const worksheet = XLSX.utils.table_to_sheet(table);
 
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
+  //     const workbook = {
+  //       Sheets: { Report: worksheet },
+  //       SheetNames: ['Report']
+  //     };
 
-    const buffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
-    });
+  //     const buffer = XLSX.write(workbook, {
+  //       bookType: 'xlsx',
+  //       type: 'array'
+  //     });
 
-    saveAs(new Blob([buffer]), 'Form2_Report.xlsx');
+  //     saveAs(new Blob([buffer]), 'Form2_Report.xlsx');
+
+  //   }
+
+  // }
+
+  downloadPdf(): void {
+
+    const departmentId = 2;
+
+    this.userService.getForm2Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form2_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
 
   }
-
 }

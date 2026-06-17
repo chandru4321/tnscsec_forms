@@ -49,6 +49,13 @@
     </div>
   </div>
 
+  <label class="label">
+    மாவட்ட தேர்தல் அலுவலரால் தேர்தல் அறிவிப்பு வழங்கப்பட்ட சங்கங்களின் எண்ணிக்கை
+  </label>
+
+  <input type="text" class="input-box" [value]="ruralDetails.length" readonly>
+
+
   <h3 class="label">நிர்வாகக்குழு உறுப்பினர்களின் எண்ணிக்கை
   </h3>
   <table *ngIf="ruralDetails.length>0" class="society-table">

@@ -79,3 +79,11 @@
 .export-btn:hover {
     background: #cdeacb;
 }
+
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-right: 15px;
+}

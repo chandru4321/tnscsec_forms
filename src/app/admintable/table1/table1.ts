@@ -199,30 +199,50 @@ export class Table1 implements OnInit {
 
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
+  // exportToExcel(): void {
+  //   const table = document.getElementById('reportTable');
 
-    if (!table) {
-      console.error('Table not found');
-      return;
-    }
+  //   if (!table) {
+  //     console.error('Table not found');
+  //     return;
+  //   }
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
+  //   const worksheet = XLSX.utils.table_to_sheet(table);
+  //   const workbook = {
+  //     Sheets: { Report: worksheet },
+  //     SheetNames: ['Report']
+  //   };
 
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
-    });
+  //   const excelBuffer = XLSX.write(workbook, {
+  //     bookType: 'xlsx',
+  //     type: 'array'
+  //   });
 
-    const blob = new Blob([excelBuffer], {
-      type: 'application/octet-stream'
-    });
+  //   const blob = new Blob([excelBuffer], {
+  //     type: 'application/octet-stream'
+  //   });
 
-    saveAs(blob, 'Form1_Report.xlsx');
+  //   saveAs(blob, 'Form1_Report.xlsx');
+  // }
+
+
+  downloadPdf(): void {
+
+    const departmentId = 2;
+
+    this.userService.getForm1Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form1_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 
 

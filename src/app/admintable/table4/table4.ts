@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user';
-import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
 
 interface TableRow {
   district_name: string;
   zone_name: string;
   society_name: string;
+
+
+
+
 
   rural_sc: number;
   rural_women: number;
@@ -37,44 +39,62 @@ export class Table4 implements OnInit {
 
   tableRows: TableRow[] = [];
   department_name = '';
+  selectedDepartment = '';
+  selectedDistrict = '';
 
+  departmentList: any[] = [];
+  districtList: any[] = [];
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+
     this.loadForm4();
+
+    this.loadDepartments();
+
+    this.loadDistricts();
+
   }
-
-
-
-
 
   loadForm4(): void {
     this.userService.getForm4Table().subscribe({
-      next: (res) => {
+      next: (res: any) => {
 
-        console.log("FORM4 FULL RESPONSE:", res);
+        console.log('FORM4 RESPONSE', res);
 
-        const apiData = res?.data?.data;   // ✅ IMPORTANT FIX
+        const apiData = res?.data?.data;
 
-        if (res?.success && Array.isArray(apiData) && apiData.length > 0) {
+        if (
+          res?.success &&
+          Array.isArray(apiData) &&
+          apiData.length > 0
+        ) {
 
-          this.department_name = apiData[0].department_name;
+          // Department Header
+          this.department_name =
+            apiData[0]?.department?.name || '';
 
           this.prepareRows(apiData);
+
         } else {
+
           this.tableRows = [];
+
         }
 
       },
-      error: err => console.error("FORM4 API ERROR:", err)
+      error: (err) => {
+        console.error('FORM4 API ERROR:', err);
+      }
     });
   }
 
   private prepareRows(data: any[]): void {
+
     const rows: TableRow[] = [];
 
-    data.forEach(item => {
+    data.forEach((item: any) => {
 
       const societies = [
         ...(item.filed_societies || []),
@@ -85,38 +105,50 @@ export class Table4 implements OnInit {
 
       societies.forEach((soc: any, index: number) => {
 
-        const rural = soc.rural || {};
-        const declared = soc.declared || {};
+        const rural = soc.rural_counts || {};
+        const declared = soc.declared_counts || {};
 
         rows.push({
-          district_name: item.district_name,
-          zone_name: item.zone_name,
+
+          district_name: item.district?.name || '-',
+
+          zone_name: item.zone?.name || '-',
+
           society_name: soc.society_name || '-',
 
+          // Rural Counts
           rural_sc: rural.sc_st || 0,
           rural_women: rural.women || 0,
           rural_general: rural.general || 0,
           rural_total: rural.total || 0,
 
+          // Declared Counts
           dec_sc: declared.sc_st || 0,
           dec_women: declared.women || 0,
           dec_general: declared.general || 0,
           dec_total: declared.total || 0,
 
+          // Unqualified Society
           rejected:
             soc.election_status === 'UNQUALIFIED'
               ? soc.society_name
               : '-',
 
           rowSpan: index === 0 ? span : 0
+
         });
+
       });
 
-      // if no societies
+      // No societies case
       if (societies.length === 0) {
+
         rows.push({
-          district_name: item.district_name,
-          zone_name: item.zone_name,
+
+          district_name: item.district?.name || '-',
+
+          zone_name: item.zone?.name || '-',
+
           society_name: '-',
 
           rural_sc: 0,
@@ -130,30 +162,86 @@ export class Table4 implements OnInit {
           dec_total: 0,
 
           rejected: '-',
+
           rowSpan: 1
+
         });
+
       }
 
     });
 
     this.tableRows = rows;
+
+    console.log('FORM4 TABLE ROWS:', this.tableRows);
   }
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
 
-    const worksheet = XLSX.utils.table_to_sheet(table);
-    const workbook = {
-      Sheets: { Report: worksheet },
-      SheetNames: ['Report']
-    };
 
-    const buffer = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array'
+
+  loadDepartments() {
+    this.userService.getdepartment().subscribe((res: any) => {
+      if (res?.success) {
+        this.departmentList = res.data;
+      }
     });
+  }
 
-    saveAs(new Blob([buffer]), 'Form3_Report.xlsx');
+  loadDistricts() {
+    this.userService.getdistrict().subscribe((res: any) => {
+      if (res?.success) {
+        this.districtList = res.data;
+      }
+    });
+  }
+
+  applyFilter(): void {
+
+    const deptId = this.departmentList
+      .find(d => d.name === this.selectedDepartment)?.id;
+
+    const distId = this.districtList
+      .find(d => d.name === this.selectedDistrict)?.id;
+
+    console.log('Department ID:', deptId);
+    console.log('District ID:', distId);
+
+    this.userService.loadForm4Filtered(deptId, distId)
+      .subscribe((res: any) => {
+
+        const apiData = res?.data?.data;
+
+        if (Array.isArray(apiData) && apiData.length > 0) {
+
+          this.prepareRows(apiData);
+
+        } else {
+
+          this.tableRows = [];
+
+        }
+
+      });
+
+  }
+
+
+
+  downloadPdf(): void {
+
+    const departmentId = 2;
+
+    this.userService.getForm4Pdf(departmentId).subscribe(
+      (res: Blob) => {
+
+        saveAs(
+          new Blob([res], { type: 'application/pdf' }),
+          'Form4_Report.pdf'
+        );
+
+      },
+      error => {
+        console.error('PDF download error:', error);
+      }
+    );
   }
 }
-
