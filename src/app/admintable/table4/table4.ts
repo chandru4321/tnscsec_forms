@@ -58,12 +58,16 @@ export class Table4 implements OnInit {
   }
 
   loadForm4(): void {
-    this.userService.getForm4Table().subscribe({
+    const selectedDepartment = this.selectedDepartment
+    console.log(selectedDepartment)
+    const selectedDistrict = this.selectedDistrict
+    this.userService.getForm4Table(selectedDepartment, selectedDistrict).subscribe({
       next: (res: any) => {
 
         console.log('FORM4 RESPONSE', res);
 
         const apiData = res?.data?.data;
+
 
         if (
           res?.success &&
@@ -181,7 +185,12 @@ export class Table4 implements OnInit {
   loadDepartments() {
     this.userService.getdepartment().subscribe((res: any) => {
       if (res?.success) {
-        this.departmentList = res.data;
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
       }
     });
   }
@@ -189,7 +198,12 @@ export class Table4 implements OnInit {
   loadDistricts() {
     this.userService.getdistrict().subscribe((res: any) => {
       if (res?.success) {
-        this.districtList = res.data;
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
       }
     });
   }
@@ -208,13 +222,20 @@ export class Table4 implements OnInit {
     this.userService.loadForm4Filtered(deptId, distId)
       .subscribe((res: any) => {
 
+        console.log('FILTER RESPONSE:', res);
+
         const apiData = res?.data?.data;
+
+        console.log('FILTER DATA:', apiData);
 
         if (Array.isArray(apiData) && apiData.length > 0) {
 
+          this.department_name = apiData[0]?.department?.name || '';
           this.prepareRows(apiData);
 
         } else {
+
+          console.log('NO DATA RETURNED');
 
           this.tableRows = [];
 
@@ -228,9 +249,13 @@ export class Table4 implements OnInit {
 
   downloadPdf(): void {
 
-    const departmentId = 2;
+    const departmentId = Number(this.selectedDepartment);
+    const districtId = Number(this.selectedDistrict);
 
-    this.userService.getForm4Pdf(departmentId).subscribe(
+    console.log('Department ID:', departmentId);
+    console.log('District ID:', districtId);
+
+    this.userService.getForm4Pdf(departmentId, districtId).subscribe(
       (res: Blob) => {
 
         saveAs(

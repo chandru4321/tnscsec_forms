@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user';
 import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
 import { FormsModule } from '@angular/forms';
+import { saveAs } from 'file-saver';
 import { RouterModule } from '@angular/router';
 
 interface TableRow {
@@ -18,6 +18,7 @@ interface TableRow {
   sc_count: number;
   women_count: number;
   general_count: number;
+
 }
 
 @Component({
@@ -32,17 +33,31 @@ export class Table5 implements OnInit {
   tableRows: TableRow[] = [];
   department_name = '';
 
+  // Add these here
+  selectedDepartment = '';
+  selectedDistrict = '';
+
+  departmentList: { id: number; name: string }[] = [];
+  districtList: { id: number; name: string }[] = [];
+
+
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+
+    this.loadDepartments();
+    this.loadDistricts();
     this.loadForm5();
+
   }
 
   loadForm5(): void {
-    this.userService.getForm5Table().subscribe({
-      next: (res) => {
 
-        console.log("FORM5 RESPONSE:", res);
+    this.userService.loadForm5Filtered().subscribe({
+
+      next: (res: any) => {
+
+        console.log("FORM5 RESPONSE", res);
 
         const apiData = res?.data;
 
@@ -53,17 +68,21 @@ export class Table5 implements OnInit {
           this.prepareRows(apiData);
 
         } else {
+
           this.tableRows = [];
+
         }
 
       },
-      error: err => console.error("FORM5 API ERROR:", err)
-    });
-  }
 
+      error: err => console.error(err)
+
+    });
+
+  }
   private prepareRows(data: any): void {
 
-    const members = data.data || [];   // ✅ FIXED HERE
+    const members = data.data || [];
 
     const societyMap: any = {};
 
@@ -72,14 +91,16 @@ export class Table5 implements OnInit {
       const key = m.society_name;
 
       if (!societyMap[key]) {
+
         societyMap[key] = {
-          district_name: data.district_name,
-          zone_name: data.zone_name,
+          district_name: data.district_name,   // <-- FIX
+          zone_name: data.zone_name,           // <-- FIX
           society_name: key,
           sc: [],
           women: [],
           general: []
         };
+
       }
 
       if (m.category_type === 'sc_st') {
@@ -91,6 +112,7 @@ export class Table5 implements OnInit {
       else if (m.category_type === 'general') {
         societyMap[key].general.push(m.member_name);
       }
+
     });
 
     this.tableRows = Object.values(societyMap).map((s: any) => ({
@@ -106,17 +128,114 @@ export class Table5 implements OnInit {
       women_count: s.women.length,
       general_count: s.general.length
     }));
+
+  }
+  applyFilter(): void {
+
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    console.log("Department:", deptId);
+    console.log("District:", distId);
+
+    this.userService.loadForm5Filtered(deptId, distId)
+      .subscribe((res: any) => {
+
+        console.log(res);
+
+        const apiData = res?.data;
+
+        if (res?.success && apiData) {
+
+          this.department_name = apiData.department_name;
+
+          this.prepareRows(apiData);
+
+        } else {
+
+          this.tableRows = [];
+
+        }
+
+      });
+
+  }
+  loadDepartments(): void {
+
+    this.userService.getdepartment().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  loadDistricts(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Form5');
+    this.userService.getdistrict().subscribe((res: any) => {
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form5_Report.xlsx');
+      if (res?.success) {
+
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+  downloadPdf(): void {
+
+    const departmentId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const districtId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    console.log("Department:", departmentId);
+    console.log("District:", districtId);
+
+    this.userService
+      .getForm5Pdf(departmentId, districtId)
+      .subscribe({
+
+        next: (res: Blob) => {
+
+          saveAs(
+            new Blob([res], { type: 'application/pdf' }),
+            'Form5_Report.pdf'
+          );
+
+        },
+
+        error: err => {
+
+          console.error(err);
+
+        }
+
+      });
+
   }
 }

@@ -9,12 +9,13 @@
         <h4>{{ selectedSociety?.society_name }}</h4>
 
         <!-- UNOPPOSED MESSAGE -->
-        <div class="annapost-box" *ngIf="selectedSociety?.election_status === 'UNOPPOSED'">
+        <!-- <div class="annapost-box" *ngIf="selectedSociety?.election_status === 'UNOPPOSED'">
             ✔️ இச்சங்கத்தில் <b>அன்னப்போஸ்ட்</b> தேர்தல் நடைபெறுகிறது
-        </div>
+        </div> -->
 
         <!-- MEMBERS (HIDE CHECKBOX FOR UNOPPOSED) -->
-        <div class="member-grid" *ngIf="selectedSociety?.election_status !== 'UNOPPOSED'">
+        <!-- <div class="member-grid" *ngIf="selectedSociety?.election_status !== 'UNOPPOSED'"> -->
+        <div class="member-grid">
 
             <div class="member-col" *ngFor="let type of ['sc_st','women','general']">
 
@@ -130,6 +131,7 @@
                     <th>தேர்தலை நிறுத்த</th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr *ngFor="let s of f4Societies; let i = index">
                     <td>{{ i + 1 }}</td>
@@ -138,14 +140,21 @@
                     <td>{{ s.women }}</td>
                     <td>{{ s.general }}</td>
                     <td>{{ s.total }}</td>
+
                     <td>
-                        <button class="btn-blue" (click)="openRejectPopup(s)" [class.disabled]="s.rejectDone">
+                        <!-- <button class="btn-blue" (click)="openRejectPopup(s)" [class.disabled]="s.rejectDone">
+
+                            {{ s.rejectDone ? 'திருத்தம் மேற்கொள்ளப்பட்டது' : 'திருத்தம் மேற்கொள்ள' }}
+                        </button> -->
+                        <button class="btn-blue" (click)="openRejectPopup(s)" [disabled]="s.rejectDone">
+
                             {{ s.rejectDone ? 'திருத்தம் மேற்கொள்ளப்பட்டது' : 'திருத்தம் மேற்கொள்ள' }}
                         </button>
                     </td>
 
                     <td>
                         <button class="btn-red" (click)="openStopPopup(s)" [class.disabled]="s.stopDone">
+
                             {{ s.stopDone ? 'தேர்தல் நிறுத்தப்பட்டது' : 'தேர்தலை நிறுத்த' }}
                         </button>
                     </td>
@@ -160,7 +169,7 @@
 
     <!-- ================= VIEW POPUP (LAST) ================= -->
     <!-- ================= REJECT POPUP ================= -->
-    <div class="modal-backdrop" *ngIf="showRejectPopup">
+    <!-- <div class="modal-backdrop" *ngIf="showRejectPopup">
         <div class="modal-box">
             <div class="modal-header">
                 <h3>தகுதி மறுத்தல்</h3>
@@ -169,50 +178,9 @@
 
             <h4>{{ selectedSociety?.society_name }}</h4>
 
-            <!-- <div class="annapost-box" *ngIf="selectedSociety?.election_status === 'UNOPPOSED'">
+            <div class="annapost-box" *ngIf="selectedSociety?.election_status === 'UNOPPOSED'">
                 ✔️ இச்சங்கத்தில் <b>அன்னப்போஸ்ட்</b> தேர்தல் நடைபெறுகிறது
-            </div> -->
-
-
-            <ng-container *ngIf="
-    selectedSociety?.election_status === 'QUALIFIED' ||
-    selectedSociety?.election_status === 'UNOPPOSED'
-  ">
-
-                <!-- SC/ST -->
-                <div class="member-column">
-                    <h4>ப.தி./ப.கு</h4>
-
-                    <div *ngFor="let member of scStMembers">
-                        <input type="checkbox">
-                        {{ member.member_name }}
-                    </div>
-                </div>
-
-                <!-- Women -->
-                <div class="member-column">
-                    <h4>மகளிர்</h4>
-
-                    <div *ngFor="let member of womenMembers">
-                        <input type="checkbox">
-                        {{ member.member_name }}
-                    </div>
-                </div>
-
-                <!-- General -->
-                <div class="member-column">
-                    <h4>பொது</h4>
-
-                    <div *ngFor="let member of generalMembers">
-                        <input type="checkbox">
-                        {{ member.member_name }}
-                    </div>
-                </div>
-
-            </ng-container>
-
-
-
+            </div>
 
             <div class="member-grid" *ngIf="selectedSociety?.election_status !== 'UNOPPOSED'">
                 <div class="member-col" *ngFor="let type of ['sc_st','women','general']">
@@ -232,7 +200,7 @@
                 <button class="btn-blue" (click)="finalWithdraw()">சமர்ப்பிக்க</button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- ================= STOP POPUP ================= -->
     <div class="modal-backdrop" *ngIf="showStopPopup">

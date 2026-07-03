@@ -8,7 +8,10 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   // private baseUrl = 'https://jk901cnt-5000.inc1.devtunnels.ms/api';
-  private baseUrl = 'https://72bnm96r-5000.inc1.devtunnels.ms/api';
+  // private baseUrl = 'https://72bnm96r-5000.inc1.devtunnels.ms/api';
+  private baseUrl = 'http://localhost:5000/api';
+
+  // http://localhost:5000/
 
 
   constructor(private http: HttpClient) { }
@@ -98,9 +101,7 @@ export class UserService {
   // editForm1(data: any): Observable<any> {
   //   return this.http.put<any>(`${this.baseUrl}/form1/edit`, data);
   // }
-  editForm1(id: number, data: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/form1/edit/${id}`, data);
-  }
+
 
   getForm1Pdf(department_id: number) {
     return this.http.get(
@@ -110,6 +111,8 @@ export class UserService {
       }
     );
   }
+
+
 
 
 
@@ -142,6 +145,40 @@ export class UserService {
       }
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  getEditableForm1(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form1/editable`);
+  }
+
+
+  // editForm1(data: any): Observable<any> {
+  //   return this.http.put<any>(`${this.baseUrl}/form1/edit`, data);
+  // }
+
+  editForm1(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form1/edit/${id}`, data);
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -228,6 +265,19 @@ export class UserService {
 
 
 
+  getEditableForm2(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form2/editable`);
+  }
+
+  // editForm2(id: number, data: any): Observable<any> {
+  //   return this.http.put<any>(`${this.baseUrl}/form2/edit/${id}`, data);
+  // }
+  editForm2(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form2/edit`, data);
+  }
+
+
+
 
 
   //form3
@@ -295,12 +345,55 @@ export class UserService {
   }
 
 
-  getForm3Pdf(department_id: number) {
+  // getForm3Pdf(department_id: number) {
+  //   return this.http.get(
+  //     `${this.baseUrl}/form3/pdf?department_id=${department_id}`,
+  //     { responseType: 'blob' }
+  //   );
+  // }
+
+  getForm3Pdf(department_id?: number, district_id?: number) {
+
+    let params: any = {};
+
+    if (department_id) {
+      params.department_id = department_id;
+    }
+
+    if (district_id) {
+      params.district_id = district_id;
+    }
+
     return this.http.get(
-      `${this.baseUrl}/form3/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
+      `${this.baseUrl}/form3/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
     );
   }
+
+
+  getEditableForm3(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form3/editable`);
+  }
+
+
+  editForm3(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form3/edit`, data);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -347,8 +440,8 @@ export class UserService {
   }
 
 
-  getForm4Table(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/form4/list`);
+  getForm4Table(selectedDepartment?: any, selectedDistrict?: any): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form4/list?department_id=${selectedDepartment}&district_id=${selectedDistrict}`);
   }
 
 
@@ -374,10 +467,32 @@ export class UserService {
   }
 
 
-  getForm4Pdf(department_id: number) {
+  // getForm4Pdf(department_id: number) {
+  //   return this.http.get(
+  //     `${this.baseUrl}/form4/pdf?department_id=${department_id}`,
+  //     { responseType: 'blob' }
+  //   );
+  // }
+
+
+  getForm4Pdf(department_id?: number, district_id?: number) {
+
+    let params: any = {};
+
+    if (department_id) {
+      params.department_id = department_id;
+    }
+
+    if (district_id) {
+      params.district_id = district_id;
+    }
+
     return this.http.get(
-      `${this.baseUrl}/form4/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
+      `${this.baseUrl}/form4/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
     );
   }
 
@@ -388,7 +503,14 @@ export class UserService {
 
 
 
+  getEditableForm4(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form4/editable`);
+  }
 
+
+  editForm4(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form4/edit`, data);
+  }
 
 
 
@@ -433,25 +555,53 @@ export class UserService {
 
     return this.http.get<any>(`${this.baseUrl}/form5`, { params });
   }
-
-  loadForm5Filtered(departmentId?: number, districtId?: number): Observable<any> {
+  loadForm5Filtered(departmentId?: number, districtId?: number) {
 
     let params: any = {};
 
-    if (departmentId) params.department_id = departmentId;
-    if (districtId) params.district_id = districtId;
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
 
-    return this.http.get<any>(`${this.baseUrl}/form5`, { params });
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(`${this.baseUrl}/form5`, {
+      params
+    });
+
+  }
+
+  getForm5Pdf(departmentId?: number, districtId?: number) {
+
+    let params: any = {};
+
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
+
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(`${this.baseUrl}/form5/pdf`, {
+      params,
+      responseType: 'blob'
+    });
+
+  }
+  getEditableForm5(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5/editable`);
+  }
+
+
+  editForm5(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form5/edit`, data);
   }
 
 
 
-  getForm5Pdf(departmentId: number) {
-    return this.http.get(
-      `${this.baseUrl}/form5/pdf?department_id=${departmentId}`,
-      { responseType: 'blob' }
-    );
-  }
 
 
 
@@ -460,13 +610,8 @@ export class UserService {
 
 
 
-
-
-
-
-
-  getForm5bpreview(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/form5b/preview`);
+  getForm5bpreview(form4_id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5b/preview/${form4_id}`);
   }
 
   postsocietystop(payload: any): Observable<any> {
@@ -505,6 +650,14 @@ export class UserService {
 
 
 
+  getEditableForm5b(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5b/editable`);
+  }
+
+
+  editForm5b(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form5b/edit`, data);
+  }
 
 
 
@@ -615,6 +768,17 @@ export class UserService {
 
 
 
+  getEditableForm6(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form6/editable`);
+  }
+
+
+  editForm6(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form6/edit`, data);
+  }
+
+
+
 
 
 
@@ -678,6 +842,21 @@ export class UserService {
 
 
 
+  getEditableForm7(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form7/editable`);
+  }
+
+
+  editForm7(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form7/edit`, data);
+  }
+
+
+
+
+
+
+
 
 
 
@@ -730,6 +909,15 @@ export class UserService {
       `${this.baseUrl}/form8/pdf?department_id=${department_id}`,
       { responseType: 'blob' }
     );
+  }
+
+  getEditableForm8(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form8/editable`);
+  }
+
+
+  editForm8(data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/form8/edit`, data);
   }
 
 

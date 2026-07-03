@@ -13,12 +13,14 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 })
 export class Form4 implements OnInit {
 
-  department_id = 2;
-  district_id = 1;
-  zone_id = 1;
+  department_id = 0;
+  district_id = 0;
+  zone_id = 0;
 
   district_name = '';
   zone_name = '';
+  isEditMode = false;
+  editableForm4Id: number | null = null;
   form4_id!: number;
 
   societyList: any[] = [];
@@ -28,14 +30,41 @@ export class Form4 implements OnInit {
   constructor(private userService: UserService, private router: Router
   ) { }
 
+  // ngOnInit(): void {
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+  //   this.form4_id = Number(localStorage.getItem('form4_id'));
+
+  //   this.loadF3();
+  // }
+  // ngOnInit(): void {
+
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+  //   console.log('district_name localStorage:',
+  //     localStorage.getItem('district_name'));
+
+  //   this.loadEditableForm4();
+  // }
+
+
   ngOnInit(): void {
+
+    this.department_id = Number(localStorage.getItem('department_id')) || 0;
+    this.district_id = Number(localStorage.getItem('district_id')) || 0;
+    this.zone_id = Number(localStorage.getItem('zone_id')) || 0;
+
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
-    this.form4_id = Number(localStorage.getItem('form4_id'));
 
-    this.loadF3();
+    console.log('Stored IDs:', {
+      department_id: this.department_id,
+      district_id: this.district_id,
+      zone_id: this.zone_id
+    });
+
+    this.loadEditableForm4();
   }
-
   /* ================= LOAD F3 ================= */
   loadF3() {
 
@@ -86,9 +115,68 @@ export class Form4 implements OnInit {
 
   }
   /* ============== FETCH CHECKBOX PREVIEW ============== */
+
+
+
+
+
+  loadEditableForm4() {
+
+
+    this.userService.getEditableForm4().subscribe({
+
+      next: (res: any) => {
+
+        console.log('Editable Form4 Response:', res);
+
+        const d = res.data;
+
+        this.isEditMode = true;
+        this.editableForm4Id = d.form4_id;
+
+        this.district_name = d.district_name;
+        this.zone_name = d.zone_name;
+
+        this.societyList = d.form2_selected_list.map((s: any) => ({
+
+          society_id: s.society_id,
+          society_name: s.society_name,
+          rural_id: s.rural_id,
+
+          sc_st: s.sc_st,
+          women: s.women,
+          general: s.general,
+          total: s.tot_voters,
+
+          selected: s.selected,
+
+          declared_sc_st: s.declared_sc_st,
+          declared_women: s.declared_women,
+          declared_general: s.declared_general,
+
+          remarks: s.remarks || ''
+        }));
+
+        this.updateLists();
+      },
+
+      error: () => {
+
+        console.log('No editable Form4 found');
+
+        this.isEditMode = false;
+
+        this.loadF3();
+      }
+    });
+  }
+
+
+
   loadCheckboxStatus() {
     this.userService.getForm4Checkbox(this.form4_id).subscribe(res => {
       if (!res?.success) return;
+
 
       const filed = res.data?.filed || [];
       const selectedSet = new Set<number>();
@@ -168,21 +256,40 @@ export class Form4 implements OnInit {
 
       form2_selected_list: this.selectedSocietyList
     };
+    console.log('Submit Payload:', payload);
+    /* ===== EDIT MODE ===== */
+    if (this.isEditMode) {
 
-    this.userService.submitForm4(payload).subscribe({
-      next: res => {
-        if (res?.success) {
-          alert('Form 4 submitted successfully');
-          localStorage.setItem('form4_id', res.data.form4_id);
+      this.userService.editForm4(payload).subscribe((res: any) => {
+
+        if (res.success) {
+
+          localStorage.setItem('form4_id', String(this.editableForm4Id));
+          localStorage.setItem('form4_completed', 'true');
+
+          alert('✔ Form4 Updated Successfully');
           this.router.navigate(['/layout/totalforms']);
-
-
         }
-      },
-      error: err => console.error('Submit error', err)
-    });
-  }
+      });
 
+    }
+
+    /* ===== ADD MODE ===== */
+    else {
+
+      this.userService.submitForm4(payload).subscribe((res: any) => {
+
+        if (res.success) {
+
+          localStorage.setItem('form4_id', res.data.form4_id);
+          localStorage.setItem('form4_completed', 'true');
+
+          alert('✔ Form4 Submitted Successfully');
+          this.router.navigate(['/layout/totalforms']);
+        }
+      });
+    }
+  }
   cancel() {
     window.history.back();
   }

@@ -126,6 +126,11 @@ td:nth-child(2) {
     margin-bottom: 20px;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 /* GRID */
 .member-grid {
     display: grid;

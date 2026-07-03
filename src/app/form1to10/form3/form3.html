@@ -55,7 +55,12 @@
             <div class="f4-input-group">
                 <span class="f4-label">உறுப்பினர் எண்ணிக்கை</span>
 
-                <input type="number" class="f4-input" [value]="voterCounts[i]" readonly />
+                <!-- <input type="number" class="f4-input" [value]="voterCounts[i]" readonly /> -->
+                <!-- <input type="number" class="f4-input" [value]="memberCounts[i]" readonly /> -->
+
+
+                <!-- <input type="number" class="f4-input" [(ngModel)]="memberCounts[i]" readonly /> -->
+                <input type="number" class="f4-input" value="0" readonly />
             </div>
         </div>
     </div>
@@ -113,7 +118,7 @@
                 </div>
 
                 <div class="f6-input-group">
-                    <span class="f6-label">மீதமுள்ள வாக்காளர்கள்</span>
+                    <span class="f6-label">சேர்க்கப்பட்ட வாக்காளர்கள்</span>
                     <input type="number" class="f6-input" [(ngModel)]="remainingCounts[i]" />
                 </div>
             </div>
@@ -128,7 +133,7 @@
             <div class="f7-name">{{ i + 1 }}. {{ soc.society_name }}</div>
             <div class="f7-input-group">
                 <span class="f7-label">மொத்த வாக்காளர்கள்</span>
-                <input class="f7-input" [value]="voterCounts[i]" readonly />
+                <input class="f7-input" [value]="voterCounts[i]" />
             </div>
         </div>
     </div>

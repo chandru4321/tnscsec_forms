@@ -228,23 +228,27 @@ export class Table1 implements OnInit {
 
   downloadPdf(): void {
 
-    const departmentId = 2;
+    const departmentId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    if (!departmentId) {
+      alert('Please select a department');
+      return;
+    }
 
     this.userService.getForm1Pdf(departmentId).subscribe(
       (res: Blob) => {
-
         saveAs(
           new Blob([res], { type: 'application/pdf' }),
           'Form1_Report.pdf'
         );
-
       },
       error => {
         console.error('PDF download error:', error);
       }
     );
   }
-
 
   /* =========================
      CREATE FILTER LISTS

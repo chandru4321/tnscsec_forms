@@ -17,6 +17,8 @@ export class Form1 implements OnInit {
   district_name = '';
   zone_name = '';
 
+  isSubmitting = false;
+
   masterZonesText = '';
   plannedSocietiesCount: number | null = null;
 
@@ -40,20 +42,60 @@ export class Form1 implements OnInit {
 
   /* ================= INIT ================= */
 
-  ngOnInit() {
+  // ngOnInit() {
 
+
+  //   this.department_name = localStorage.getItem('department_name') || '';
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_names') || '';
+
+  //   this.route.queryParams.subscribe(p => {
+  //     console.log('Query Params', p);
+
+  //     if (p['id']) {
+  //       this.form1Id = Number(p['id']);
+  //       this.isEditMode = true;
+  //       // this.loadEditForm(this.form1Id);
+  //       this.loadEditableForm();
+  //     } else {
+  //       this.loadMasterZones();
+  //       this.loadMasterZonesCheckbox();
+  //     }
+  //   });
+  // }
+
+  ngOnInit() {
+    console.log('district_name=', localStorage.getItem('district_name'));
+    console.log('zone_name=', localStorage.getItem('zone_name'));
     this.department_name = localStorage.getItem('department_name') || '';
     this.district_name = localStorage.getItem('district_name') || '';
-    this.zone_name = localStorage.getItem('zone_names') || '';
+    this.zone_name = localStorage.getItem('zone_name') || '';
 
-    this.route.queryParams.subscribe(p => {
-      if (p['id']) {
-        this.form1Id = Number(p['id']);
+    this.route.queryParams.subscribe(params => {
+
+      // Edit from table
+      if (params['id']) {
+
+        this.form1Id = +params['id'];
         this.isEditMode = true;
-        this.loadEditForm(this.form1Id);
-      } else {
-        this.loadMasterZones();
-        this.loadMasterZonesCheckbox();
+
+        this.loadEditableForm();
+      }
+      else {
+
+        // Fresh user or existing user
+        const form1Completed = localStorage.getItem('form1_completed');
+
+        if (form1Completed === 'true') {
+
+          this.loadEditableForm();
+
+        } else {
+
+          this.loadMasterZones();
+          this.loadMasterZonesCheckbox();
+
+        }
       }
     });
   }
@@ -65,6 +107,62 @@ export class Form1 implements OnInit {
       if (res.success) {
         this.masterZonesText = res.data.map((x: any) => x.association_name).join('\n\n');
         this.plannedSocietiesCount = res.data.length;
+      }
+    });
+  }
+
+
+
+  get selectedCount(): number {
+    return this.masterZones12.filter(x => x.selected).length;
+  }
+
+
+  loadEditableForm() {
+
+    this.userService.getEditableForm1().subscribe({
+
+      next: (res) => {
+
+        const d = res.data;
+
+        this.noteText = d.remark || '';
+
+        const selectedNames = d.selected_soc.map(
+          (x: any) => x.society_name.trim()
+        );
+
+        this.userService.getMasterZones().subscribe(master => {
+
+          this.masterZones12 = master.data.map((z: any) => ({
+            id: z.id,
+            name: z.association_name,
+            selected: selectedNames.includes(
+              z.association_name.trim()
+            )
+          }));
+
+          this.plannedSocietiesCount = master.data.length;
+
+          this.ruralDetails = d.selected_soc.map((s: any) => ({
+            name: s.society_name,
+            sc: s.sc_st,
+            women: s.women,
+            general: s.general,
+            total: s.tot_voters
+          }));
+
+          this.unselectedList = d.non_selected_soc.map(
+            (x: any) => x.society_name
+          );
+        });
+      },
+
+      error: () => {
+
+        // New user -> load empty form
+        this.loadMasterZones();
+        this.loadMasterZonesCheckbox();
       }
     });
   }
@@ -83,44 +181,6 @@ export class Form1 implements OnInit {
 
   /* ================= EDIT MODE ================= */
 
-  loadEditForm(id: number) {
-
-    this.userService.getMasterZones().subscribe(master => {
-
-      this.masterZones12 = master.data.map((z: any) => ({
-        id: z.id,
-        name: z.association_name,
-        selected: false
-      }));
-
-      this.masterZonesText = master.data.map((x: any) => x.association_name).join('\n\n');
-      this.plannedSocietiesCount = master.data.length;
-
-      this.userService.getForm1ById(id).subscribe(res => {
-
-        const d = res.data;
-        this.noteText = d.remark || '';
-
-        const selectedNames = d.selected_soc.map((x: any) =>
-          x.society_name.trim()
-        );
-
-        this.masterZones12 = this.masterZones12.map(z => ({
-          ...z,
-          selected: selectedNames.includes(z.name.trim())
-        }));
-
-        // Load existing rural details (no duplicate)
-        this.ruralDetails = d.selected_soc.map((s: any) => ({
-          name: s.society_name,
-          sc: s.sc_st,
-          women: s.women,
-          general: s.general,
-          total: s.tot_voters
-        }));
-      });
-    });
-  }
 
   /* ================= CHECKBOX ================= */
 
@@ -240,6 +300,40 @@ export class Form1 implements OnInit {
     };
 
     /* ===== EDIT MODE ===== */
+    //     if (this.isEditMode) {
+
+    //       this.userService.editForm1(this.form1Id!, payload).subscribe(() => {
+
+    //         localStorage.setItem('form1_id', this.form1Id!.toString());
+    //         localStorage.setItem('form1_completed', 'true');
+
+    //         alert("✔ Form Updated Successfully");
+    //         this.router.navigate(['/layout/form2']);
+    //       });
+
+    //     }
+    //     /* ===== ADD MODE ===== */
+    //     else {
+
+    //       this.userService.submitForm1(payload).subscribe((res: any) => {
+
+    //         if (res.success) {
+
+    //           localStorage.setItem('form1_id', res.data.id);
+    //           localStorage.setItem('form1_completed', 'true');
+
+    //           localStorage.setItem('district_name', this.district_name);
+    //           localStorage.setItem('zone_name', this.zone_name);
+
+    //           alert("✔ Form Submitted Successfully");
+    //           this.router.navigate(['/layout/totalforms']);
+    //         }
+    //       });
+    //     }
+    //   }
+    // }
+
+    /* ===== EDIT MODE ===== */
     if (this.isEditMode) {
 
       this.userService.editForm1(this.form1Id!, payload).subscribe(() => {
@@ -272,3 +366,4 @@ export class Form1 implements OnInit {
     }
   }
 }
+

@@ -17,6 +17,8 @@ export class Form2 implements OnInit {
   zone_name = '';
 
   form1_id!: number;
+  isEditMode = false;
+  form2Id: number | null = null;
 
   /* F3 */
   f3List = '';
@@ -38,19 +40,110 @@ export class Form2 implements OnInit {
   ) { }
 
   /* ================= INIT ================= */
-  ngOnInit(): void {
+  // ngOnInit(): void {
 
-    const storedForm1Id = localStorage.getItem('form1_id');
-    this.form1_id = storedForm1Id ? Number(storedForm1Id) : 0;
+  //   const storedForm1Id = localStorage.getItem('form1_id');
+  //   this.form1_id = storedForm1Id ? Number(storedForm1Id) : 0;
+
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+
+  //   if (this.form1_id) {
+  //     this.loadForm1Selected();
+  //   }
+  // }
+
+
+
+
+  // ngOnInit(): void {
+  //   console.log('form2Completed = ', localStorage.getItem('form2_completed'));
+
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+
+  //   const form2Completed = localStorage.getItem('form2_completed');
+
+  //   if (form2Completed === 'true') {
+
+  //     this.loadEditableForm2();
+
+  //   } else {
+
+  //     const storedForm1Id = localStorage.getItem('form1_id');
+  //     this.form1_id = storedForm1Id ? Number(storedForm1Id) : 0;
+
+  //     if (this.form1_id) {
+  //       this.loadForm1Selected();
+  //     }
+  //   }
+  // }
+
+  ngOnInit(): void {
 
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
 
-    if (this.form1_id) {
-      this.loadForm1Selected();
-    }
+    console.log('Calling Editable Form2 API');
+
+    this.loadEditableForm2();
   }
 
+
+  loadEditableForm2(): void {
+
+    console.log('loadEditableForm2 called');
+
+    this.userService.getEditableForm2().subscribe({
+
+      next: (res) => {
+
+        const d = res.data;
+
+        // ✅ EDIT MODE
+        this.isEditMode = true;
+        this.form2Id = d.id;
+
+        this.finalCheckboxList = [];
+
+        // Selected societies
+        d.selected_soc.forEach((s: any) => {
+
+          this.finalCheckboxList.push({
+            society_id: s.society_id,
+            society_name: s.society_name,
+            checked: true
+          });
+
+        });
+
+        // Non-selected societies
+        d.non_selected_soc.forEach((s: any) => {
+
+          this.finalCheckboxList.push({
+            society_id: s.society_id,
+            society_name: s.society_name,
+            checked: false
+          });
+
+        });
+
+        this.updateF5F6();
+      },
+
+      error: () => {
+
+        this.isEditMode = false;
+
+        const storedForm1Id = localStorage.getItem('form1_id');
+        this.form1_id = storedForm1Id ? Number(storedForm1Id) : 0;
+
+        if (this.form1_id) {
+          this.loadForm1Selected();
+        }
+      }
+    });
+  }
   /* ================= API-1 : LOAD F3 ================= */
   loadForm1Selected(): void {
     this.userService.getForm1Selected(this.form1_id).subscribe(res => {
@@ -85,36 +178,91 @@ export class Form2 implements OnInit {
   }
 
   /* ================= SUBMIT (🔥 FIXED) ================= */
+  //   submitForm2(): void {
+
+  //     // 🔥 BACKEND EXPECTS IDs ONLY
+  //     const selectedIds = this.finalCheckboxList
+  //       .filter(x => x.checked)
+  //       .map(x => x.society_id);
+
+  //     // Validation
+  //     if (selectedIds.length === 0) {
+  //       alert('⚠️ குறைந்தது ஒரு சங்கத்தை தேர்வு செய்ய வேண்டும்');
+  //       return;
+  //     }
+
+  //     const payload = {
+  //       selectedIds,                    // ✅ THIS IS THE FIX
+  //       remark: 'Form2 submission test'
+  //     };
+
+  //     console.log('🚀 FINAL PAYLOAD SENT TO BACKEND:', payload);
+
+
+  //     this.userService.submitForm2(payload).subscribe(res => {
+
+  //       if (res?.success) {
+
+  //         // Save form2 id for future use
+  //         localStorage.setItem('form2_id', res.data.id);
+  //         localStorage.setItem('form2_completed', 'true');
+
+  //         alert('✔ Form-2 Saved Successfully');
+  //         this.router.navigate(['/layout/totalforms']);
+  //       }
+  //     });
+  //   }
+  // }
+
+
+
   submitForm2(): void {
 
-    // 🔥 BACKEND EXPECTS IDs ONLY
     const selectedIds = this.finalCheckboxList
       .filter(x => x.checked)
       .map(x => x.society_id);
 
-    // Validation
     if (selectedIds.length === 0) {
       alert('⚠️ குறைந்தது ஒரு சங்கத்தை தேர்வு செய்ய வேண்டும்');
       return;
     }
 
     const payload = {
-      selectedIds,                    // ✅ THIS IS THE FIX
-      remark: 'Form2 submission test'
+      selectedIds,
+      remark: 'Updated after verification'
     };
 
-    console.log('🚀 FINAL PAYLOAD SENT TO BACKEND:', payload);
+    /* ===== EDIT MODE ===== */
+    if (this.isEditMode) {
 
-    this.userService.submitForm2(payload).subscribe(res => {
+      // this.userService.editForm2(this.form2Id!, payload).subscribe((res: any) => {
+      this.userService.editForm2(payload).subscribe((res: any) => {
+        if (res.success) {
 
-      if (res?.success) {
+          localStorage.setItem('form2_id', this.form2Id!.toString());
+          localStorage.setItem('form2_completed', 'true');
 
-        // Save form2 id for future use
-        localStorage.setItem('form2_id', res.data.id);
+          alert('✔ Form-2 Updated Successfully');
+          this.router.navigate(['/layout/totalforms']);
+        }
+      });
 
-        alert('✔ Form-2 Saved Successfully');
-        this.router.navigate(['/layout/totalforms']);
-      }
-    });
+    }
+
+    /* ===== ADD MODE ===== */
+    else {
+
+      this.userService.submitForm2(payload).subscribe((res: any) => {
+
+        if (res.success) {
+
+          localStorage.setItem('form2_id', res.data.id);
+          localStorage.setItem('form2_completed', 'true');
+
+          alert('✔ Form-2 Saved Successfully');
+          this.router.navigate(['/layout/totalforms']);
+        }
+      });
+    }
   }
 }

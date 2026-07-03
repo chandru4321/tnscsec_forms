@@ -247,9 +247,15 @@ export class Table3 implements OnInit {
 
   downloadPdf(): void {
 
-    const departmentId = 2;
+    const departmentId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
 
-    this.userService.getForm3Pdf(departmentId).subscribe(
+    const districtId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.getForm3Pdf(departmentId, districtId).subscribe(
       (res: Blob) => {
 
         saveAs(

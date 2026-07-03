@@ -17,6 +17,7 @@ export class Form5b implements OnInit {
   district_name = '';
   zone_name = '';
 
+
   f3Societies: any[] = [];
   f4Societies: any[] = [];
 
@@ -27,72 +28,152 @@ export class Form5b implements OnInit {
   showFinalSubmitPopup = false;
 
   stopRemark = '';
+  isEditMode = false;
+  editableData: any = null;
   formSubmitted = false;
 
-
-
-
-  scStMembers: any[] = [];
-  womenMembers: any[] = [];
-  generalMembers: any[] = [];
 
   constructor(
     private userService: UserService,
     private router: Router
   ) { }
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
 
+
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+
+  //   this.loadPreview();
+  // }
+
+
+  ngOnInit(): void {
 
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
 
-    this.loadPreview();
+    this.loadEditableForm5b();
+  }
+  loadEditableForm5b() {
+
+    this.userService.getEditableForm5b().subscribe({
+
+      next: (res: any) => {
+        console.log(this.userService);
+
+
+
+        this.isEditMode = true;
+        this.editableData = res.data;
+        console.log('Editable Societies:', this.editableData?.societies);
+
+
+        this.loadPreview();
+      },
+
+      error: () => {
+
+        this.isEditMode = false;
+
+        this.loadPreview();
+      }
+    });
   }
 
 
 
   /* ================= PREVIEW ================= */
 
+  /* ================= PREVIEW ================= */
+
   loadPreview() {
 
-    this.userService.getForm5bpreview().subscribe(res => {
+    const form4Id = Number(localStorage.getItem('form4_id'));
+
+    this.userService.getForm5bpreview(form4Id).subscribe(res => {
 
       if (!res?.success) return;
 
-      const prepared = res.data.societies.map((s: any) => ({
+      console.log('SOCIETIES:', res.data.societies);
 
-        ...s,
+      const prepared = res.data.societies.map((s: any) => {
 
-        sc_st: +s.declared.sc_st,
-        women: +s.declared.women,
-        general: +s.declared.general,
-        total: +s.declared.total,
+        const activeMembers = s.members.filter(
+          (m: any) => m.is_active === true
+        );
 
-        rejectDone: false,
-        stopDone: false,
+        return {
 
-        members: s.members.map((m: any) => ({
-          ...m,
-          checked: false
-        }))
+          ...s,
 
-      }));
+          sc_st: activeMembers.filter(
+            (m: any) => m.category_type === 'sc_st'
+          ).length,
+
+          women: activeMembers.filter(
+            (m: any) => m.category_type === 'women'
+          ).length,
+
+          general: activeMembers.filter(
+            (m: any) => m.category_type === 'general'
+          ).length,
+
+          total: activeMembers.length,
+
+          // Default button text
+          rejectDone: false,
+
+          stopDone: s.is_stopped === true,
+
+          members: s.members.map((m: any) => ({
+            ...m,
+            checked: false
+          }))
+        };
+
+      });
 
       this.f3Societies = JSON.parse(JSON.stringify(prepared));
-      this.f4Societies = prepared;
+      this.f4Societies = JSON.parse(JSON.stringify(prepared));
+
+      console.log('F4 Societies:', this.f4Societies);
 
     });
 
   }
 
-  /* ================= REJECT POPUP ================= */
-
   openRejectPopup(soc: any) {
 
-    this.selectedSociety = soc;
-    this.showRejectPopup = true;
+    if (this.isEditMode && this.editableData?.societies) {
 
+      const editableSoc = this.editableData.societies.find(
+        (x: any) => x.form4_filed_soc_id === soc.form4_filed_soc_id
+      );
+
+      if (editableSoc) {
+
+        this.selectedSociety = {
+          ...soc,
+          members: editableSoc.members.map((m: any) => ({
+            ...m,
+            checked: !m.is_active   // previously withdrawn = checked
+          }))
+        };
+
+      } else {
+
+        this.selectedSociety = soc;
+      }
+
+    } else {
+
+      this.selectedSociety = soc;
+    }
+
+    console.log('SELECTED SOCIETY', this.selectedSociety);
+
+    this.showRejectPopup = true;
   }
 
   closeReject() {
@@ -119,55 +200,101 @@ export class Form5b implements OnInit {
       .map((m: any) => m.id);
 
     // if (!candidateIds.length) {
-
     //   alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
     //   return;
-    //   ``
     // }
 
-    const payload = {
+    /* ===== EDIT MODE ===== */
+    if (this.isEditMode) {
 
-      candidate_ids: candidateIds
+      const payload = {
+        updates: candidateIds.map((id: number) => ({
+          form5_id: id,
+          member_name: '',
+          aadhar_no: ''
+        }))
+      };
 
-    };
+      console.log('EDIT PAYLOAD', payload);
 
-    this.userService.postcandidatestop(payload).subscribe(res => {
+      this.userService.editForm5b(payload).subscribe((res: any) => {
 
-      if (res?.success) {
+        if (res?.success) {
 
-        this.selectedSociety.rejectDone = true;
+          const soc = this.f4Societies.find(
+            (x: any) =>
+              x.form4_filed_soc_id === this.selectedSociety.form4_filed_soc_id
+          );
 
-        this.closeReject();
+          if (soc) {
+            soc.rejectDone = true;
+          }
 
-      }
+          alert('✔ Form5B Updated Successfully');
 
-    });
+          this.closeReject();
+        }
 
+      });
+
+    }
+
+    /* ===== ADD MODE ===== */
+    else {
+
+      const payload = {
+        candidate_ids: candidateIds
+      };
+
+      this.userService.postcandidatestop(payload).subscribe((res: any) => {
+
+        if (res?.success) {
+
+          const soc = this.f4Societies.find(
+            (x: any) =>
+              x.form4_filed_soc_id === this.selectedSociety.form4_filed_soc_id
+          );
+
+          if (soc) {
+
+            soc.members.forEach((m: any) => {
+
+              if (candidateIds.includes(m.id)) {
+                m.is_active = false;
+              }
+
+            });
+
+            const activeMembers = soc.members.filter(
+              (m: any) => m.is_active === true
+            );
+
+            soc.sc_st = activeMembers.filter(
+              (m: any) => m.category_type === 'sc_st'
+            ).length;
+
+            soc.women = activeMembers.filter(
+              (m: any) => m.category_type === 'women'
+            ).length;
+
+            soc.general = activeMembers.filter(
+              (m: any) => m.category_type === 'general'
+            ).length;
+
+            soc.total = activeMembers.length;
+
+            // Button text change after submit
+            soc.rejectDone = true;
+          }
+
+          alert('✔ Form5B Submitted Successfully');
+
+          this.closeReject();
+        }
+
+      });
+    }
   }
-
-
-  openSocietyModal(society: any) {
-
-    console.log('SELECTED SOCIETY', society);
-
-    const members = society.members || [];
-
-    console.log('MEMBERS', members);
-
-    this.scStMembers = members.filter(
-      (m: any) => m.category_type === 'sc_st'
-    );
-
-    this.womenMembers = members.filter(
-      (m: any) => m.category_type === 'women'
-    );
-
-    this.generalMembers = members.filter(
-      (m: any) => m.category_type === 'general'
-    );
-
-  }
-
   /* ================= STOP ELECTION ================= */
 
   openStopPopup(soc: any) {

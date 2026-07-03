@@ -1,8 +1,31 @@
 <div class="table-actions">
-    <button class="export-btn" (click)="exportToExcel()">
-        ⬇ Export Excel
+
+    <div class="filter-section">
+
+        <label>Department:</label>
+        <select [(ngModel)]="selectedDepartment" (change)="applyFilter()">
+            <option value="">All</option>
+            <option *ngFor="let d of departmentList" [value]="d.name">
+                {{ d.name }}
+            </option>
+        </select>
+
+        <label>District:</label>
+        <select [(ngModel)]="selectedDistrict" (change)="applyFilter()">
+            <option value="">All</option>
+            <option *ngFor="let d of districtList" [value]="d.name">
+                {{ d.name }}
+            </option>
+        </select>
+
+    </div>
+
+    <button class="export-btn" (click)="downloadPdf()">
+        📄 Download PDF
     </button>
+
 </div>
+
 
 <div class="formt4-container">
     <div class="table-scroll-wrapper">
@@ -42,11 +65,11 @@
                 <!-- Sub Header -->
                 <tr class="sub-header">
                     <th>சங்கம்</th>
-                    <th>SC/ST</th>
+                    <th>ப.இ./ப.கு</th>
                     <th>பெண்கள்</th>
                     <th>பொது</th>
 
-                    <th>SC/ST</th>
+                    <th>ப.இ./ப.கு</th>
                     <th>பெண்கள்</th>
                     <th>பொது</th>
                 </tr>

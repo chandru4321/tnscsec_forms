@@ -2,29 +2,36 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  height: 90px;
   background: #4caf50;
+  padding: 10px 20px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
-}
-
-.logo {
-  height: 55px;
 }
 
 .left-section {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex: 1;
+  min-width: 0;
+}
+
+.header-text {
+  min-width: 0;
+}
+
+.logo {
+  height: 55px;
+  flex-shrink: 0;
 }
 
 .header-title {
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
+  color: white;
+  line-height: 1.3;
 }
 
 .header-subtitle {
@@ -53,9 +60,47 @@
 
 .logout-btn {
   background: #e53935;
-  color: #fff;
+  color: white;
   border: none;
   padding: 6px 14px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  .left-section {
+    width: 100%;
+  }
+
+  .right-section {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .header-title {
+    font-size: 14px;
+  }
+
+  .header-subtitle {
+    font-size: 12px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  .logout-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }

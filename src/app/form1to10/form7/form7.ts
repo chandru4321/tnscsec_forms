@@ -16,6 +16,9 @@ export class Form7 implements OnInit {
 
   district_name = '';
   Zone_name = '';
+  isEditMode = false;
+  editableData: any = null;
+  form7_id!: number;
 
   // F3 – Rural counts
   f3Societies: any[] = [];
@@ -27,21 +30,72 @@ export class Form7 implements OnInit {
   f5Data: any[] = [];
 
   constructor(private userService: UserService, private router: Router) { }
+  // ngOnInit(): void {
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.Zone_name = localStorage.getItem('zone_name') || '';
+  //   this.loadPreview();
+
+  // }
   ngOnInit(): void {
+
+    console.log('Form7 ngOnInit');
+
     this.district_name = localStorage.getItem('district_name') || '';
     this.Zone_name = localStorage.getItem('zone_name') || '';
-    this.loadPreview();
+
+    this.loadEditableForm7();
   }
+
+
+
+
+  loadEditableForm7() {
+
+    this.userService.getEditableForm7().subscribe({
+
+      next: (res: any) => {
+
+        this.editableData = res.data;
+
+        // If societies exist, it's edit mode
+        this.isEditMode = res.data.societies?.length > 0;
+
+        if (res.data.form7_id) {
+          this.form7_id = res.data.form7_id;
+        }
+
+        console.log('EDIT MODE:', this.isEditMode);
+        console.log('EDIT DATA:', this.editableData);
+
+        this.loadPreview();
+
+      },
+
+      error: () => {
+
+        this.isEditMode = false;
+
+        this.loadPreview();
+
+      }
+
+    });
+
+  }
+
 
   /* ================= PREVIEW ================= */
   loadPreview() {
+
     this.userService.getForm7Preview().subscribe(res => {
+
       if (!res?.success) return;
 
       const societies = res.data.societies;
 
       // Remove duplicates
       const uniqueMap = new Map();
+
       societies.forEach((s: any) => {
         uniqueMap.set(s.society_id, s);
       });
@@ -49,16 +103,22 @@ export class Form7 implements OnInit {
       const uniqueSocieties = Array.from(uniqueMap.values());
 
       /* ================= F3 ================= */
+
       this.f3Societies = uniqueSocieties.map((s: any) => ({
+
         society_id: s.society_id,
         society_name: s.society_name,
+
         sc_st: +s.rural.sc_st,
         women: +s.rural.women,
         general: +s.rural.general,
+
         total: +s.rural.total_voters
+
       }));
 
       /* ================= F4 ================= */
+
       this.f4Societies = uniqueSocieties.map((s: any) => {
 
         const scst = s.qualified_categories.sc_st;
@@ -70,17 +130,24 @@ export class Form7 implements OnInit {
         const general_count = general.eligible ? general.count : 0;
 
         return {
+
           society_id: s.society_id,
           society_name: s.society_name,
+
           sc_st: sc_st_count,
           women: women_count,
           general: general_count,
+
           total: sc_st_count + women_count + general_count
+
         };
+
       });
 
       /* ================= F5 ================= */
+
       this.f5Data = this.f4Societies.map(f4 => ({
+
         society_id: f4.society_id,
         society_name: f4.society_name,
 
@@ -88,23 +155,62 @@ export class Form7 implements OnInit {
         final_women_count: f4.women,
         final_general_count: f4.general,
 
-        // Total voters from F4
         form3_total: f4.total,
 
-        // User inputs
         casted_votes_count: 0,
         voting_percentage: 0,
+
         ballot_box_count: 0,
         stamp_count: 0,
+
         polling_stations_count: 0,
         election_officers_count: 0,
 
-        // 🔥 Single rule field
         polling_suspension_count: 'NO_ISSUES'
-      }));
-    });
-  }
 
+      }));
+
+
+      /* ================= EDITABLE ================= */
+
+      /* ================= EDITABLE ================= */
+
+      if (this.isEditMode && this.editableData?.societies) {
+
+        this.f5Data = this.f5Data.map(row => {
+
+          const edit = this.editableData.societies.find(
+            (x: any) => x.society_id === row.society_id
+          );
+
+          if (!edit) {
+            return row;
+          }
+
+          return {
+
+            ...row,
+
+            casted_votes_count: edit.casted_votes_count,
+            voting_percentage: Number(edit.voting_percentage),
+
+            ballot_box_count: edit.ballot_box_count,
+            stamp_count: edit.stamp_count,
+
+            polling_stations_count: edit.polling_stations_count,
+            election_officers_count: edit.election_officers_count,
+
+            polling_suspension_count: edit.polling_suspension_count
+
+          };
+
+        });
+
+      }
+
+    });   // <-- closes subscribe
+
+  }      // <-- closes loadPreview()
   /* ================= RULE SELECT ================= */
   setRule(row: any, rule: string, event: any) {
     if (event.target.checked) {
@@ -132,44 +238,113 @@ export class Form7 implements OnInit {
   /* ================= SUBMIT ================= */
   onSubmit() {
 
-    const payload = {
-      societies: this.f5Data.map(row => ({
+    /* ================= EDIT ================= */
 
-        society_id: row.society_id,
-        society_name: row.society_name,
+    if (this.isEditMode) {
 
-        final_sc_st_count: row.final_sc_st_count,
-        final_women_count: row.final_women_count,
-        final_general_count: row.final_general_count,
+      const payload = {
 
-        form3_total: row.form3_total,
-        casted_votes_count: row.casted_votes_count,
-        voting_percentage: Number(row.voting_percentage),
+        form7_id: this.form7_id,
 
-        ballot_box_count: row.ballot_box_count,
-        stamp_count: row.stamp_count,
-        polling_stations_count: row.polling_stations_count,
-        election_officers_count: row.election_officers_count,
+        societies: this.f5Data.map(row => ({
 
-        polling_suspension_count: row.polling_suspension_count
-      }))
-    };
+          society_id: row.society_id,
+          society_name: row.society_name,
 
-    console.log('Form7 Payload:', payload);
+          final_sc_st_count: row.final_sc_st_count,
+          final_women_count: row.final_women_count,
+          final_general_count: row.final_general_count,
 
-    this.userService.submitForm7(payload).subscribe({
-      next: (res: any) => {
-        if (res?.success) {
-          alert('Form 7 வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது');
+          form3_total: row.form3_total,
+
+          casted_votes_count: row.casted_votes_count,
+          voting_percentage: Number(row.voting_percentage),
+
+          ballot_box_count: row.ballot_box_count,
+          stamp_count: row.stamp_count,
+
+          polling_stations_count: row.polling_stations_count,
+          election_officers_count: row.election_officers_count,
+
+          polling_suspension_count: row.polling_suspension_count
+
+        }))
+
+      };
+
+      console.log(payload);
+
+      this.userService.editForm7(payload).subscribe({
+
+        next: (res: any) => {
+
+          alert('Form7 Updated Successfully');
           this.router.navigate(['/layout/totalforms']);
 
 
+          // this.loadEditableForm7();
+
+        },
+
+        error: (err) => {
+
+          console.log(err);
 
         }
-      },
-      error: () => {
-        alert('Form 7 சமர்ப்பிப்பதில் பிழை ஏற்பட்டது');
-      }
-    });
+
+      });
+    }
+
+
+    /* ================= FIRST SUBMIT ================= */
+
+    else {
+
+      const payload = {
+
+        societies: this.f5Data.map(row => ({
+
+          society_id: row.society_id,
+          society_name: row.society_name,
+
+          final_sc_st_count: row.final_sc_st_count,
+          final_women_count: row.final_women_count,
+          final_general_count: row.final_general_count,
+
+          form3_total: row.form3_total,
+          casted_votes_count: row.casted_votes_count,
+          voting_percentage: Number(row.voting_percentage),
+
+          ballot_box_count: row.ballot_box_count,
+          stamp_count: row.stamp_count,
+
+          polling_stations_count: row.polling_stations_count,
+          election_officers_count: row.election_officers_count,
+
+          polling_suspension_count: row.polling_suspension_count
+
+        }))
+
+      };
+
+      console.log(payload);
+
+      this.userService.submitForm7(payload).subscribe({
+
+        next: (res: any) => {
+
+          alert('Form7 Submitted Successfully');
+
+
+          // this.loadEditableForm7();
+          this.router.navigate(['/layout/totalforms']);
+
+
+        }
+
+      });
+
+    }
+
   }
 }

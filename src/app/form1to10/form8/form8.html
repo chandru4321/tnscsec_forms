@@ -1,4 +1,5 @@
 <!-- Preview Popup -->
+<!-- Preview Popup -->
 <div class="popup-overlay" *ngIf="showPreviewPopup">
 
     <div class="popup-container">
@@ -9,31 +10,34 @@
             <span class="close-btn" (click)="closePreview()">✖</span>
         </div>
 
-        <!-- Rural Count Table -->
-        <div class="mini-table">
-            <label class="mini-title">சங்கத்தின் எண்ணிக்கை</label>
-            <table>
-                <tr>
-                    <th>ப.தி./ப.கு</th>
-                    <th>மகளிர்</th>
-                    <th>பொது</th>
-                </tr>
-                <tr>
-                    <td>{{ selectedSociety?.rural?.sc_st }}</td>
-                    <td>{{ selectedSociety?.rural?.women }}</td>
-                    <td>{{ selectedSociety?.rural?.general }}</td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- Member List Scroll -->
+        <!-- Scrollable Content -->
         <div class="member-scroll">
 
+            <!-- Rural Count Table -->
+            <div class="mini-table">
+                <label class="mini-title">சங்கத்தின் எண்ணிக்கை</label>
+
+                <table>
+                    <tr>
+                        <th>ப.தி./ப.கு</th>
+                        <th>மகளிர்</th>
+                        <th>பொது</th>
+                    </tr>
+                    <tr>
+                        <td>{{ selectedSociety?.rural?.sc_st }}</td>
+                        <td>{{ selectedSociety?.rural?.women }}</td>
+                        <td>{{ selectedSociety?.rural?.general }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Member Grid -->
             <div class="member-grid">
 
                 <!-- SC/ST -->
                 <div class="member-col">
                     <h5>ப.தி./ப.கு</h5>
+
                     <div *ngFor="let m of getMembers('SC_ST')" class="member-box">
                         <label>
                             <input type="checkbox" (change)="onMemberToggle(m, 'SC_ST', $event)">
@@ -45,6 +49,7 @@
                 <!-- WOMEN -->
                 <div class="member-col">
                     <h5>மகளிர்</h5>
+
                     <div *ngFor="let m of getMembers('WOMEN')" class="member-box">
                         <label>
                             <input type="checkbox" (change)="onMemberToggle(m, 'WOMEN', $event)">
@@ -56,6 +61,7 @@
                 <!-- GENERAL -->
                 <div class="member-col">
                     <h5>பொது</h5>
+
                     <div *ngFor="let m of getMembers('GENERAL')" class="member-box">
                         <label>
                             <input type="checkbox" (change)="onMemberToggle(m, 'GENERAL', $event)">
@@ -68,13 +74,19 @@
 
         </div>
 
-        <!-- Buttons Right -->
+        <!-- Footer -->
         <div class="popup-footer">
-            <button class="btn-grey" (click)="closePreview()">ரத்து செய்</button>
-            <button class="btn-blue" (click)="submitPreview()">சமர்ப்பிக்க</button>
+            <button class="btn-grey" (click)="closePreview()">
+                ரத்து செய்
+            </button>
+
+            <button class="btn-blue" (click)="submitPreview()">
+                சமர்ப்பிக்க
+            </button>
         </div>
 
     </div>
+
 </div>
 
 

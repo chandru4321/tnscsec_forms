@@ -161,7 +161,11 @@ export class Login {
           localStorage.setItem('username', res.data.username);
           localStorage.setItem('department_name', res.data.department_name);
           localStorage.setItem('district_name', res.data.district_name);
-          localStorage.setItem('zone_name', res.data.zone_name);
+          // localStorage.setItem('zone_name', res.data.zone_name);
+          localStorage.setItem(
+            'zone_name',
+            res.data.zone_name?.[0] || ''
+          );
           localStorage.setItem('auth_token', res.data.accessToken);
 
           // Store UID
@@ -170,8 +174,12 @@ export class Login {
           // Store IDs
           localStorage.setItem('department_id', String(res.data.department_id || 0));
           localStorage.setItem('district_id', String(res.data.district_id || 0));
-          localStorage.setItem('zone_id', String(res.data.zone_id || 0));
+          // localStorage.setItem('zone_id', String(res.data.zone_id || 0));
 
+          localStorage.setItem(
+            'zone_id',
+            String(res.data.zone_id?.[0] || 0)
+          );
           // Show success toast
           this.showSuccessToast('Login Successful');
 

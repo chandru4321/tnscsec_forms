@@ -83,7 +83,7 @@
 
     <!-- ================= F3 ================= -->
     <label class="section-label">
-        வேட்புமனு பரிசீலனையில் தகுதி பெற்ற சங்கங்கள்
+        தேர்தல் அறிவிப்பின்படி வேட்புமனு தாக்கல் நடைபெற வேண்டிய சங்கங்கள் மற்றும் உறுப்பினர்களின் எண்ணிக்கை
     </label>
 
     <div class="table-box">
@@ -102,14 +102,56 @@
                 <tr *ngFor="let s of f3Societies; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ s.society_name }}</td>
-                    <td>{{ s.sc_st }}</td>
+                    <!-- <td>{{ s.sc_st }}</td>
                     <td>{{ s.women }}</td>
                     <td>{{ s.general }}</td>
-                    <td>{{ s.total }}</td>
+                    <td>{{ s.total }}</td> -->
+
+                    <td>{{ s.rural_sc_st }}</td>
+                    <td>{{ s.rural_women }}</td>
+                    <td>{{ s.rural_general }}</td>
+                    <td>{{ s.rural_total }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+
+
+
+    <label class="section-label">
+        வேட்புமனு தாக்கல் செய்யப்பட்ட சங்கங்கள் மற்றும் உறுப்பினர்களின் எண்ணிக்கை
+    </label>
+
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>வ.எண்</th>
+                    <th>சங்கத்தின் பெயர்</th>
+                    <th>ப.தி./ப.கு</th>
+                    <th>மகளிர்</th>
+                    <th>பொது</th>
+                    <th>மொத்தம்</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let s of f3Societies; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ s.society_name }}</td>
+                    <td>{{ s.declared_sc_st }}</td>
+                    <td>{{ s.declared_women }}</td>
+                    <td>{{ s.declared_general }}</td>
+                    <td>{{ s.declared_total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
 
     <!-- ================= F4 ================= -->
     <label class="section-label">
@@ -141,6 +183,10 @@
                     <td>
                         <button class="btn-blue" (click)="openRejectPopup(s)" [class.disabled]="s.rejectDone">
                             {{ s.rejectDone ? 'திருத்தம் மேற்கொள்ளப்பட்டது' : 'திருத்தம் மேற்கொள்ள' }}
+
+                            <!-- {{ s.rejectDone || isEditMode
+    ? 'திருத்தம் மேற்கொள்ளப்பட்டது'
+    : 'திருத்தம் மேற்கொள்ள' }} -->
                         </button>
                     </td>
 

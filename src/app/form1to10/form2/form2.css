@@ -1,11 +1,179 @@
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+@media screen and (max-width: 768px) {
+
+  .step-container {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .sub-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  /* Stack columns */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Stack panels */
+  .upload-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .form-column {
+    width: 100%;
+  }
+
+  .input-box {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .checkbox-list,
+  .society-list-box {
+    max-height: 250px;
+  }
+
+  .checkbox-item,
+  .society-item {
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    transform: scale(1.2);
+  }
+
+  .panel-title {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .panel-item,
+  .panel-item-red {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  /* Buttons */
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .button-box {
+    width: 100%;
+  }
+
+  /* Section title */
+  .section-title {
+    width: 100%;
+    font-size: 16px;
+    white-space: normal;
+  }
+
+  .unselected-box {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================
+   EXTRA SMALL DEVICES
+========================================== */
+@media screen and (max-width: 480px) {
+
+  .step-container {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .sub-title {
+    font-size: 14px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .input-box {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .checkbox-item,
+  .society-item {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .panel-title {
+    font-size: 14px;
+  }
+
+  .panel-item,
+  .panel-item-red {
+    font-size: 13px;
+  }
+}
+
+
+
+
 /* --------------------------------------------------
    MAIN CONTAINER
 -------------------------------------------------- */
+/* .step-container {
+  background: #b7d7b2;
+  padding: 40px 60px;
+  width: 100%;
+  box-sizing: border-box;
+} */
+
+
 .step-container {
   background: #b7d7b2;
   padding: 40px 60px;
   width: 100%;
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .step-container {
+    padding: 10px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px;
+  }
+
+  .upload-container {
+    grid-template-columns: 1fr !important;
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .button-box {
+    width: 100%;
+  }
 }
 
 /* --------------------------------------------------

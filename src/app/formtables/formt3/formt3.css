@@ -22,20 +22,34 @@
 /* Scroll */
 .table-scroll-wrapper {
     width: 100%;
-    max-height: calc(100vh - 200px);
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     border: 1px solid #4d7c0f;
     background: #ffffff;
 }
 
 /* Table */
-.report-table {
+/* .report-table {
     width: 100%;
     min-width: 1800px;
     border-collapse: collapse;
     table-layout: fixed;
     font-family: "Noto Sans Tamil", sans-serif;
     font-size: 14px;
+    margin-bottom: 0;
+
+} */
+
+.report-table {
+    width: auto;
+    min-width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.empty-table-message {
+    padding: 30px;
+    margin: 0;
 }
 
 .report-table th,

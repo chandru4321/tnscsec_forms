@@ -19,6 +19,9 @@ export class Form3 implements OnInit {
   form1_id!: number;
   form2_id!: number;
 
+  isEditMode = false;
+  form3Id: number | null = null;
+
   // F3 society list (IMPORTANT: object list)
   f3SocietyList: {
     society_id: number;
@@ -35,18 +38,73 @@ export class Form3 implements OnInit {
   removedCounts: number[] = [];
   remainingCounts: number[] = [];
 
+
+  memberCounts: number[] = [];   // From API (readonly)
+
   constructor(private userService: UserService, private router: Router
 
   ) { }
 
   ngOnInit(): void {
-    this.form1_id = Number(localStorage.getItem('form1_id'));
+
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
 
-    if (this.form1_id) {
-      this.loadF3();
-    }
+    this.loadEditableForm3();
+  }
+
+
+
+
+
+
+  loadEditableForm3(): void {
+
+    console.log('loadEditableForm3 called');
+
+    this.userService.getEditableForm3().subscribe({
+
+      next: (res: any) => {
+
+        const d = res.data;
+
+        this.isEditMode = true;
+        this.form3Id = d.id;
+        this.form2_id = d.form2_id;
+
+        this.f3SocietyList = d.societies.map((s: any) => ({
+          society_id: s.society_id,
+          society_name: s.society_name
+        }));
+
+        this.voterCounts = d.societies.map((s: any) =>
+          Number(s.ass_memlist || 0)
+        );
+
+        this.f5Answers = d.societies.map((s: any) =>
+          s.ero_claim === 1 ? 'YES' : 'NO'
+        );
+
+        this.removedCounts = d.societies.map((s: any) =>
+          Number(s.jcount || 0)
+        );
+
+        this.remainingCounts = d.societies.map((s: any) =>
+          Number(s.rcount || 0)
+        );
+      },
+
+      error: () => {
+
+        this.isEditMode = false;
+
+        this.form1_id = Number(localStorage.getItem('form1_id'));
+
+        if (this.form1_id) {
+          this.loadF3();
+        }
+      }
+    });
   }
 
   // ================= LOAD F3 DATA =================
@@ -100,42 +158,62 @@ export class Form3 implements OnInit {
   // ================= SUBMIT =================
   onSubmit() {
 
-    if (!this.form2_id) {
-      alert('form2_id missing. Please reload page.');
-      return;
-    }
+    // const society_entries = this.f3SocietyList.map((soc, i) => ({
+    //   society_id: soc.society_id,
+    //   society_name: soc.society_name,
+    //   ass_memlist: String(this.voterCounts[i]),
+    //   ero_claim: this.f5Answers[i],
+    //   jcount: String(this.removedCounts[i]),
+    //   rcount: String(this.remainingCounts[i]),
+    //   total: String(this.voterCounts[i])
+    // }));
 
     const society_entries = this.f3SocietyList.map((soc, i) => ({
       society_id: soc.society_id,
       society_name: soc.society_name,
-
-      ass_memlist: String(this.voterCounts[i]),   // ✅ STRING
-      ero_claim: this.f5Answers[i],               // YES / NO (string)
-      jcount: String(this.removedCounts[i]),      // ✅ STRING
-      rcount: String(this.remainingCounts[i]),    // ✅ STRING
-      total: String(this.voterCounts[i])          // ✅ STRING
+      ass_memlist: String(this.voterCounts[i]),
+      ero_claim: this.f5Answers[i].toLowerCase(), // "yes" or "no"
+      jcount: Number(this.removedCounts[i]),
+      rcount: Number(this.remainingCounts[i]),
+      total: Number(this.voterCounts[i])
     }));
-
     const payload = {
       form2_id: this.form2_id,
       remarks: `Form3 submission for Form2 ID ${this.form2_id}`,
       society_entries
     };
 
-    console.log('FINAL PAYLOAD', payload);
+    /* ===== EDIT MODE ===== */
+    if (this.isEditMode) {
 
-    this.userService.submitForm3(payload).subscribe({
-      next: () => {
-        alert('Form3 submitted successfully');
-        this.router.navigate(['/layout/totalforms']); // ✅ added line
-      },
+      this.userService.editForm3(payload).subscribe((res: any) => {
 
-      error: err => {
-        console.error(err);
-        alert(err?.error?.message || 'Submission failed');
-      }
-    });
+        if (res.success) {
 
+          localStorage.setItem('form3_completed', 'true');
+
+          alert('✔ Form3 Updated Successfully');
+          this.router.navigate(['/layout/totalforms']);
+        }
+      });
+
+    }
+
+    /* ===== ADD MODE ===== */
+    else {
+
+      this.userService.submitForm3(payload).subscribe((res: any) => {
+
+        if (res.success) {
+
+          localStorage.setItem('form3_id', res.data.id);
+          localStorage.setItem('form3_completed', 'true');
+
+          alert('✔ Form3 Submitted Successfully');
+          this.router.navigate(['/layout/totalforms']);
+        }
+      });
+    }
   }
 
 

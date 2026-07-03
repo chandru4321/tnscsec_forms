@@ -25,6 +25,8 @@ export class Form5Component implements OnInit {
 
   district_name = '';
   zone_name = '';
+  isEditMode = false;
+  editableMembers: any[] = [];
 
   showModal = false;
   selectedSociety: any = null;
@@ -33,12 +35,46 @@ export class Form5Component implements OnInit {
 
   constructor(private userService: UserService) { }
 
+  // ngOnInit(): void {
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+  //   this.loadForm5();
+  // }
   ngOnInit(): void {
+
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
-    this.loadForm5();
+
+    this.loadEditableForm5();
   }
 
+  loadEditableForm5() {
+
+    this.userService.getEditableForm5().subscribe({
+
+      next: (res: any) => {
+
+        const d = res.data;
+
+        if (d.editable) {
+
+          this.isEditMode = true;
+
+          this.editableMembers = d.members;
+
+          // Load society list normally
+          this.loadForm5();
+        }
+      },
+
+      error: () => {
+
+        this.isEditMode = false;
+
+        this.loadForm5();
+      }
+    });
+  }
   /* ===============================
      LOAD FORM 5 ELIGIBLE (DEDUPED)
      =============================== */
@@ -103,16 +139,39 @@ export class Form5Component implements OnInit {
      OPEN MODAL
      =============================== */
   openModal(row: any) {
+
     this.selectedSociety = row;
     this.members = [];
 
-    this.createMembers('sc_st', row.sc_st);
-    this.createMembers('women', row.women);
-    this.createMembers('general', row.general);
+    const existingMembers = this.editableMembers.filter(
+      x => x.form4_filed_soc_id === row.filed_soc_id
+    );
+
+    if (existingMembers.length > 0) {
+
+      // EDIT MODE
+      this.isEditMode = true;
+
+      this.members = existingMembers.map((m: any) => ({
+        id: m.id,
+        form4_filed_soc_id: m.form4_filed_soc_id,
+        category_type: m.category_type,
+        member_name: m.member_name,
+        aadhar_no: m.aadhar_no
+      }));
+
+    } else {
+
+      // ADD MODE
+      this.isEditMode = false;
+
+      this.createMembers('sc_st', row.sc_st);
+      this.createMembers('women', row.women);
+      this.createMembers('general', row.general);
+    }
 
     this.showModal = true;
   }
-
   private createMembers(type: CategoryType, count: number) {
     for (let i = 0; i < count; i++) {
       this.members.push({
@@ -154,6 +213,7 @@ export class Form5Component implements OnInit {
 
     const namePattern = /^[a-zA-Z\u0B80-\u0BFF ]+$/;
     const aadharPattern = /^([0-9]{12}|[0-9]{4}-[0-9]{4}-[0-9]{4})$/;
+
     const invalidMember = this.members.some(m =>
       !m.member_name ||
       !namePattern.test(m.member_name) ||
@@ -166,21 +226,46 @@ export class Form5Component implements OnInit {
       return;
     }
 
-    const payload = { members: this.members };
+    const payload = {
+      members: this.members
+    };
 
-    this.userService.submitForm5(payload).subscribe({
-      next: () => {
-        alert('Form 5 successfully submitted');
+    /* ===== EDIT MODE ===== */
+    if (this.isEditMode) {
 
-        this.selectedSociety.submitted = true;
-        this.closeModal();
-      },
-      error: err => {
-        alert(err?.error?.message || 'Submit failed');
-      }
-    });
+      const payload = {
+        updates: this.members.map((m: any) => ({
+          form5_id: m.id,
+          member_name: m.member_name,
+          aadhar_no: m.aadhar_no
+        }))
+      };
+
+      this.userService.editForm5(payload).subscribe((res: any) => {
+        if (res.success) {
+          alert('✔ Form5 Updated Successfully');
+          this.closeModal();
+        }
+      });
+
+    } else {
+
+      const payload = {
+        members: this.members
+      };
+
+      this.userService.submitForm5(payload).subscribe((res: any) => {
+        if (res.success) {
+
+          // Change button text for this row
+          this.selectedSociety.submitted = true;
+
+          alert('✔ Form5 Submitted Successfully');
+          this.closeModal();
+        }
+      });
+    }
   }
-
   cancel() {
     window.history.back();
   }

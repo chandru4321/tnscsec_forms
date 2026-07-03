@@ -27,6 +27,9 @@ export class Form6 implements OnInit {
   showStopPopup = false;
   showFinalSubmitPopup = false;
   form6Submitted = false;
+  isEditMode = false;
+  editableData: any = null;
+
 
   selectedSociety: any = null;
   stopRemark = '';
@@ -40,22 +43,72 @@ export class Form6 implements OnInit {
 
   constructor(private userService: UserService, private router: Router) { }
 
+  // ngOnInit(): void {
+  //   this.district_name = localStorage.getItem('district_name') || '';
+  //   this.zone_name = localStorage.getItem('zone_name') || '';
+  //   this.initForm6();
+  // }
   ngOnInit(): void {
+
     this.district_name = localStorage.getItem('district_name') || '';
     this.zone_name = localStorage.getItem('zone_name') || '';
+
+    // First initialize Form6 to get form6_id
     this.initForm6();
   }
 
-  /* ================= INIT ================= */
   initForm6() {
+
     this.userService.initForm6().subscribe(res => {
+
       if (res?.success) {
+
         this.form6_id = res.data.form6_id;
+
+        // Save for later use
+        localStorage.setItem('form6_id', this.form6_id.toString());
+
+        // Now load editable data
         this.loadPreview();
+        //this.loadEditableForm6();
       }
+
     });
+
   }
 
+  loadEditableForm6() {
+
+    this.userService.getEditableForm6().subscribe({
+
+      next: (res: any) => {
+
+        this.editableData = res.data;
+
+        // Only enable edit mode if there are already withdrawn members
+        // this.isEditMode = res.data.societies.some((soc: any) =>
+        //   soc.election_status !== 'QUALIFIED'
+        // );
+        this.isEditMode = res.data.societies.some(
+          (soc: any) =>
+            soc.members.some((m: any) => m.withdrawn === true)
+        );
+
+        this.loadPreview();
+
+      },
+
+      error: () => {
+
+        this.isEditMode = false;
+
+        this.initForm6();
+
+      }
+
+    });
+
+  }
   /* ================= PREVIEW ================= */
   loadPreview() {
     this.userService.getForm6Preview().subscribe(res => {
@@ -63,12 +116,34 @@ export class Form6 implements OnInit {
 
       const prepared = res.data.societies.map((s: any) => ({
         ...s,
+
+        // Rural Counts
+        rural_sc_st: +s.rural.sc_st,
+        rural_women: +s.rural.women,
+        rural_general: +s.rural.general,
+        rural_total:
+          +s.rural.sc_st +
+          +s.rural.women +
+          +s.rural.general,
+
+        // Declared Counts
+        declared_sc_st: +s.declared.sc_st,
+        declared_women: +s.declared.women,
+        declared_general: +s.declared.general,
+        declared_total:
+          +s.declared.sc_st +
+          +s.declared.women +
+          +s.declared.general,
+
+        // Active Counts (existing)
         sc_st: +s.active_counts.sc_st,
         women: +s.active_counts.women,
         general: +s.active_counts.general,
-        total: +s.active_counts.sc_st + +s.active_counts.women + +s.active_counts.general,
+        total: +s.active_counts.total,
+
         rejectDone: false,
         stopDone: false,
+
         members: s.members.map((m: any) => ({
           ...m,
           checked: false,
@@ -84,11 +159,43 @@ export class Form6 implements OnInit {
 
 
   /* ================= REJECT ================= */
+  // openRejectPopup(soc: any) {
+  //   this.selectedSociety = soc;
+  //   this.showRejectPopup = true;
+  // }
+
   openRejectPopup(soc: any) {
-    this.selectedSociety = soc;
+
+    if (this.isEditMode && this.editableData?.societies) {
+
+      const editableSoc = this.editableData.societies.find(
+        (x: any) =>
+          x.form4_filed_soc_id === soc.form4_filed_soc_id
+      );
+
+      if (editableSoc) {
+
+        this.selectedSociety = {
+          ...soc,
+          members: editableSoc.members.map((m: any) => ({
+            ...m,
+            checked: m.withdrawn === true,
+            withdrawn: m.withdrawn === true
+          }))
+        };
+
+      } else {
+
+        this.selectedSociety = soc;
+      }
+
+    } else {
+
+      this.selectedSociety = soc;
+    }
+
     this.showRejectPopup = true;
   }
-
   closeReject() {
     this.showRejectPopup = false;
     this.selectedSociety = null;
@@ -145,35 +252,116 @@ export class Form6 implements OnInit {
     let membersToWithdraw: any[] = [];
 
     if (this.selectedSociety.election_status === 'UNOPPOSED') {
+
       membersToWithdraw = [this.selectedSociety.members[0]];
+
     } else {
+
       membersToWithdraw = this.selectedSociety.members.filter(
         (m: any) => m.checked || m.withdrawn
       );
+
     }
 
-    // if (!membersToWithdraw.length) {
-    //   alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
-    //   return;
-    // }
+    if (!membersToWithdraw.length) {
+      alert('தயவுசெய்து உறுப்பினரை தேர்வு செய்யவும்');
+      return;
+    }
 
-    let completed = 0;
+    // ================= EDIT =================
 
-    membersToWithdraw.forEach((m: any) => {
-      this.userService.withdrawForm6({
+    if (this.isEditMode) {
+      console.log('IS EDIT MODE =', this.isEditMode);
+      console.log('FORM6 ID =', this.form6_id);
+      console.log('SELECTED SOCIETY =', this.selectedSociety);
+
+
+      const payload = {
+
+
         form6_id: this.form6_id,
-        form5_member_id: m.form5_member_id ?? m.id,
-        action: 'WITHDRAW'
-      }).subscribe(() => {
-        completed++;
-        if (completed === membersToWithdraw.length) {
-          this.moveSocietyAfterSubmit(this.selectedSociety);
-          this.closeReject();
-        }
-      });
-    });
-  }
 
+
+        candidate_events: membersToWithdraw.map((m: any) => ({
+
+          form4_filed_soc_id: this.selectedSociety.form4_filed_soc_id,
+
+          form5_member_id: m.form5_member_id ?? m.id,
+
+          event_type: 'WITHDRAW'
+
+        })),
+
+        societies: [
+
+          {
+
+            form4_filed_soc_id: this.selectedSociety.form4_filed_soc_id,
+
+            election_action: this.selectedSociety.election_status,
+
+            remarks: null
+
+          }
+
+        ]
+
+      };
+
+      console.log('EDIT PAYLOAD', payload);
+
+      this.userService.editForm6(payload).subscribe((res: any) => {
+
+        if (res.success) {
+
+          alert('✔ Form6 Updated Successfully');
+
+          this.closeReject();
+
+          this.loadEditableForm6();
+
+        }
+
+      });
+
+    }
+
+    // ================= FIRST SUBMIT =================
+
+    else {
+
+      let completed = 0;
+
+      membersToWithdraw.forEach((m: any) => {
+        console.log('form6_id =', this.form6_id);
+
+        this.userService.withdrawForm6({
+
+          form6_id: this.form6_id,
+
+          form5_member_id: m.form5_member_id ?? m.id,
+
+          action: 'WITHDRAW'
+
+        }).subscribe(() => {
+
+          completed++;
+
+          if (completed === membersToWithdraw.length) {
+
+            this.moveSocietyAfterSubmit(this.selectedSociety);
+
+            this.closeReject();
+
+          }
+
+        });
+
+      });
+
+    }
+
+  }
   /* ================= MOVE SOCIETY ================= */
   private moveSocietyAfterSubmit(soc: any) {
 

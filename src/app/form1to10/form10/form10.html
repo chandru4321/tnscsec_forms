@@ -27,7 +27,7 @@
             <tr>
                 <th>வ. எண்</th>
                 <th>சங்கத்தின் பெயர்</th>
-                <th>SC/ST</th>
+                <th>ப.இ./ப.கு</th>
                 <th>மகளிர்</th>
                 <th>பொது</th>
                 <th>மொத்தம்</th>
@@ -69,7 +69,7 @@
                 <tr>
                     <th>வ. எண்</th>
                     <th>சங்கத்தின் பெயர்</th>
-                    <th>SC/ST</th>
+                    <th>ப.இ./ப.கு</th>
                     <th>மகளிர்</th>
                     <th>பொது</th>
                     <th>மொத்தம்</th>
@@ -111,7 +111,7 @@
                 <tr>
                     <th>வ. எண்</th>
                     <th>சங்கத்தின் பெயர்</th>
-                    <th>SC/ST</th>
+                    <th>ப.இ./ப.கு</th>
                     <th>மகளிர்</th>
                     <th>பொது</th>
                     <th>மொத்தம்</th>
@@ -193,7 +193,7 @@
             <div *ngIf="currentAction !== 'FINALIZE'">
 
                 <div *ngIf="scstCandidates.length">
-                    <h4>SC/ST ({{ selectedSociety.sc_st }})</h4>
+                    <h4>ப.இ./ப.கு ({{ selectedSociety.sc_st }})</h4>
                     <label *ngFor="let c of scstCandidates">
                         <input type="checkbox" [(ngModel)]="c.is_elected">
                         {{ c.member_name }} - {{ maskAadhar(c.aadhar_no) }}
