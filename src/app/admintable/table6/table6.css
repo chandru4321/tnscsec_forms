@@ -16,6 +16,23 @@
     font-size: 14px;
 }
 
+
+
+.empty-table-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #d32f2f;
+
+    background: #fff;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+
+
 /* Common border */
 .report-table th,
 .report-table td {
@@ -141,4 +158,34 @@
     padding: 0 10px;
     background: #ffffff;
     border-bottom: 1px solid #dcdcdc;
+}
+
+.filter-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-section select {
+    width: 220px;
+    padding: 5px;
+}
+
+.table-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.filter-bar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 120;
+
+    background: #fff;
+
 }

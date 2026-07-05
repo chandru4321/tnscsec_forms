@@ -1,129 +1,266 @@
-/* Scroll */
-/* .table-scroll-wrapper {
-    width: 100%;
-    overflow: auto;
-    max-height: calc(100vh - 200px);
-    border: 1px solid #4d7c0f;
-} */
+/* ================= PAGE ================= */
 
-.table-scroll-wrapper {
-    width: 100%;
-    max-height: calc(100vh - 200px);
-    overflow: auto;
-    border: 1px solid #4d7c0f;
-    background: #fff;
-}
+.page-content {
+    position: fixed;
+    top: 90px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-/* Table */
-/* .report-table {
-    min-width: 1800px;
-    width: max-content;
-    border-collapse: collapse;
-    font-family: "Noto Sans Tamil", sans-serif;
-} */
-
-
-
-
-.report-table {
-    width: 100%;
-    min-width: 1800px;
-    border-collapse: collapse;
-    table-layout: fixed;
-    font-family: "Noto Sans Tamil", sans-serif;
-}
-
-/* Cells */
-.report-table th,
-.report-table td {
-    border: 1px solid #4d7c0f;
-    padding: 8px;
-    text-align: center;
-    vertical-align: top;
-}
-
-.wrap-col {
-    width: 350px;
-    min-width: 350px;
-    word-break: break-word;
-    text-align: left;
-}
-
-.text-left {
-    text-align: left;
-}
-
-/* Header colors */
-.top-header th {
-    background: #b7e3a1;
-    position: sticky;
-    top: 0;
-    z-index: 40;
-}
-
-.top-sub-header th {
-    background: #c6efb3;
-    position: sticky;
-    top: 40px;
-    z-index: 39;
-}
-
-.group-header {
-    background: #61b9c0;
-    color: #fff;
-    position: sticky;
-    top: 80px;
-    z-index: 38;
-}
-
-.mid-header th {
-    background: #a7d38f;
-    position: sticky;
-    top: 120px;
-    z-index: 37;
-}
-
-.sub-header th {
-    background: #9fd38a;
-    position: sticky;
-    top: 160px;
-    z-index: 36;
-}
-
-/* Remove red column */
-.danger-text {
-    background: transparent;
-    color: #000;
-}
-
-.table-actions {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
-}
+    flex-direction: column;
 
-.export-btn {
-    background: #e6f4e6;
-    border: 1px solid #4d7c0f;
-    padding: 6px 14px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.formt4-container {
-    width: 100%;
-    padding: 10px;
+    overflow: hidden;
     background: #f3f4f6;
 }
 
+/* ================= ACTION BAR ================= */
+
+.table-actions {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 15px;
+
+    background: #fff;
+
+    border-bottom: 1px solid #dcdcdc;
+
+    flex-shrink: 0;
+
+}
+
+/* ================= FILTER ================= */
+
+.filter-section {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+}
+
+.filter-section label {
+
+    font-weight: 600;
+
+}
+
+.filter-section select {
+
+    min-width: 220px;
+
+    padding: 6px 10px;
+
+    border: 1px solid #bdbdbd;
+
+    border-radius: 4px;
+
+    background: #fff;
+
+}
+
+/* ================= BUTTON ================= */
+
+.export-btn {
+
+    padding: 8px 16px;
+
+    border: 1px solid #4d7c0f;
+
+    background: #e6f4e6;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+}
+
 .export-btn:hover {
-    background: #cdeacb;
+
+    background: #d3edd3;
+
+}
+
+/* ================= TABLE WRAPPER ================= */
+
+.table-scroll-wrapper {
+
+    flex: 1;
+
+    overflow: auto;
+
+    border: 1px solid #4d7c0f;
+
+    background: #fff;
+
+}
+
+/* ================= TABLE ================= */
+
+.report-table {
+
+    min-width: 3200px;
+
+    width: max-content;
+
+    border-collapse: collapse;
+
+    table-layout: fixed;
+
+    font-family: "Noto Sans Tamil", sans-serif;
+
+    font-size: 14px;
+
+    white-space: pre-line;
+
+}
+
+/* ================= CELLS ================= */
+
+.report-table th,
+.report-table td {
+
+    border: 1px solid #4d7c0f;
+
+    padding: 8px;
+
+    text-align: center;
+
+    vertical-align: middle;
+
+}
+
+/* ================= HEADERS ================= */
+
+.top-header th {
+
+    background: #b7e3a1;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
 }
 
 .top-sub-header th {
+
     background: #c6efb3;
+
     text-align: left;
+
     position: sticky;
-    top: 40px;
-    z-index: 29;
+
+    top: 42px;
+
+    z-index: 99;
+
+}
+
+.main-header th {
+
+    background: #5fa9b0;
+
+    color: #fff;
+
+    position: sticky;
+
+    top: 82px;
+
+    z-index: 98;
+
+}
+
+.sub-header th {
+
+    background: #9fd38a;
+
+    position: sticky;
+
+    top: 130px;
+
+    z-index: 97;
+
+}
+
+/* ================= BODY ================= */
+
+.report-table tbody tr:nth-child(even) {
+
+    background: #fafafa;
+
+}
+
+.report-table tbody tr:hover {
+
+    background: #eef9ee;
+
+}
+
+/* ================= COLUMN WIDTH ================= */
+
+.col-small {
+
+    width: 70px;
+
+}
+
+.col-medium {
+
+    width: 180px;
+
+}
+
+.col-wide {
+
+    width: 420px;
+
+    word-break: break-word;
+
+}
+
+/* ================= TEXT ================= */
+
+.text-left {
+
+    text-align: left;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:768px) {
+
+    .table-actions {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+
+    }
+
+    .filter-section {
+
+        width: 100%;
+
+    }
+
+    .filter-section select {
+
+        width: 100%;
+
+    }
+
 }

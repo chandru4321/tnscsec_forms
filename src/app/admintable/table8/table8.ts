@@ -40,90 +40,216 @@ export class Table8 implements OnInit {
 
   department_name = '';
   tableRows: TableRow[] = [];
+  selectedDepartment = '';
+  selectedDistrict = '';
+
+  departmentList: { id: number; name: string }[] = [];
+  districtList: { id: number; name: string }[] = [];
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+
+    this.loadDepartments();
+    this.loadDistricts();
     this.loadForm8();
+
+  }
+
+
+  loadDepartments(): void {
+
+    this.userService.getdepartment().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+  loadDistricts(): void {
+
+    this.userService.getdistrict().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
   }
 
   loadForm8(): void {
-    this.userService.getForm8Table().subscribe(res => {
 
-      if (!res?.success || !res.data?.length) return;
+    this.userService.loadForm8Filtered().subscribe({
 
-      const rows: TableRow[] = [];
+      next: (res: any) => {
 
-      // Loop all form8 records (safe)
-      res.data.forEach((form: any) => {
+        if (!res.success || !res.data?.length) {
 
-        const department = form.department?.name || '';
-        const district = form.district?.name || '';
-        const zone = form.zone?.name || '';
+          this.tableRows = [];
+          return;
 
-        // Set top header department (once)
-        this.department_name = department;
+        }
 
-        form.societies?.forEach((soc: any) => {
+        this.prepareRows(res.data);
 
-          const categories = soc.categories || [];
+      },
 
-          // ---------- Helpers ----------
-          const getNames = (type: string): string => {
-            const cat = categories.find((c: any) => c.category === type);
-            if (!cat?.winners?.length) return '-';
-            return cat.winners.map((w: any) => w.member_name).join('\n');
-          };
+      error: err => console.error(err)
 
-          const getCount = (type: string): number => {
-            const cat = categories.find((c: any) => c.category === type);
-            return cat?.winners?.length || 0;
-          };
+    });
 
-          const sc_count = getCount('SC_ST');
-          const women_count = getCount('WOMEN');
-          const general_count = getCount('GENERAL');
+  }
 
-          // ---------- Push Row ----------
-          rows.push({
-            department_name: department,
-            district_name: district,
-            zone_name: zone,
-            society_name: soc.society_name || '-',
+  prepareRows(data: any[]): void {
 
-            casted_votes: soc.casted_votes_count || 0,
-            ballot_votes: soc.polling_details?.ballot_votes_at_counting || 0,
-            valid_votes: soc.polling_details?.valid_votes || 0,
-            invalid_votes: soc.polling_details?.invalid_votes || 0,
+    const rows: TableRow[] = [];
 
-            sc_name: getNames('SC_ST'),
-            women_name: getNames('WOMEN'),
-            general_name: getNames('GENERAL'),
+    data.forEach((form: any) => {
 
-            sc_count,
-            women_count,
-            general_count,
-            total_count: sc_count + women_count + general_count,
+      // Read values from the API correctly
+      const department = form.department_name || '';
+      const district = form.district_name || '';
+      const zone = form.zone_name || '';
 
-            remarks: soc.polling_details?.remarks || '-'
-          });
+      this.department_name = department;
+
+      form.societies?.forEach((soc: any) => {
+
+        const categories = soc.categories || [];
+
+        const getNames = (type: string): string => {
+          const cat = categories.find((c: any) => c.category === type);
+
+          return cat?.winners?.length
+            ? cat.winners.map((w: any) => w.member_name).join('\n')
+            : '-';
+        };
+
+        const getCount = (type: string): number => {
+          const cat = categories.find((c: any) => c.category === type);
+          return cat?.winners?.length || 0;
+        };
+
+        const sc = getCount('SC_ST');
+        const women = getCount('WOMEN');
+        const general = getCount('GENERAL');
+
+        rows.push({
+
+          department_name: department,
+
+          district_name: district,
+
+          zone_name: zone,      // <-- fixed
+
+          society_name: soc.society_name || '-',
+
+          casted_votes: soc.casted_votes_count || 0,
+
+          ballot_votes: soc.polling_details?.ballot_votes_at_counting || 0,
+
+          valid_votes: soc.polling_details?.valid_votes || 0,
+
+          invalid_votes: soc.polling_details?.invalid_votes || 0,
+
+          sc_name: getNames('SC_ST'),
+
+          women_name: getNames('WOMEN'),
+
+          general_name: getNames('GENERAL'),
+
+          sc_count: sc,
+
+          women_count: women,
+
+          general_count: general,
+
+          total_count: sc + women + general,
+
+          remarks: soc.polling_details?.remarks || '-'
 
         });
 
       });
 
-      this.tableRows = rows;
     });
+
+    this.tableRows = rows;
+
+    console.log(this.tableRows);
+
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  applyFilter(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form8_Report.xlsx');
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.loadForm8Filtered(deptId, distId)
+      .subscribe({
+
+        next: (res: any) => {
+
+          if (!res.success || !res.data?.length) {
+
+            this.tableRows = [];
+            return;
+
+          }
+
+          this.prepareRows(res.data);
+
+        }
+
+      });
+
+  }
+  downloadPdf(): void {
+
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.getForm8Pdf(deptId, distId)
+      .subscribe({
+
+        next: (res: Blob) => {
+
+          saveAs(
+            new Blob([res], { type: 'application/pdf' }),
+            'Form8_Report.pdf'
+          );
+
+        }
+
+      });
+
   }
 }

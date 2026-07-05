@@ -1,9 +1,45 @@
 <div class="page-content">
 
     <div class="table-actions">
-        <button class="action-btn export-btn" (click)="exportToExcel()">
-            ⬇ Export Excel
+
+        <div class="filter-section">
+
+            <label>Department:</label>
+
+            <select [(ngModel)]="selectedDepartment" (change)="applyFilter()">
+
+                <option value="">All</option>
+
+                <option *ngFor="let d of departmentList" [value]="d.name">
+
+                    {{d.name}}
+
+                </option>
+
+            </select>
+
+            <label>District:</label>
+
+            <select [(ngModel)]="selectedDistrict" (change)="applyFilter()">
+
+                <option value="">All</option>
+
+                <option *ngFor="let d of districtList" [value]="d.name">
+
+                    {{d.name}}
+
+                </option>
+
+            </select>
+
+        </div>
+
+        <button class="export-btn" (click)="downloadPdf()">
+
+            📄 Download PDF
+
         </button>
+
     </div>
 
     <div class="table-scroll-wrapper">
@@ -13,15 +49,15 @@
 
                 <!-- TITLE -->
                 <tr class="top-header">
-                    <th colspan="32">
+                    <th colspan="21">
                         வேட்புமனு திரும்ப பெறுதல் மற்றும் இறுதி போட்டியிடும் வேட்பாளர்கள் பற்றிய முழு விவரங்கள்
                     </th>
                 </tr>
 
                 <!-- DEPARTMENT -->
                 <tr class="top-sub-header">
-                    <th colspan="32">
-                        துறை -- {{ form7Data?.department?.name }}
+                    <th colspan="21">
+                        துறை -- {{ department_name }}
                     </th>
                 </tr>
 
@@ -67,7 +103,8 @@
 
                     <td>{{ i + 1 }}</td>
                     <td>{{ form7Data?.district?.name }}</td>
-                    <td>{{ form7Data?.zone?.name }}</td>
+                    <!-- <td>{{ form7Data?.zone?.name }}</td> -->
+                    <td>{{ s.zone_name }}</td>
                     <td>{{ s.society_name }}</td>
 
                     <!-- Rural -->
@@ -100,4 +137,3 @@
 
         </table>
     </div>
-</div>

@@ -21,6 +21,13 @@ export class Table7 implements OnInit {
 
   form7Data: any;
   societies: any[] = [];
+  department_name = '';
+
+  selectedDepartment = '';
+  selectedDistrict = '';
+
+  departmentList: { id: number; name: string }[] = [];
+  districtList: { id: number; name: string }[] = [];
 
   constructor(
     private userservice: UserService,
@@ -28,10 +35,118 @@ export class Table7 implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('Form7 loaded');
-    this.getForm7Table();
+
+    this.loadDepartments();
+    this.loadDistricts();
+    this.loadForm7();
+
   }
 
+  loadDepartments(): void {
+
+    this.userservice.getdepartment().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+  loadDistricts(): void {
+
+    this.userservice.getdistrict().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+
+  loadForm7(): void {
+
+    this.userservice.loadForm7Filtered().subscribe({
+
+      next: (res: any) => {
+
+        console.log(res);
+
+        if (!res.success || !res.data?.length) {
+
+          this.societies = [];
+          return;
+
+        }
+
+        this.form7Data = res.data[0];
+
+        this.department_name =
+          this.form7Data.department?.name || '';
+
+        this.societies =
+          this.form7Data.societies || [];
+
+      },
+
+      error: err => console.log(err)
+
+    });
+
+  }
+
+  applyFilter(): void {
+
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userservice.loadForm7Filtered(deptId, distId)
+      .subscribe({
+
+        next: (res: any) => {
+
+          if (!res.success || !res.data?.length) {
+
+            this.societies = [];
+            return;
+
+          }
+
+          this.form7Data = res.data[0];
+
+          this.department_name =
+            this.form7Data.department?.name || '';
+
+          this.societies =
+            this.form7Data.societies || [];
+
+        }
+
+      });
+
+  }
   // API CALL (Fixed to use UserService)
   getForm7Table() {
     this.userservice.getForm7Table().subscribe({
@@ -70,15 +185,25 @@ export class Table7 implements OnInit {
     return total;
   }
 
-  // Excel Export
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+    const departmentId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form7_Report.xlsx');
+    this.userservice.getForm7Pdf(departmentId!)
+      .subscribe({
+
+        next: (res: Blob) => {
+
+          saveAs(
+            new Blob([res], { type: 'application/pdf' }),
+            'Form7_Report.pdf'
+          );
+
+        }
+
+      });
+
   }
 }

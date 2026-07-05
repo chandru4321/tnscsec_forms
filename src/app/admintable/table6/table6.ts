@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { UserService } from '../../services/user';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 interface TableRow {
   district_name: string;
@@ -60,7 +62,7 @@ interface TableRow {
 @Component({
   selector: 'app-formt6',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './table6.html',
   styleUrls: ['./table6.css']
 })
@@ -68,134 +70,226 @@ export class Table6 implements OnInit {
 
   department_name = '';
   tableRows: TableRow[] = [];
+  selectedDepartment = '';
+  selectedDistrict = '';
+
+  departmentList: { id: number; name: string }[] = [];
+  districtList: { id: number; name: string }[] = [];
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+
+    this.loadDepartments();
+    this.loadDistricts();
     this.loadForm6();
+
+  }
+
+  private prepareRows(apiData: any): void {
+
+    const rows: TableRow[] = [];
+
+    const forms = apiData.data || [];
+
+    forms.forEach((item: any) => {
+
+      const district = item.district_name;
+      const zone = item.zone_name;
+
+      (item.societies || []).forEach((soc: any) => {
+
+        rows.push({
+
+          district_name: district,
+          zone_name: zone,
+          society_name: soc.society_name,
+
+          // Withdrawn
+          w_sc_name: (soc.withdraw_scst_names || []).join('\n'),
+          w_women_name: (soc.withdraw_women_names || []).join('\n'),
+          w_general_name: (soc.withdraw_general_names || []).join('\n'),
+
+          w_sc: (soc.withdraw_scst_names || []).length,
+          w_women: (soc.withdraw_women_names || []).length,
+          w_general: (soc.withdraw_general_names || []).length,
+          w_total:
+            (soc.withdraw_scst_names || []).length +
+            (soc.withdraw_women_names || []).length +
+            (soc.withdraw_general_names || []).length,
+
+          // Final Candidates
+          f_sc_name: (soc.final_scst_names || []).join('\n'),
+          f_women_name: (soc.final_women_names || []).join('\n'),
+          f_general_name: (soc.final_general_names || []).join('\n'),
+
+          f_sc: soc.final_sc_st || 0,
+          f_women: soc.final_women || 0,
+          f_general: soc.final_general || 0,
+          f_total: soc.final_total || 0,
+
+          // Equal (if required later)
+          eq_sc_name: '-',
+          eq_women_name: '-',
+          eq_general_name: '-',
+
+          eq_sc: 0,
+          eq_women: 0,
+          eq_general: 0,
+          eq_total: 0,
+
+          // Less
+          less_sc_name: '-',
+          less_women_name: '-',
+          less_general_name: '-',
+
+          less_sc: 0,
+          less_women: 0,
+          less_general: 0,
+          less_total: 0,
+
+          // Final
+          final_sc_name: (soc.final_scst_names || []).join('\n'),
+          final_women_name: (soc.final_women_names || []).join('\n'),
+          final_general_name: (soc.final_general_names || []).join('\n'),
+
+          final_sc: soc.final_sc_st || 0,
+          final_women: soc.final_women || 0,
+          final_general: soc.final_general || 0,
+          final_total: soc.final_total || 0,
+
+          rowSpan: 1
+
+        });
+
+      });
+
+    });
+
+    this.tableRows = rows;
+
+  }
+  loadDepartments(): void {
+
+    this.userService.getdepartment().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+  loadDistricts(): void {
+
+    this.userService.getdistrict().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+  applyFilter(): void {
+
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.loadForm6Filtered(deptId, distId)
+      .subscribe({
+
+        next: (res: any) => {
+
+          const apiData = res?.data;
+
+          if (!res?.success || !apiData) {
+
+            this.tableRows = [];
+            return;
+
+          }
+
+          this.department_name = apiData.department_name || '';
+
+          this.prepareRows(apiData);
+
+        },
+
+        error: err => console.error(err)
+
+      });
+
   }
 
   loadForm6(): void {
+
     this.userService.getForm6Table().subscribe({
-      next: (res) => {
 
-        console.log("FORM6 RESPONSE:", res);
+      next: (res: any) => {
 
-        const apiData = res?.data;
+        console.log(res);
 
-        if (!res?.success || !apiData) {
+        if (!res.success) {
           this.tableRows = [];
           return;
         }
 
-        this.department_name = apiData.department_name || '';
+        this.department_name = '';
 
-        const district = apiData.district_name || '';
-        const zone = apiData.zone_name || '';
+        this.prepareRows(res.data);
 
-        const societies = apiData.data || [];   // ✅ IMPORTANT
+      }
 
-        const rows: TableRow[] = [];
-
-        societies.forEach((soc: any) => {
-
-          const candidates = soc.candidates || [];
-
-          const filterBy = (cat: string, status?: string) =>
-            candidates
-              .filter((c: any) =>
-                c.category_type === cat &&
-                (!status || c.status === status)
-              )
-              .map((c: any) => c.member_name)
-              .join('\n');
-
-          const countBy = (cat: string, status?: string) =>
-            candidates.filter((c: any) =>
-              c.category_type === cat &&
-              (!status || c.status === status)
-            ).length;
-
-          const isQualified = soc.election_status === 'QUALIFIED';
-          const isUnopposed = soc.election_status === 'UNOPPOSED';
-          const isUnqualified = soc.election_status === 'UNQUALIFIED';
-
-          const w_sc = isUnqualified ? countBy('sc_st', 'WITHDRAWN') : 0;
-          const w_women = isUnqualified ? countBy('women', 'WITHDRAWN') : 0;
-          const w_general = isUnqualified ? countBy('general', 'WITHDRAWN') : 0;
-
-          const f_sc = isQualified ? countBy('sc_st', 'ACTIVE') : 0;
-          const f_women = isQualified ? countBy('women', 'ACTIVE') : 0;
-          const f_general = isQualified ? countBy('general', 'ACTIVE') : 0;
-
-          const eq_sc = isUnopposed ? countBy('sc_st', 'ACTIVE') : 0;
-          const eq_women = isUnopposed ? countBy('women', 'ACTIVE') : 0;
-          const eq_general = isUnopposed ? countBy('general', 'ACTIVE') : 0;
-
-          rows.push({
-            district_name: district,
-            zone_name: zone,
-            society_name: soc.society_name || '-',
-
-            w_sc_name: isUnqualified ? filterBy('sc_st', 'WITHDRAWN') : '-',
-            w_women_name: isUnqualified ? filterBy('women', 'WITHDRAWN') : '-',
-            w_general_name: isUnqualified ? filterBy('general', 'WITHDRAWN') : '-',
-            w_sc,
-            w_women,
-            w_general,
-            w_total: w_sc + w_women + w_general,
-
-            f_sc_name: isQualified ? filterBy('sc_st', 'ACTIVE') : '-',
-            f_women_name: isQualified ? filterBy('women', 'ACTIVE') : '-',
-            f_general_name: isQualified ? filterBy('general', 'ACTIVE') : '-',
-            f_sc,
-            f_women,
-            f_general,
-            f_total: f_sc + f_women + f_general,
-
-            eq_sc_name: isUnopposed ? filterBy('sc_st', 'ACTIVE') : '-',
-            eq_women_name: isUnopposed ? filterBy('women', 'ACTIVE') : '-',
-            eq_general_name: isUnopposed ? filterBy('general', 'ACTIVE') : '-',
-            eq_sc,
-            eq_women,
-            eq_general,
-            eq_total: eq_sc + eq_women + eq_general,
-
-            less_sc_name: '-',
-            less_women_name: '-',
-            less_general_name: '-',
-            less_sc: 0,
-            less_women: 0,
-            less_general: 0,
-            less_total: 0,
-
-            final_sc_name: isQualified ? filterBy('sc_st', 'ACTIVE') : '-',
-            final_women_name: isQualified ? filterBy('women', 'ACTIVE') : '-',
-            final_general_name: isQualified ? filterBy('general', 'ACTIVE') : '-',
-            final_sc: f_sc,
-            final_women: f_women,
-            final_general: f_general,
-            final_total: f_sc + f_women + f_general,
-
-            rowSpan: 1
-          });
-
-        });
-
-        this.tableRows = rows;
-
-      },
-      error: err => console.error("FORM6 ERROR:", err)
     });
+
   }
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
+  downloadPdf(): void {
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form6_Report.xlsx');
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.getForm6Pdf(deptId, distId)
+      .subscribe({
+
+        next: (res: Blob) => {
+
+          saveAs(
+            new Blob([res], { type: 'application/pdf' }),
+            'Form6_Report.pdf'
+          );
+
+        },
+
+        error: err => console.error(err)
+
+      });
+
   }
 }

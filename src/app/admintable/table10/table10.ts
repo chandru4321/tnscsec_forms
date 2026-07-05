@@ -17,77 +17,202 @@ export class Table10 implements OnInit {
 
   department_name = '';
   tableRows: any[] = [];
+  selectedDepartment = '';
+  selectedDistrict = '';
+
+  departmentList: { id: number; name: string }[] = [];
+  districtList: { id: number; name: string }[] = [];
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+
+    this.loadDepartments();
+    this.loadDistricts();
     this.loadForm10();
+
+  }
+
+  loadDepartments(): void {
+
+    this.userService.getdepartment().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.departmentList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
+  }
+
+  loadDistricts(): void {
+
+    this.userService.getdistrict().subscribe((res: any) => {
+
+      if (res?.success) {
+
+        this.districtList = res.data
+          .filter((d: any) => d.is_active === 1)
+          .map((d: any) => ({
+            id: d.id,
+            name: d.name.trim()
+          }));
+
+      }
+
+    });
+
   }
 
   loadForm10(): void {
-    this.userService.getForm10List().subscribe(res => {
 
-      if (!res?.success || !res.data?.length) return;
+    this.userService.loadForm10Filtered().subscribe({
 
-      const rows: any[] = [];
+      next: (res: any) => {
 
-      res.data.forEach((form: any) => {
+        if (!res.success || !res.data?.length) {
 
-        const department = form.department?.name || '';
-        const district = form.district?.name || '';
-        const zone = form.zone?.name || '';
+          this.tableRows = [];
+          return;
 
-        // Set header department once
-        this.department_name = department;
+        }
 
-        form.societies?.forEach((soc: any) => {
+        this.prepareRows(res.data);
 
-          rows.push({
-            district_name: district,
-            zone_name: zone,
-            society_name: soc.society_name || '-',
+      },
 
-            // Final counts
-            final_sc: soc.final_counts?.sc_st || 0,
-            final_women: soc.final_counts?.women || 0,
-            final_general: soc.final_counts?.general || 0,
-            final_total: soc.final_counts?.total || 0,
+      error: err => console.error(err)
 
-            // Rejected counts
-            rejected_sc: soc.rejected_counts?.sc_st || 0,
-            rejected_women: soc.rejected_counts?.women || 0,
-            rejected_general: soc.rejected_counts?.general || 0,
-            rejected_total: soc.rejected_counts?.total || 0,
+    });
 
-            // Withdrawn counts
-            withdrawn_sc: soc.withdrawn_counts?.sc_st || 0,
-            withdrawn_women: soc.withdrawn_counts?.women || 0,
-            withdrawn_general: soc.withdrawn_counts?.general || 0,
-            withdrawn_total: soc.withdrawn_counts?.total || 0,
+  }
 
-            // Winner
-            president_name: soc.president_winner?.member_name || '-',
+  prepareRows(data: any[]): void {
 
-            // Election type
-            election_type: soc.election_type || '-'
-          });
+    const rows: any[] = [];
+
+    data.forEach((form: any) => {
+
+      const department =
+        form.department_name ??
+        form.department?.name ??
+        '';
+
+      const district =
+        form.district_name ??
+        form.district?.name ??
+        '';
+
+      const zone =
+        form.zone_name ??
+        form.zone?.name ??
+        '';
+
+      this.department_name = department;
+
+      form.societies?.forEach((soc: any) => {
+
+        rows.push({
+
+          district_name: district,
+          zone_name: zone,
+          society_name: soc.society_name || '-',
+
+          final_sc: soc.final_counts?.sc_st || 0,
+          final_women: soc.final_counts?.women || 0,
+          final_general: soc.final_counts?.general || 0,
+          final_total: soc.final_counts?.total || 0,
+
+          rejected_sc: soc.rejected_counts?.sc_st || 0,
+          rejected_women: soc.rejected_counts?.women || 0,
+          rejected_general: soc.rejected_counts?.general || 0,
+          rejected_total: soc.rejected_counts?.total || 0,
+
+          withdrawn_sc: soc.withdrawn_counts?.sc_st || 0,
+          withdrawn_women: soc.withdrawn_counts?.women || 0,
+          withdrawn_general: soc.withdrawn_counts?.general || 0,
+          withdrawn_total: soc.withdrawn_counts?.total || 0,
+
+          president_name:
+            soc.president_winner?.member_name || '-',
+
+          election_type:
+            soc.election_type || '-'
 
         });
 
       });
 
-      this.tableRows = rows;
     });
+
+    this.tableRows = rows;
+
   }
 
-  exportToExcel(): void {
-    const table = document.getElementById('reportTable');
-    if (!table) return;
 
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = { Sheets: { Report: ws }, SheetNames: ['Report'] };
+  applyFilter(): void {
 
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([buffer]), 'Form10_Report.xlsx');
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.loadForm10Filtered(deptId, distId)
+      .subscribe({
+
+        next: (res: any) => {
+
+          if (!res.success || !res.data?.length) {
+
+            this.tableRows = [];
+            return;
+
+          }
+
+          this.prepareRows(res.data);
+
+        },
+
+        error: err => console.error(err)
+
+      });
+
+  }
+  downloadPdf(): void {
+
+    const deptId = this.departmentList.find(
+      d => d.name === this.selectedDepartment
+    )?.id;
+
+    const distId = this.districtList.find(
+      d => d.name === this.selectedDistrict
+    )?.id;
+
+    this.userService.getForm10Pdf(deptId, distId)
+      .subscribe({
+
+        next: (res: Blob) => {
+
+          saveAs(
+            new Blob([res], { type: 'application/pdf' }),
+            'Form10_Report.pdf'
+          );
+
+        },
+
+        error: err => console.error(err)
+
+      });
+
   }
 }

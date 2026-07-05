@@ -640,10 +640,57 @@ export class UserService {
     );
   }
 
-  getForm5bPdf(departmentId: number) {
+  getForm5bTable(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/form5b`);
+  }
+
+
+
+
+  loadForm5bTable(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
+
+    const params = {
+      pageNumber: pageNumber,
+      pageSize: pageSize
+    };
+
+    return this.http.get<any>(`${this.baseUrl}/form5b`, { params });
+  }
+  loadForm5bFiltered(departmentId?: number, districtId?: number) {
+
+    let params: any = {};
+
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
+
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
     return this.http.get(
-      `${this.baseUrl}/form5/pdf?department_id=${departmentId}`,
-      { responseType: 'blob' }
+      `${this.baseUrl}/form5b/list`,
+      { params }
+    );
+  }
+  getForm5bPdf(departmentId?: number, districtId?: number) {
+
+    let params: any = {};
+
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
+
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(
+      `${this.baseUrl}/form5b/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
     );
   }
 
@@ -727,22 +774,13 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form6/list`);
   }
 
+
   submitForm6(payload: any): Observable<any> {
     return this.http.post<any>(
       `${this.baseUrl}/form6/submit`,
       payload
     );
   }
-
-
-  getForm6Pdf(department_id: number) {
-    return this.http.get(
-      `${this.baseUrl}/form6/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
-    );
-  }
-
-
 
 
   loadForm6Table(pageNumber: number = 1, pageSize: number = 50): Observable<any> {
@@ -752,22 +790,48 @@ export class UserService {
       pageSize: pageSize
     };
 
-    return this.http.get<any>(`${this.baseUrl}/form6`, { params });
+    return this.http.get<any>(`${this.baseUrl}/form6/list`, { params });
   }
-
-  loadForm6Filtered(departmentId?: number, districtId?: number): Observable<any> {
+  loadForm6Filtered(departmentId?: number, districtId?: number) {
 
     let params: any = {};
 
-    if (departmentId) params.department_id = departmentId;
-    if (districtId) params.district_id = districtId;
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
 
-    return this.http.get<any>(`${this.baseUrl}/form6`, { params });
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(
+      `${this.baseUrl}/form6/list`,
+      { params }
+    );
+
   }
 
+  getForm6Pdf(departmentId?: number, districtId?: number) {
 
+    let params: any = {};
 
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
 
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(
+      `${this.baseUrl}/form6/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
+    );
+
+  }
   getEditableForm6(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form6/editable`);
   }
@@ -830,14 +894,27 @@ export class UserService {
   // }
 
 
-  getForm7Pdf(department_id: number) {
+  getForm7Pdf(departmentId?: number, districtId?: number) {
+
+    let params: any = {};
+
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
+
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
     return this.http.get(
-      `${this.baseUrl}/form7/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
+      `${this.baseUrl}/form7/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
     );
+
   }
-
-
 
 
 
@@ -892,25 +969,41 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form8`, { params });
   }
 
-  loadForm8Filtered(departmentId?: number, districtId?: number): Observable<any> {
+  loadForm8Filtered(departmentId?: number, districtId?: number) {
 
     let params: any = {};
 
-    if (departmentId) params.department_id = departmentId;
-    if (districtId) params.district_id = districtId;
+    if (departmentId)
+      params.department_id = departmentId;
 
-    return this.http.get<any>(`${this.baseUrl}/form8`, { params });
-  }
+    if (districtId)
+      params.district_id = districtId;
 
-
-
-  getForm8Pdf(department_id: number) {
-    return this.http.get(
-      `${this.baseUrl}/form8/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
+    return this.http.get<any>(
+      `${this.baseUrl}/form8`,
+      { params }
     );
-  }
 
+  }
+  getForm8Pdf(departmentId?: number, districtId?: number) {
+
+    let params: any = {};
+
+    if (departmentId)
+      params.department_id = departmentId;
+
+    if (districtId)
+      params.district_id = districtId;
+
+    return this.http.get(
+      `${this.baseUrl}/form8/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
+    );
+
+  }
   getEditableForm8(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/form8/editable`);
   }
@@ -965,22 +1058,47 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form9`, { params });
   }
 
-  loadForm9Filtered(departmentId?: number, districtId?: number): Observable<any> {
+
+
+  loadForm9Filtered(departmentId?: number, districtId?: number) {
 
     let params: any = {};
 
-    if (departmentId) params.department_id = departmentId;
-    if (districtId) params.district_id = districtId;
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
 
-    return this.http.get<any>(`${this.baseUrl}/form9`, { params });
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(
+      `${this.baseUrl}/form9`,
+      { params }
+    );
+
   }
 
+  getForm9Pdf(departmentId?: number, districtId?: number) {
 
-  getForm9Pdf(department_id: number) {
+    let params: any = {};
+
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
+
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
     return this.http.get(
-      `${this.baseUrl}/form9/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
+      `${this.baseUrl}/form9/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
     );
+
   }
 
 
@@ -1023,27 +1141,46 @@ export class UserService {
     return this.http.get<any>(`${this.baseUrl}/form10`, { params });
   }
 
-  loadForm10Filtered(departmentId?: number, districtId?: number): Observable<any> {
+  loadForm10Filtered(departmentId?: number, districtId?: number) {
 
     let params: any = {};
 
-    if (departmentId) params.department_id = departmentId;
-    if (districtId) params.district_id = districtId;
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
 
-    return this.http.get<any>(`${this.baseUrl}/form10`, { params });
-  }
+    if (districtId) {
+      params.district_id = districtId;
+    }
 
-
-  getForm10Pdf(department_id: number) {
     return this.http.get(
-      `${this.baseUrl}/form10/pdf?department_id=${department_id}`,
-      { responseType: 'blob' }
+      `${this.baseUrl}/form10`,
+      { params }
     );
+
   }
 
+  getForm10Pdf(departmentId?: number, districtId?: number) {
 
+    let params: any = {};
 
+    if (departmentId) {
+      params.department_id = departmentId;
+    }
 
+    if (districtId) {
+      params.district_id = districtId;
+    }
+
+    return this.http.get(
+      `${this.baseUrl}/form10/pdf`,
+      {
+        params,
+        responseType: 'blob'
+      }
+    );
+
+  }
 
 
 

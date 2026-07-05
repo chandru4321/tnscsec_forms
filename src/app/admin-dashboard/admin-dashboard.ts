@@ -45,6 +45,15 @@ export class AdminDashboard {
 
     },
 
+
+    {
+      title: 'வேட்புமனு பரிசீலனை மற்றும் செல்லத்தக்க வேட்புமனுக்கள் பட்டியல் பற்றிய விபரங்கள்',
+      code: 'Form5b',
+
+      tableLink: '/layout/admintable/table5b'
+
+    },
+
     {
       title: 'வேட்புமனு திரும்ப பெறுதல் மற்றும் போட்டியிடும் வேட்பாளர்கள் விபரங்கள்', code: 'Form6',
 

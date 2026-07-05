@@ -9,6 +9,7 @@ import { Table7 } from "./table7/table7";
 import { Table8 } from "./table8/table8";
 import { Table9 } from "./table9/table9";
 import { Table10 } from "./table10/table10";
+import { table5b } from "./table5b/table5b";
 
 const routes: Routes = [
     {
@@ -25,6 +26,10 @@ const routes: Routes = [
     },
     {
         path: 'table5', component: Table5
+    },
+    {
+        path: 'table5b', component: table5b
+
     },
     {
         path: 'table6', component: Table6

@@ -93,41 +93,53 @@ export class Table5 implements OnInit {
       if (!societyMap[key]) {
 
         societyMap[key] = {
-          district_name: data.district_name,   // <-- FIX
-          zone_name: data.zone_name,           // <-- FIX
-          society_name: key,
+          district_name: data.district_name,
+          zone_name: data.zone_name,
+          society_name: m.society_name,
+
           sc: [],
           women: [],
           general: []
         };
-
       }
 
-      if (m.category_type === 'sc_st') {
-        societyMap[key].sc.push(m.member_name);
-      }
-      else if (m.category_type === 'women') {
-        societyMap[key].women.push(m.member_name);
-      }
-      else if (m.category_type === 'general') {
-        societyMap[key].general.push(m.member_name);
+      switch (m.category_type) {
+        case 'sc_st':
+          societyMap[key].sc.push(m.member_name);
+          break;
+
+        case 'women':
+          societyMap[key].women.push(m.member_name);
+          break;
+
+        case 'general':
+          societyMap[key].general.push(m.member_name);
+          break;
       }
 
     });
 
-    this.tableRows = Object.values(societyMap).map((s: any) => ({
-      district_name: s.district_name,
-      zone_name: s.zone_name,
-      society_name: s.society_name,
+    this.tableRows = [];
 
-      sc_names: s.sc.join('<br>'),
-      women_names: s.women.join('<br>'),
-      general_names: s.general.join('<br>'),
+    Object.values(societyMap).forEach((s: any) => {
 
-      sc_count: s.sc.length,
-      women_count: s.women.length,
-      general_count: s.general.length
-    }));
+      this.tableRows.push({
+
+        district_name: data.district_name,
+        zone_name: data.zone_name,
+        society_name: s.society_name,
+
+        sc_names: s.sc.join('<br>'),
+        women_names: s.women.join('<br>'),
+        general_names: s.general.join('<br>'),
+
+        sc_count: s.sc.length,
+        women_count: s.women.length,
+        general_count: s.general.length
+
+      });
+
+    });
 
   }
   applyFilter(): void {
@@ -140,21 +152,14 @@ export class Table5 implements OnInit {
       d => d.name === this.selectedDistrict
     )?.id;
 
-    console.log("Department:", deptId);
-    console.log("District:", distId);
-
     this.userService.loadForm5Filtered(deptId, distId)
       .subscribe((res: any) => {
 
-        console.log(res);
+        if (res.success) {
 
-        const apiData = res?.data;
+          this.department_name = res.data.department_name;
 
-        if (res?.success && apiData) {
-
-          this.department_name = apiData.department_name;
-
-          this.prepareRows(apiData);
+          this.prepareRows(res.data);
 
         } else {
 
